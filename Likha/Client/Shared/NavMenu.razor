@@ -1,37 +1,27 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Likha</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
-    </ul>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+﻿<nav class="navbar navbar-expand-lg navbar-light mb-2">
+    <div class="container-fluid nav-container py-md-3">
+        <a class="navbar-brand" href="#">
+            LiKHA
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse  d-flex-md justify-content-end" id="navbarNav">
+            <div class="navbar-nav">
+                <a class="nav-link d-flex align-items-center" href="#">
+                    <i class="oi oi-dashboard"></i>
+                    <p class="d-block d-lg-none m-2 ">Gallery</p>
+                </a>
+                <a class="nav-link d-flex align-items-center" href="#">
+                    <i class="oi oi-cart"></i>
+                    <p class="d-block d-lg-none m-2">Cart</p>
+                </a>
+                <a class="nav-link d-flex align-items-center" href="#">
+                    <i class="oi oi-person"></i>
+                    <p class="d-block d-lg-none m-2">Account</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
