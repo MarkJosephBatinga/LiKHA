@@ -1,7 +1,29 @@
 ﻿@page "/"
 
 <div>
-    <div>
-        <SortMenu />
+    <SortMenu />
+    <div class="container-fluid body-container">
+        <div class="row">
+            <div class="col-2 d-none d-xxl-block category-container">
+                <div class="d-flex flex-column align-items-center mt-5 min-vh-100">
+                    <h3 class="mb-3">CATEGORIES</h3>
+                    <a href="" class="btn btn-lg w-75 my-4">Painting</a>
+                    <a href="" class="btn btn-lg w-75 my-4">Drawings</a>
+                    <a href="" class="btn btn-lg w-75 my-4">Digital Arts</a>
+                    <a href="" class="btn btn-lg w-75 my-4">Sculptures</a>
+                    <a href="" class="btn btn-lg w-75 my-4">Ceramics</a>
+                    <a href="" class="btn btn-lg w-75 my-4">Photography</a>
+                    <a href="" class="btn btn-lg w-75 my-4">Designs</a>
+                    <a href="" class="btn btn-lg w-75 my-4">Crafts</a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="container-fluid my-4">
+                    <div class="row row-cols-md-3 row-cols-2 g-3">
+                        <ProductList />
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
