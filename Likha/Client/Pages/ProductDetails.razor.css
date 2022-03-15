@@ -1,9 +1,68 @@
-﻿/* Artworks Cards */
-a {
-    text-decoration: none;
-    color: #000000;
+﻿.image-container {
+    width: 100%;
+    background: #f6f6f6;
+    border: 1px solid #d8d8d8;
+    box-sizing: border-box;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
 }
 
+.art-full-image {
+    width: 800px;
+    max-height: 800px;
+    border-radius: 10px;
+}
+
+.art-details {
+    background: #f6f6f6;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+}
+
+.artist-container {
+    background: #f6f6f6;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+}
+
+.art-title {
+    font-weight: 700;
+    font-size: 1.5;
+    letter-spacing: 0.188;
+}
+
+.art-description {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1re;
+    letter-spacing: 0.165rem;
+}
+
+.art-price {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.165rem;
+    color: #af8585;
+}
+
+.artist {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1.125rem;
+    letter-spacing: 0.2rem;
+}
+
+.btn-md {
+    background: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
+    font-weight: 400;
+    font-size: 0.7rem;
+    letter-spacing: 0.111rem;
+}
+
+/* Artworks Cards */
 .art-card {
     background: #f6f6f6;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
@@ -13,11 +72,10 @@ a {
 
 .art-img {
     width: 100%;
-    height: 500px;
+    height: 400px;
     filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.1));
     border-radius: 10px;
-    object-fit: none;
-    object-position: top;
+    object-fit: cover;
 }
 
 .tag {
@@ -53,6 +111,13 @@ a {
 }
 
 @media (max-width: 640px) {
+    .art-full-image {
+        width: 100%;
+        max-height: 500px;
+        border-radius: 10px;
+    }
+
+    /* Artworks */
     .art-card {
         width: 100%;
     }
@@ -89,7 +154,6 @@ a {
     /* Artworks */
     .art-card {
         width: 100%;
-        min-height: 435px;
     }
 
     .art-img {
