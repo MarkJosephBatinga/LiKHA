@@ -1,5 +1,6 @@
 ﻿@page "/product/{Id}"
 @inject IProductService ProductService
+@inject NavigationManager NavigationManager
 
 <div class="container-fluid">
     <div class="image-container d-flex justify-content-center p-4">
@@ -14,7 +15,7 @@
             </div>
             <div class="col-md-6 d-md-flex flex-column align-items-end">
                 <p class="art-price">@product.Price</p>
-                <button class="btn btn-md btn-cart">Add To Cart</button>
+                <button class="btn btn-md btn-cart" @onclick="NavigateToCart">Add to Cart</button>
             </div>
         </div>
     </div>
@@ -30,16 +31,22 @@
     </div>
     <div class="container-fluid my-3">
         <div class="row row-cols-xl-3 row-cols-2 g-3">
-               <ProductList /> 
+            <ProductList />
         </div>
     </div>
 </div>
 
 @code {
-    private Product product;
+    private Product product = null;
 
     [Parameter]
     public string Id { get; set; }
+
+    private void NavigateToCart()
+    {
+        NavigationManager.NavigateTo("cart");
+    }
+
 
     protected override void OnInitialized()
     {
@@ -47,5 +54,7 @@
         {
             ProductService.LoadProducts();
         }
+
+        product = ProductService.Products.FirstOrDefault(prod => prod.Id == Int32.Parse(Id));
     }
 }
