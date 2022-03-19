@@ -1,0 +1,80 @@
+﻿.gallery-container {
+    width: 100%;
+    border: 1px solid #dddddd;
+    box-sizing: border-box;
+    box-shadow: 0px 7px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+
+.profile-container {
+    padding: 20px 70px;
+    width: 80%;
+    background: #f6f6f6;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+
+.profile-box {
+    width: 30%;
+}
+
+.profile-img {
+    width: auto;
+    max-height: 150px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+    background: url(image.png);
+    filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.6));
+}
+
+.address-box {
+    width: 50%;
+    margin-left: 20px;
+    box-shadow: -2px 0px 0px #cccccc;
+    margin-right: auto;
+}
+
+.address-box-xl {
+    margin: 20px 40px;
+    box-shadow: 0px 2px 0px #cccccc, 0px -2px 0px #cccccc;
+}
+
+.profile-name {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 25px;
+    letter-spacing: 3px;
+}
+
+.address-title {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 25px;
+    letter-spacing: 3px;
+    margin: 0;
+}
+
+.address-content {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.9rem;
+    line-height: 25px;
+    letter-spacing: 3px;
+    margin: 0;
+}
+
+.edit-link {
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: #c2c2c2;
+}
+
+    .edit-link:hover {
+        color: black;
+    }

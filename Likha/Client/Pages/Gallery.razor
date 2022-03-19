@@ -1,0 +1,46 @@
+﻿@page "/gallery"
+
+<div class="container-fluid">
+    <div class="gallery-container p-3 d-xl-flex flex-column align-items-center d-none d-xl-block ">
+        <div class="profile-container d-flex">
+            <div class="image-box d-flex flex-column align-items-center">
+                <img src="https://images.unsplash.com/photo-1516756587022-7891ad56a8cd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                     alt="" class="profile-img">
+                <h3 class="profile-name">Tamara Menzi</h3>
+            </div>
+            <div class="address-box p-2 d-flex flex-column justify-content-center">
+                <h3 class="address-title">Address Book</h3>
+                <p class="address-content">Tamara Menzi</p>
+                <p class="address-content">Ercuis, France, Europe</p>
+                <p class="address-content">+123456789</p>
+            </div>
+            <div class="edit-box d-flex flex-column justify-content-around align-items-end">
+                <a href="#" class="edit-link">Edit</a>
+                <button class="btn btn-md">Add New Art</button>
+            </div>
+        </div>
+    </div>
+    <div class="gallery-container d-block d-xl-none">
+        <div class="profile-container-xl d-flex flex-column">
+            <div class="image-box pt-4 d-flex flex-column align-items-center">
+                <img src="https://images.unsplash.com/photo-1516756587022-7891ad56a8cd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                     alt="" class="profile-img">
+            </div>
+            <div class="address-box-xl p-3 d-flex flex-column align-items-center">
+                <h3 class="profile-name">Tamara Menzi</h3>
+                <p class="address-content">Ercuis, France, Europe</p>
+                <p class="address-content">+123456789</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="container-fluid my-4">
+        <div class="row row-cols-md-3 row-cols-2 g-3">
+            <ProductList />
+        </div>
+    </div>
+</div>
+
+@code {
+
+}
