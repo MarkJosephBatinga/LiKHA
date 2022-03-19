@@ -1,0 +1,119 @@
+﻿@page "/payment"
+
+
+<div class="container-fluid d-block d-xl-none">
+    <div class="shipping-container-xl p-3 mb-4 d-flex flex-column align-items-center">
+        <h3 class="body-title">Shipping Address</h3>
+        <p class="address-content">Tamara Menzi</p>
+        <p class="address-content">Ercuis, France, Europe</p>
+        <p class="address-content">+123456789</p>
+        <div class="dropdown">
+            <button class="btn btn-md dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                Payment Method
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Cash on Delivery</a>
+                <a class="dropdown-item" href="#">Credit/Debit Card</a>
+            </div>
+        </div>
+    </div>
+    <h3 class="body-title">Artworks</h3>
+    <div class="artwork-box-xl p-2 mb-3">
+        <div class="img-box">
+            <img src="https://picsum.photos/200/300" alt="" class="art-img">
+        </div>
+        <div class="artwork-summary">
+            <h4 class="artwork-number">Artwork 1</h4>
+            <p class="artwork-content">Vince Gogh</p>
+            <p class="artwork-content">Manila City, Philippines</p>
+        </div>
+        <div class="total-summary">
+            <p class="summary-content">Total: P 12, 500</p>
+            <button class="delete"><img src="../images/trash-bin.png" alt="" class="icon-delete"></button>
+        </div>
+    </div>
+    <form action="">
+        <div class="order-box-xl p-3">
+            <h3 class="payment-title">Order Summary</h3>
+            <table>
+                <tr>
+                    <th>Subtotal</th>
+                    <td>P 12,500</td>
+                </tr>
+                <tr>
+                    <th>Shipping Fee</th>
+                    <td>P 1,000</td>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <td>P 13,500</td>
+                </tr>
+            </table>
+            <button class="checkout check-xl" type="submit">Checkout</button>
+        </div>
+    </form>
+</div>
+<div class="container-fluid d-none d-xl-block">
+    <div class="row">
+        <div class="shipping-container col-9">
+            <h3 class="body-title">Shipping Address</h3>
+            <div class="address-box">
+                <p class="address-content">Tamara Menzi</p>
+                <p class="address-content">Ercuis, France, Europe</p>
+                <p class="address-content">+123456789</p>
+            </div>
+            <h3 class="body-title">Artworks</h3>
+            <div class="artwork-box mb-3">
+                <div class="img-box">
+                    <img src="https://picsum.photos/200/300" alt="" class="art-img">
+                </div>
+                <div class="artwork-summary">
+                    <h4 class="artwork-number">Artwork 1</h4>
+                    <p class="artwork-content">Vince Gogh</p>
+                    <p class="artwork-content">Manila City, Philippines</p>
+                </div>
+                <div class="total-summary">
+                    <p class="summary-content">Total: P 12, 500</p>
+                    <button class="delete"><img src="../images/trash-bin.png" alt="" class="icon-delete"></button>
+                </div>
+            </div>
+
+        </div>
+        <div class="payment-container pt-3 col-3 d-flex flex-column align-items-center">
+            <h3 class="payment-title">Select Payment Method</h3>
+            <form action="">
+                <div class="check-box">
+                    <label for="cod-method" class="checkbox-label">Cash On Delivery</label>
+                    <input type="checkbox" name="cod-method" id="payment-method">
+                </div>
+                <div class="check-box">
+                    <label for="cd-method" class="checkbox-label">Credit/Debit Card</label>
+                    <input type="checkbox" name="cd-method" id="payment-method">
+                </div>
+                <div class="order-box">
+                    <h3 class="payment-title">Order Summary</h3>
+                    <table>
+                        <tr>
+                            <th>Subtotal</th>
+                            <td>P 12,500</td>
+                        </tr>
+                        <tr>
+                            <th>Shipping Fee</th>
+                            <td>P 1,000</td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <td>P 13,500</td>
+                        </tr>
+                    </table>
+                    <button class="checkout" type="submit">Checkout</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@code {
+
+}

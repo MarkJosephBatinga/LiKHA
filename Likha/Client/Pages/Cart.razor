@@ -1,4 +1,5 @@
 ﻿@page "/cart"
+@inject NavigationManager NavigationManager
 
 <div class="container-fluid mb-3">
     <div class="row">
@@ -94,7 +95,7 @@
                         <p class="summary-total">Php 13,500</p>
                     </div>
                 </div>
-                <button class="btn btn-lg">Checkout</button>
+                <button @onclick="Payment" class="btn btn-lg">Checkout</button>
             </div>
         </div>
     </div>
@@ -102,4 +103,9 @@
 
 @code {
 
+
+    private void Payment()
+        {
+            NavigationManager.NavigateTo("payment");
+        }
 }
