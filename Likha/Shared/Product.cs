@@ -28,6 +28,8 @@ namespace Likha.Shared
 
         public int CategoryId { get; set; }
 
+        public string CategoryUrl { get; set; }
+
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
         public DateTime DateUpdated { get; set; }

@@ -1,5 +1,8 @@
 ﻿@page "/"
+@page "/category/{Url}"
 @inject ICategoryService CategoryService
+@inject IProductService ProductService
+@inject NavigationManager NavigationManager
 
 <div>
     <div class="container-fluid sort-container py-md-3 py-2 mb-2">
@@ -13,7 +16,7 @@
                     <ul class="dropdown-menu" aria-labelledby="ListTypeDrop">
                         @foreach (var categories in CategoryService.Categories)
                         {
-                            <li><a class="dropdown-item" @onclick="() => CategorizeProduct(categories.Id)">@categories.Name</a></li>
+                            <li><a class="dropdown-item" @onclick="() => CategorizeProduct(categories.Url)">@categories.Name</a></li>
                         }
                     </ul>
                 </div>
@@ -49,21 +52,23 @@
                     <h3 class="mb-3">CATEGORIES</h3>
                     @foreach (var categories in CategoryService.Categories)
                     {
-                        <button @onclick="() => CategorizeProduct(categories.Id)" class="btn btn-lg w-75 my-4">@categories.Name</button>
+                        <button @onclick="() => CategorizeProduct(categories.Url)" class="btn btn-lg w-75 my-4">@categories.Name</button>
                     }
                 </div>
             </div>
             <div class="col">
                 <div class="container-fluid my-4">
                     <div class="row row-cols-md-3 row-cols-2 g-3">
-                        @if (CategoryId == 0)
+                        @if (Url == null)
                         {
                             <ProductList />
+
                         }
                         else
                         {
-                            <ProductList CategoryId=@CategoryId />
+                            <ProductsByCategory />
                         }
+
                     </div>
                 </div>
             </div>
@@ -72,15 +77,24 @@
 </div>
 
 @code {
-    private int CategoryId = 0;
 
-    protected override void OnInitialized()
+    [Parameter]
+    public string Url { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        CategoryService.LoadCategories();
+        await CategoryService.LoadCategories();
+        await ProductService.LoadProducts();
     }
 
-    private void CategorizeProduct(int Id)
+    protected override async Task OnParametersSetAsync()
     {
-        CategoryId = Id;
+        await ProductService.LoadProductsbyCategory(Url);
+    }
+
+
+    private void CategorizeProduct(string categoryUrl)
+    {
+        NavigationManager.NavigateTo($"/category/{categoryUrl}");
     }
 }

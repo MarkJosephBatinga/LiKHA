@@ -3,26 +3,26 @@ using Likha.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 
 namespace Likha.Client.Services
 {
     public class CategoryService : ICategoryService
     {
+        private readonly HttpClient _http;
+
         public List<Category> Categories { get; set; } = new List<Category>();
 
-        public void LoadCategories()
+        public CategoryService(HttpClient http)
         {
-            Categories = new List<Category> {
-                new Category{ Id = 1, Name = "Paintings", Url = "paintings" },
-                new Category{ Id = 2, Name = "Drawings", Url = "drawings" },
-                new Category{ Id = 3, Name = "Digital Arts", Url = "digital_arts" },
-                new Category{ Id = 4, Name = "Sculptures", Url = "sculptures" },
-                new Category{ Id = 5, Name = "Ceramics", Url = "ceramics" },
-                new Category{ Id = 6, Name = "Photography", Url = "photography" },
-                new Category{ Id = 7, Name = "Designs", Url = "designs" },
-                new Category{ Id = 8, Name = "Crafts", Url = "crafts" }
-            };
+            _http = http;
+        }
+
+        public async Task LoadCategories()
+        {
+            Categories = await _http.GetFromJsonAsync<List<Category>>("api/Category");
         }
     }
 }

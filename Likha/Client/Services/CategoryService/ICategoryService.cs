@@ -10,6 +10,6 @@ namespace Likha.Client.Services
     {
         List<Category> Categories { get; set; }
 
-        void LoadCategories();
+        Task LoadCategories();
     }
 }

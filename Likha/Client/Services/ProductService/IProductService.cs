@@ -8,8 +8,12 @@ namespace Likha.Client.Services
 {
     interface IProductService
     {
-        public List<Product> Products { get; set; }
+        event Action OnChange;
 
-        void LoadProducts();
+        public List<Product> Products { get; set; }
+        public List<Product> ProductsbyCategory { get; set; }
+
+        Task LoadProducts();
+        Task LoadProductsbyCategory(string categoryUrl);
     }
 }
