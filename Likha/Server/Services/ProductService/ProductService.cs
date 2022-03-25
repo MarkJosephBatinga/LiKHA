@@ -27,6 +27,12 @@ namespace Likha.Server.Services.ProductService
             return Products.Where(p => p.CategoryId == category.Id).ToList();
         }
 
+        public async Task<Product> GetProduct(int id)
+        {
+            Product product = Products.FirstOrDefault(p => p.Id == id);
+            return product;
+        }
+
         public List<Product> Products { get; set; } = new List<Product>
             {
                new Product {

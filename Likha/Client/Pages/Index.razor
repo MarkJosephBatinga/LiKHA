@@ -79,7 +79,7 @@
 @code {
 
     [Parameter]
-    public string Url { get; set; }
+    public string Url { get; set; } = null;
 
     protected override async Task OnInitializedAsync()
     {
@@ -89,7 +89,11 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        await ProductService.LoadProductsbyCategory(Url);
+        if(Url != null)
+        {
+            await ProductService.LoadProductsbyCategory(Url);
+        }
+
     }
 
 

@@ -10,5 +10,7 @@ namespace Likha.Server.Services.ProductService
     {
         Task<List<Product>> GetProductByCategory(string categoryUrl);
         Task<List<Product>> GetProducts();
+
+        Task<Product> GetProduct(int id);
     }
 }

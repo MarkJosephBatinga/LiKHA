@@ -1,4 +1,4 @@
-﻿@page "/product/{Id}"
+﻿@page "/product/{Id:int}"
 @inject IProductService ProductService
 @inject NavigationManager NavigationManager
 
@@ -37,24 +37,29 @@
 </div>
 
 @code {
-    private Product product = null;
+    private Product product = new Product();
 
     [Parameter]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
     private void NavigateToCart()
     {
         NavigationManager.NavigateTo("cart");
     }
 
+    protected override async Task OnParametersSetAsync()
+    {
+        product = await ProductService.LoadProduct(Id);
+        await ProductService.LoadProducts();
+    }
 
     protected override void OnInitialized()
     {
-        if (ProductService.Products == null || ProductService.Products.Count == 0)
-        {
-            ProductService.LoadProducts();
-        }
+        ProductService.OnChange += StateHasChanged;
+    }
 
-        product = ProductService.Products.FirstOrDefault(prod => prod.Id == Int32.Parse(Id));
+    public void Dispose()
+    {
+        ProductService.OnChange -= StateHasChanged;
     }
 }

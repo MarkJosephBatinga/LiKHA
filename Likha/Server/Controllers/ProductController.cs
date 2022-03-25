@@ -28,10 +28,16 @@ namespace Likha.Server.Controllers
         }
 
 
-        [HttpGet("{categoryUrl}")]
+        [HttpGet("Category/{categoryUrl}")]
         public async Task<ActionResult<List<Product>>> GetProductsByCategory(string categoryUrl)
         {
             return Ok(await _productService.GetProductByCategory(categoryUrl));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<List<Product>>> GetProduct(int id)
+        {
+            return Ok(await _productService.GetProduct(id));
         }
     }
 }
