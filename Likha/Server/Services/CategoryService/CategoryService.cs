@@ -1,4 +1,6 @@
-﻿using Likha.Shared;
+﻿using Likha.Server.Data;
+using Likha.Shared;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,25 +10,21 @@ namespace Likha.Server.Services.CategoryService
 {
     public class CategoryService : ICategoryService
     {
-        public List<Category> Categories { get; set; } = new List<Category> {
-                new Category{ Id = 1, Name = "Paintings", Url = "paintings" },
-                new Category{ Id = 2, Name = "Drawings", Url = "drawings" },
-                new Category{ Id = 3, Name = "Digital Arts", Url = "digital_arts" },
-                new Category{ Id = 4, Name = "Sculptures", Url = "sculptures" },
-                new Category{ Id = 5, Name = "Ceramics", Url = "ceramics" },
-                new Category{ Id = 6, Name = "Photography", Url = "photography" },
-                new Category{ Id = 7, Name = "Designs", Url = "designs" },
-                new Category{ Id = 8, Name = "Crafts", Url = "crafts" }
-            };
+        private readonly DataContext _context;
+
+        public CategoryService(DataContext context)
+        {
+            _context = context;
+        }
 
         public async Task<List<Category>> GetCategories()
         {
-            return Categories;
+            return await _context.Categories.ToListAsync();
         }
 
         public async Task<Category> GetCategoryByUrl(string categoryUrl)
         {
-            return Categories.FirstOrDefault(c => c.Url.ToLower().Equals(categoryUrl.ToLower()));
+            return await _context.Categories.FirstOrDefaultAsync(c => c.Url.ToLower().Equals(categoryUrl.ToLower()));
         }
     }
 }
