@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace Likha.Shared
 
         public string Image { get; set; } = "https://via.placeholder.com/300x300";
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
         public bool IsPublic { get; set; }
@@ -27,8 +29,6 @@ namespace Likha.Shared
         public Category Category { get; set; }
 
         public int CategoryId { get; set; }
-
-        public string CategoryUrl { get; set; }
 
         public DateTime DateCreated { get; set; } = DateTime.Now;
 
