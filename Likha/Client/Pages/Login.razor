@@ -1,0 +1,41 @@
+﻿@page "/login"
+@inject ILocalStorageService LocalStorage
+@inject AuthenticationStateProvider AuthState
+@inject NavigationManager Navigate
+
+<div class="container-fluid main-container d-flex justify-content-center">
+    <div class="login-container d-flex flex-column align-items-center">
+        <h3 class="logo">LiKHA</h3>
+        <div class="btn-box d-flex justify-content-around">
+            <button class="btn btn-switch" @onclick="ChangeForm">Login</button>
+            <button class="btn btn-switch" @onclick="ChangeForm">Register</button>
+        </div>
+        <div>
+            <EditForm Model="user" OnSubmit="HandleSubmit" class="form-box d-flex flex-column w-100">
+                <label for="username">Email/Username</label>
+                <input type="text" @bind-value="user.Username" id="username" class="input-box">
+                <label for="password">Password</label>
+                <input type="password" @bind-value="user.Password" id="password" class="input-box">
+                <button type="submit">Login</button>
+            </EditForm>
+        </div>
+        <a href="" class="forgot-link">Forgot Password</a>
+    </div>
+</div>
+
+@code {
+    private User user = new User();
+
+    private async void HandleSubmit()
+    {
+        Console.WriteLine("Login");
+        await LocalStorage.SetItemAsync<string>("username", user.Username);
+        await AuthState.GetAuthenticationStateAsync();
+        Navigate.NavigateTo("");
+    }
+
+    private void ChangeForm()
+    {
+        Console.WriteLine("Can Change");
+    }
+}
