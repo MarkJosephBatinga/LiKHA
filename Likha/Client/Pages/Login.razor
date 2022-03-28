@@ -7,16 +7,33 @@
     <div class="login-container d-flex flex-column align-items-center">
         <h3 class="logo">LiKHA</h3>
         <div class="btn-box d-flex justify-content-around">
-            <button class="btn btn-switch" @onclick="ChangeForm">Login</button>
-            <button class="btn btn-switch" @onclick="ChangeForm">Register</button>
+            <button class="btn btn-switch" @onclick='() => ChangeForm("login")'>Login</button>
+            <button class="btn btn-switch" @onclick='() => ChangeForm("register")'>Register</button>
         </div>
-        <div>
-            <EditForm Model="user" OnSubmit="HandleSubmit" class="form-box d-flex flex-column w-100">
-                <label for="username">Email/Username</label>
-                <input type="text" @bind-value="user.Username" id="username" class="input-box">
-                <label for="password">Password</label>
-                <input type="password" @bind-value="user.Password" id="password" class="input-box">
+        <div class="@LoginSwitch">
+            <EditForm Model="user" OnSubmit="HandleLogin" class="form-box d-flex flex-column w-100">
+                <label for="login_username">Email/Username</label>
+                <input type="text" @bind-value="user.Username" id="login_username" class="input-box">
+                <label for="login_password">Password</label>
+                <input type="password" @bind-value="user.Password" id="login_password" class="input-box">
                 <button type="submit">Login</button>
+            </EditForm>
+        </div>
+        <div class="@RegisterSwitch">
+            <EditForm Model="user" OnSubmit="HandleRegister" class="form-box d-flex flex-column w-100">
+                <label for="register_username">Email/Username</label>
+                <input type="text" @bind-value="user.Username" id="register_username" class="input-box">
+                <label for="register_password">Password</label>
+                <input type="password" @bind-value="user.Password" id="register_password" class="input-box">
+                <label for="last_name">Last Name</label>
+                <input type="text" @bind-value="user.LastName" id="last_name" class="input-box">
+                <label for="first_name">First Name</label>
+                <input type="text" @bind-value="user.FirstName" id="first_name" class="input-box">
+                <label for="address">Address</label>
+                <input type="text" @bind-value="user.Address" id="address" class="input-box">
+                <label for="phone">Phone Number</label>
+                <input type="text" @bind-value="user.Phone" id="phone" class="input-box">
+                <button type="submit">Register</button>
             </EditForm>
         </div>
         <a href="" class="forgot-link">Forgot Password</a>
@@ -25,8 +42,10 @@
 
 @code {
     private User user = new User();
+    private string LoginSwitch = string.Empty;
+    private string RegisterSwitch = "d-none";
 
-    private async void HandleSubmit()
+    private async void HandleLogin()
     {
         Console.WriteLine("Login");
         await LocalStorage.SetItemAsync<string>("username", user.Username);
@@ -34,8 +53,26 @@
         Navigate.NavigateTo("");
     }
 
-    private void ChangeForm()
+    private void HandleRegister()
     {
-        Console.WriteLine("Can Change");
+        Console.WriteLine("Register");
+        Console.WriteLine(user.FirstName);
+        Console.WriteLine(user.LastName);
+        Console.WriteLine(user.Address);
+        Console.WriteLine(user.Phone);
+    }
+
+    private void ChangeForm(string btnSwitch)
+    {
+        if(btnSwitch == "login")
+        {
+            LoginSwitch = string.Empty;
+            RegisterSwitch = "d-none";
+        }
+        else
+        {
+            LoginSwitch = "d-none";
+            RegisterSwitch = string.Empty;
+        }
     }
 }
