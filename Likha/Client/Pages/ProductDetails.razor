@@ -1,6 +1,8 @@
 ﻿@page "/product/{Id:int}"
 @inject IProductService ProductService
+@inject ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
+@inject IToastService ToastService
 
 <div class="container-fluid">
     <div class="image-container d-flex justify-content-center p-4">
@@ -15,7 +17,7 @@
             </div>
             <div class="col-md-6 d-md-flex flex-column align-items-end">
                 <p class="art-price">@product.Price</p>
-                <button class="btn btn-md btn-cart" @onclick="NavigateToCart">Add to Cart</button>
+                <button class="btn btn-md btn-cart" @onclick="AddToCart">Add to Cart</button>
             </div>
         </div>
     </div>
@@ -42,9 +44,18 @@
     [Parameter]
     public int Id { get; set; }
 
-    private void NavigateToCart()
+    private async Task AddToCart()
     {
-        NavigationManager.NavigateTo("cart");
+        var cart = await LocalStorage.GetItemAsync<List<Product>>("cart");
+
+        if(cart == null)
+        {
+            cart = new List<Product>();
+        }
+
+        cart.Add(product);
+        await LocalStorage.SetItemAsync("cart", cart);
+        ToastService.ShowSuccess(product.Title, "Successfuly added to cart:");
     }
 
     protected override async Task OnParametersSetAsync()

@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazored.Toast;
 using Likha.Client.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -27,6 +28,7 @@ namespace Likha.Client
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+            builder.Services.AddBlazoredToast();
 
             await builder.Build().RunAsync();
         }
