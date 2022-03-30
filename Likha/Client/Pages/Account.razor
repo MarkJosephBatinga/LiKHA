@@ -1,4 +1,7 @@
 ﻿@page "/account"
+@inject IUserService UserService
+@inject ILocalStorageService LocalStorage
+@inject IJSRuntime JsRuntime
 
 <div class="container-fluid">
     <div class="row">
@@ -106,5 +109,14 @@
 </div>
 
 @code {
+
+    private string Username = "ShyGuy";
+
+    protected override async Task OnInitializedAsync()
+    {
+        //Username = await LocalStorage.GetItemAsStringAsync("username");
+        User user = await UserService.GetUser(Username);
+        await JsRuntime.InvokeVoidAsync("console.log", user);
+    }
 
 }
