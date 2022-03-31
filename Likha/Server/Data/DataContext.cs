@@ -23,18 +23,6 @@ namespace Likha.Server.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<User>().HasData(
-                 new User { 
-                    Id = 1, 
-                    Username = "ShyGuy", 
-                    Password = "Mark", 
-                    LastName = "Batinga", 
-                    FirstName = "Mark", 
-                    Address = "Alusiis, San Narciso, Zambales", 
-                    Phone = "09501109163" 
-                 }
-                );
-
             modelBuilder.Entity<Category>().HasData(
                     new Category { Id = 1, Name = "Paintings", Url = "paintings" },
                     new Category { Id = 2, Name = "Drawings", Url = "drawings" },

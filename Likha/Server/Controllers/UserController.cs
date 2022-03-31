@@ -22,17 +22,14 @@ namespace Likha.Server.Controllers
 
         List<User> Users = new List<User>
         {
-            new User {Id=1, Username="ShyGuy", Password="Mark", LastName="Batinga", FirstName="Mark", Address="Alusiis, San Narciso, Zambales", Phone="09501109163"},
+            new User {Id=1, Email="Batingamark@gmail.com", Password="Mark", LastName="Batinga", FirstName="Mark", Phone="09501109163"},
         };
 
         [HttpGet("{username}")]
         public async Task<ActionResult<User>> GetUser(string username)
         {
-            User User = Users.FirstOrDefault(u => u.Username == username);
-            User UserNotFound = new User();
-            if (User == null)
-                return Ok(UserNotFound);
-            return Ok(User);
+            var dbuser = await _user.GetUser(username);
+            return Ok(dbuser);
         }
 
         [HttpPost("login")]

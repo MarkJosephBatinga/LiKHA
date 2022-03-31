@@ -9,5 +9,7 @@ namespace Likha.Server.Services.UserService
     public interface IUserService
     {
         Task<User> LoginUser(User user);
+
+        Task<User> GetUser(string username);
     }
 }

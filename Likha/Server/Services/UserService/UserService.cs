@@ -17,9 +17,18 @@ namespace Likha.Server.Services.UserService
             _dataContext = dataContext;
         }
 
+        public async Task<User> GetUser(string username)
+        {
+            User User = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == username);
+            User UserNotFound = new User();
+            if (User == null)
+                return UserNotFound;
+            return User;
+        }
+
         public async Task<User> LoginUser(User user)
         {
-            User dbuser = await _dataContext.Users.FirstOrDefaultAsync(u => u.Username == user.Username && u.Password == user.Password);
+            User dbuser = await _dataContext.Users.FirstOrDefaultAsync(u => u.Email == user.Email && u.Password == user.Password);
             var dbnotfound = new User();
             if (dbuser == null)
                 return dbnotfound;

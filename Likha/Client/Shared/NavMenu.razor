@@ -1,5 +1,5 @@
 ﻿@inject ILocalStorageService LocalStorage
-@inject ISyncLocalStorageService SyncLocalStorage
+@inject IUserService UserService
 @inject AuthenticationStateProvider AuthState
 @inject NavigationManager Navigate
 
@@ -38,8 +38,8 @@
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="bi bi-person-circle"></i>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/account">@SyncLocalStorage.GetItemAsString("username") Account</a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="/account">@user.FirstName Account</a>
                                 <a class="dropdown-item" @onclick="Logout">Logout</a>
                             </div>
                         </li>
@@ -50,7 +50,17 @@
     </div>
 </nav>
 
-@code {
+@code {        
+
+    User user = new User();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var username = await LocalStorage.GetItemAsStringAsync("username");
+        if(!string.IsNullOrEmpty(username))
+            user = await UserService.GetUser(username);
+    }
+
     private async void Logout()
     {
         await LocalStorage.RemoveItemAsync("username");
