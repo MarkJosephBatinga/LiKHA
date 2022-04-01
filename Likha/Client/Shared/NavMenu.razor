@@ -1,7 +1,9 @@
-﻿@inject ILocalStorageService LocalStorage
+﻿@inject ISyncLocalStorageService SyncLocalStorage
+@inject ILocalStorageService LocalStorage
 @inject IUserService UserService
 @inject AuthenticationStateProvider AuthState
 @inject NavigationManager Navigate
+@inject IJSRuntime JsRuntime
 
 <nav class="navbar navbar-expand-lg navbar-light mb-2">
     <div class="container-fluid nav-container py-md-3">
@@ -14,10 +16,12 @@
         </button>
         <div class="collapse navbar-collapse  d-flex-md justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-                <li><a class="nav-link d-flex align-items-center" href="/cart">
-                    <i class="bi bi-handbag-fill"></i>
-                    <p class="d-block d-lg-none m-2">Cart</p>
-                </a></li>
+                <li>
+                    <a class="nav-link d-flex align-items-center" href="/cart">
+                        <i class="bi bi-handbag-fill"></i>
+                        <p class="d-block d-lg-none m-2">Cart</p>
+                    </a>
+                </li>
                 <AuthorizeView>
                     <NotAuthorized>
                         <li>
@@ -34,12 +38,12 @@
                                 <p class="d-block d-lg-none m-2 ">Gallery</p>
                             </a>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown dropstart">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="bi bi-person-circle"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/account">@user.FirstName Account</a>
+                                <a class="dropdown-item" href="/account">@SyncLocalStorage.GetItemAsString("username") Account</a>
                                 <a class="dropdown-item" @onclick="Logout">Logout</a>
                             </div>
                         </li>
@@ -50,16 +54,7 @@
     </div>
 </nav>
 
-@code {        
-
-    User user = new User();
-
-    protected override async Task OnInitializedAsync()
-    {
-        var username = await LocalStorage.GetItemAsStringAsync("username");
-        if(!string.IsNullOrEmpty(username))
-            user = await UserService.GetUser(username);
-    }
+@code {
 
     private async void Logout()
     {

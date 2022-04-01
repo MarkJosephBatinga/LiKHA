@@ -27,13 +27,15 @@ namespace Likha.Server.Services.ProductService
 
         public async Task<List<Product>> GetProductByCategory(string categoryUrl)
         {
-            Category category = await _categoryService.GetCategoryByUrl(categoryUrl);
+            Category category = new Category();
+            category = await _categoryService.GetCategoryByUrl(categoryUrl);
             return await _context.Products.Where(p => p.CategoryId == category.Id).ToListAsync();
         }
 
         public async Task<Product> GetProduct(int id)
         {
-            Product product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            Product product = new Product();
+            product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
             return product;
         }
     }

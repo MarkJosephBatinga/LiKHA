@@ -11,6 +11,14 @@ namespace Likha.Client.Repository.UserRepository
 {
     public class UserRepository : IUserRepository
     {
+        public User LoginEncrypt(LoginUser UserLogin)
+        {
+            User user = new User();
+            user.Email = UserLogin.Email;
+            user.PasswordHash = Encoding.UTF8.GetBytes(UserLogin.Password);
+            return user;
+        }
+
         public User PasswordDecrypt(User user)
         {
             string passwordbytes = Encoding.UTF8.GetString(user.PasswordHash);
@@ -18,10 +26,14 @@ namespace Likha.Client.Repository.UserRepository
             return user;
         }
 
-        public User PasswordEncrypt(User user)
+        public User PasswordEncrypt(RegisterUser UnregisteredUser)
         {
-            byte[] passwordbytes = Encoding.UTF8.GetBytes(user.Password);
-            user.PasswordHash = passwordbytes;
+            User user = new User();
+            user.Email = UnregisteredUser.Email;
+            user.PasswordHash = Encoding.UTF8.GetBytes(UnregisteredUser.Password);
+            user.LastName = UnregisteredUser.LastName;
+            user.FirstName = UnregisteredUser.FirstName;
+            user.Phone = UnregisteredUser.Phone;
             return user;
         }
     }

@@ -12,8 +12,8 @@
                     Manage My Account
                 </button>
                 <div class="dropdown-menu" aria-labelledby="AccountDropdown">
-                    <a class="dropdown-item" href="#">Profile</a>
-                    <a class="dropdown-item" href="#">Address</a>
+                    <a class="dropdown-item" href="/editprofile">Edit Profile</a>
+                    <a class="dropdown-item" href="#">Edit Address</a>
                     <a class="dropdown-item" href="#">Orders</a>
                 </div>
             </div>
@@ -23,8 +23,8 @@
                     Manage My Gallery
                 </button>
                 <div class="dropdown-menu" aria-labelledby="GalleryDropdown">
-                    <a class="dropdown-item" href="#">Profile</a>
-                    <a class="dropdown-item" href="#">Address</a>
+                    <a class="dropdown-item" href="#">Edit Profile</a>
+                    <a class="dropdown-item" href="#">Edit Address</a>
                     <a class="dropdown-item" href="#">Orders</a>
                 </div>
             </div>
@@ -33,15 +33,15 @@
             <h3 class="manage-title">My Account</h3>
             <div class="manage-box d-flex flex-column align-items-center">
                 <h5 class="manage-subtitle">Manage My Account</h5>
-                <a href="" class="manage-link">Profile</a>
-                <a href="" class="manage-link">Address</a>
+                <a href="/editprofile" class="manage-link">Edit Profile</a>
+                <a href="" class="manage-link">Edit Address</a>
                 <a href="" class="manage-link">Orders</a>
             </div>
             <h3 class="manage-title">My Gallery</h3>
             <div class="manage-box d-flex flex-column align-items-center">
                 <h5 class="manage-subtitle">Manage My Gallery</h5>
-                <a href="" class="manage-link">Profile</a>
-                <a href="" class="manage-link">Address</a>
+                <a href="" class="manage-link">Edit Profile</a>
+                <a href="" class="manage-link">Edit Address</a>
                 <a href="" class="manage-link">Orders</a>
             </div>
         </div>
@@ -50,7 +50,7 @@
                 <div class="account-box-xl d-flex flex-column align-items-center">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
                          alt="" class="account-image">
-                    <h5 class="account-name-xl">Tamara Menzi</h5>
+                    <h5 class="account-name-xl">Tamara Me</h5>
                     <div class="address-box-xl d-flex flex-column align-items-center">
                         <p class="address-content-xl">Ercuis, France, Europe</p>
                         <p class="address-content-xl">09501109163</p>
@@ -62,13 +62,13 @@
                     <div class="account-box col-3 d-flex flex-column align-items-center">
                         <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
                              alt="" class="account-image">
-                        <h5 class="account-name">Tamara Menzi</h5>
+                        <h5 class="account-name">@user.FirstName @user.LastName</h5>
                     </div>
                     <div class="address-box col d-flex flex-column justify-content-center">
                         <h6 class="address-title">Address Book</h6>
-                        <p class="address-content">Tamara Menzi</p>
-                        <p class="address-content">Ercuis, France, Europe</p>
-                        <p class="address-content">09501109163</p>
+                        <p class="address-content">@user.Email</p>
+                        <p class="address-content">@user.FirstName @user.LastName</p>
+                        <p class="address-content">@user.Phone</p>
                     </div>
                 </div>
                 <h3 class="recent-order">Recent Order</h3>
@@ -109,13 +109,12 @@
 </div>
 
 @code {
+    User user = new User();
 
-    private string Username = "ShyGuy";
-
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        //Username = await LocalStorage.GetItemAsStringAsync("username");
-        User user = await UserService.GetUser(Username);
+        var Username = await LocalStorage.GetItemAsStringAsync("username");
+        user = await UserService.GetUser(Username);
         await JsRuntime.InvokeVoidAsync("console.log", user);
     }
 

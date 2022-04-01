@@ -20,13 +20,6 @@ namespace Likha.Client.Services.UserService
         public List<User> Users { get; set; }
         public User User { get; set; }
 
-        public async Task<List<User>> CreateUser(User user)
-        {
-            var result = await _http.PostAsJsonAsync("api/user", user);
-            var users = await result.Content.ReadFromJsonAsync<List<User>>();
-            return users;
-        }
-
         public async Task<User> LoginUser(User user)
         {
             var dbuser = new User();
@@ -47,8 +40,16 @@ namespace Likha.Client.Services.UserService
 
         public async Task<User> GetUser(string username)
         {
+
             User = await _http.GetFromJsonAsync<User>($"api/user/{username}");
             return User;
+        }
+
+        public async Task<List<User>> RegisterUser(User user)
+        {
+            var result = await _http.PostAsJsonAsync("api/user/register", user);
+            var status = await result.Content.ReadFromJsonAsync<List<User>>();
+            return status;
         }
     }
 }

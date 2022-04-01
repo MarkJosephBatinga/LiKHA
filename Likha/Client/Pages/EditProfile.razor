@@ -1,0 +1,126 @@
+﻿@page "/editprofile"
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="dropdown-container d-block d-xl-none d-flex justify-content-around">
+                <div class="dropdown">
+                    <button class="btn btn-md dropdown-toggle" type="button" id="AccountDropdown" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Manage My Account
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="AccountDropdown">
+                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="#">Address</a>
+                        <a class="dropdown-item" href="#">Orders</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-md dropdown-toggle" type="button" id="GalleryDropdown" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        Manage My Gallery
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="GalleryDropdown">
+                        <a class="dropdown-item" href="#">Profile</a>
+                        <a class="dropdown-item" href="#">Address</a>
+                        <a class="dropdown-item" href="#">Orders</a>
+                    </div>
+                </div>
+            </div>
+            <div class="manage-container d-none d-xl-block col-xl-3 d-flex flex-column align-items-center">
+                <h3 class="manage-title">My Account</h3>
+                <div class="manage-box d-flex flex-column align-items-center">
+                    <h5 class="manage-subtitle">Manage My Account</h5>
+                    <a href="" class="manage-link">Profile</a>
+                    <a href="" class="manage-link">Address</a>
+                    <a href="" class="manage-link">Orders</a>
+                </div>
+                <h3 class="manage-title">My Gallery</h3>
+                <div class="manage-box d-flex flex-column align-items-center">
+                    <h5 class="manage-subtitle">Manage My Gallery</h5>
+                    <a href="" class="manage-link">Profile</a>
+                    <a href="" class="manage-link">Address</a>
+                    <a href="" class="manage-link">Orders</a>
+                </div>
+            </div>
+            <div class="col-xl-9">
+                <div class="account-container-xl d-block d-xl-none">
+                    <div class="account-box-xl d-flex flex-column align-items-center">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
+                             alt="" class="account-image">
+                        <h5 class="account-edit">Edit Account</h5>
+                    </div>
+                    <div class="edit-container mx-3">
+                        <form class="edit-form" action="">
+                            <div class="row">
+                                <div class="col-xl">
+                                    <p class="edit-title">Full Name</p>
+                                    <label class="label-form" for="last_name">Last Name</label>
+                                    <input class="input-form" type="text" name="last_name" id="last_name"><br>
+                                    <label class="label-form" for="first_name">First Name</label>
+                                    <input class="input-form" type="text" name="first_name" id="first_name">
+                                    <p class="edit-title">Email Address</p>
+                                    <input class="input-form" type="text" name="email" id="email">
+                                </div>
+                                <div class="col-xl">
+                                    <p class="edit-title">Phone Number</p>
+                                    <input class="input-form" type="text" name="phone" id="phone">
+                                    <p class="edit-title">Gender</p>
+                                    <label class="label-form" for="male">Male</label>
+                                    <input type="radio" name="gender" id="male">
+                                    <label class="label-form" for="female">Female</label>
+                                    <input type="radio" name="gender" id="female">
+                                    <p class="edit-title">Birthday</p>
+                                    <input class="input-form" type="date" name="birthday" id="birthday">
+                                </div>
+                            </div>
+                            <div class="save-box d-flex w-100 justify-content-center">
+                                <button class="save-button" type="submit">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="body-container p-4 container-fluid d-none d-xl-block">
+                    <div class="account-container row">
+                        <div class="account-box d-flex flex-column align-items-center">
+                            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
+                                 alt="" class="account-image">
+                            <h5 class="account-edit">Edit Account</h5>
+                        </div>
+                        <div class="edit-container">
+                            <form class="edit-form" action="">
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="edit-title">Full Name</p>
+                                        <label class="label-form" for="last_name">Last Name</label>
+                                        <input class="input-form" type="text" name="last_name" id="last_name"><br>
+                                        <label class="label-form" for="first_name">First Name</label>
+                                        <input class="input-form" type="text" name="first_name" id="first_name">
+                                        <p class="edit-title">Email Address</p>
+                                        <input class="input-form" type="text" name="email" id="email">
+                                    </div>
+                                    <div class="col">
+                                        <p class="edit-title">Phone Number</p>
+                                        <input class="input-form" type="text" name="phone" id="phone">
+                                        <p class="edit-title">Gender</p>
+                                        <label class="label-form" for="male">Male</label>
+                                        <input type="radio" name="gender" id="male">
+                                        <label class="label-form" for="female">Female</label>
+                                        <input type="radio" name="gender" id="female">
+                                        <p class="edit-title">Birthday</p>
+                                        <input class="input-form" type="date" name="birthday" id="birthday">
+                                    </div>
+                                </div>
+                                <div class="save-box d-flex w-100 justify-content-end">
+                                    <button class="save-button" type="submit">Save Changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @code {
+
+    }

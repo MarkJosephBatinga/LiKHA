@@ -22,7 +22,7 @@ namespace Likha.Server.Controllers
 
         List<User> Users = new List<User>
         {
-            new User {Id=1, Email="Batingamark@gmail.com", Password="Mark", LastName="Batinga", FirstName="Mark", Phone="09501109163"},
+            new User {Id=1, Email="Batingamark@gmail.com", LastName="Batinga", FirstName="Mark", Phone="09501109163"},
         };
 
         [HttpGet("{username}")]
@@ -40,12 +40,13 @@ namespace Likha.Server.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<ActionResult<List<User>>> CreateUser(User user)
+        [HttpPost("register")]
+        public async Task<ActionResult<List<User>>> RegisterUser(User user)
         {
-            user.Id = Users.Max(u => u.Id + 1);
-            Users.Add(user);
-            return Ok(Users);
+            List<User> Users = await _user.RegisterUser(user);
+            if (Users != null)
+                return Ok(Users);
+            return NotFound(Users);
         }
 
         [HttpPut("{id}")]

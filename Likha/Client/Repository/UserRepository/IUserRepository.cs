@@ -8,7 +8,9 @@ namespace Likha.Client.Repository.UserRepository
 {
     public interface IUserRepository
     {
-        User PasswordEncrypt(User user);
+        User PasswordEncrypt(RegisterUser UnregisteredUser);
         User PasswordDecrypt(User user);
+
+        User LoginEncrypt(LoginUser UserLogin);
     }
 }
