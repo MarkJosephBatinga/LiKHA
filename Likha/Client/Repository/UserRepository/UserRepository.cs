@@ -29,8 +29,12 @@ namespace Likha.Client.Repository.UserRepository
         public User PasswordEncrypt(RegisterUser UnregisteredUser)
         {
             User user = new User();
+            if (UnregisteredUser.Id != 0)
+                user.Id = UnregisteredUser.Id;
             user.Email = UnregisteredUser.Email;
             user.PasswordHash = Encoding.UTF8.GetBytes(UnregisteredUser.Password);
+            user.Gender = UnregisteredUser.Gender;
+            user.Image = UnregisteredUser.Image;
             user.LastName = UnregisteredUser.LastName;
             user.FirstName = UnregisteredUser.FirstName;
             user.Phone = UnregisteredUser.Phone;

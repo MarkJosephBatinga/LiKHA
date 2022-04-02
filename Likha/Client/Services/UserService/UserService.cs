@@ -12,6 +12,8 @@ namespace Likha.Client.Services.UserService
     {
         private readonly HttpClient _http;
 
+        public event Action OnChange;
+
         public UserService(HttpClient http)
         {
             _http = http;
@@ -40,8 +42,8 @@ namespace Likha.Client.Services.UserService
 
         public async Task<User> GetUser(string username)
         {
-
             User = await _http.GetFromJsonAsync<User>($"api/user/{username}");
+            OnChange.Invoke();
             return User;
         }
 

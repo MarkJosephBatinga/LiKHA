@@ -30,5 +30,7 @@ namespace Likha.Shared
         [Required(ErrorMessage = "Phone Number is Required")]
         [Phone(ErrorMessage ="Invalid Phone Number")]
         public string Phone { get; set; }
+        public string Gender { get; set; }
+        public string Image { get; set; }
     }
 }

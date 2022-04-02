@@ -10,6 +10,7 @@ namespace Likha.Client.Services.UserService
     {
         public List<User> Users { get; set; }
         public User User { get; set; }
+        event Action OnChange;
 
         Task<User> GetUser(string username);
 
