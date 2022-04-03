@@ -86,9 +86,11 @@
     private async void HandleRegister()
     {
         User encryptedUser = UserRepo.PasswordEncrypt(registerUser);
-        await JsRuntime.InvokeVoidAsync("console.log", encryptedUser);
         List<User> result = await UserService.RegisterUser(encryptedUser);
-        await JsRuntime.InvokeVoidAsync("console.log", result);
+
+        await LocalStorage.SetItemAsStringAsync("username", encryptedUser.Email);
+        await AuthState.GetAuthenticationStateAsync();
+        Navigate.NavigateTo("");
     }
 
     private void ChangeForm(string switchBtn)

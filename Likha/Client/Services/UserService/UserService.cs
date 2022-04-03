@@ -33,9 +33,9 @@ namespace Likha.Client.Services.UserService
             return dbuser;
         }
 
-        public async Task<List<User>> UpdateUser(User user, int id)
+        public async Task<List<User>> UpdateUser(User user)
         {
-            var result = await _http.PutAsJsonAsync($"api/user/{id}", user);
+            var result = await _http.PutAsJsonAsync("api/user", user);
             var users = await result.Content.ReadFromJsonAsync<List<User>>();
             return users;
         }

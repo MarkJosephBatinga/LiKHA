@@ -3,7 +3,7 @@
 
 <div class="account-container-xl d-block d-xl-none">
     <div class="account-box-xl d-flex flex-column align-items-center">
-        <img src="@defaultImage"
+        <img src="@(user.Image == null ? defaultImage : user.Image)"
              alt="" class="account-image">
         <h5 class="account-name-xl">@user.FirstName @user.LastName</h5>
         <div class="address-box-xl d-flex flex-column align-items-center">
@@ -16,7 +16,7 @@
 <div class="body-container p-4 container-fluid d-none d-xl-block">
     <div class="account-container row">
         <div class="account-box col-3 d-flex flex-column align-items-center">
-            <img src="@defaultImage"
+            <img src="@(user.Image == null ? defaultImage : user.Image)"
                  alt="" class="account-image">
             <h5 class="account-name">@user.FirstName @user.LastName</h5>
         </div>

@@ -16,7 +16,7 @@ namespace Likha.Client.Services.UserService
 
         Task<List<User>> RegisterUser(User user);
 
-        Task<List<User>> UpdateUser(User user, int id);
+        Task<List<User>> UpdateUser(User user);
 
         Task<User> LoginUser(User user);
     }

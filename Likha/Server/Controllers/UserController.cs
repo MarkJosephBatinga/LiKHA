@@ -49,16 +49,13 @@ namespace Likha.Server.Controllers
             return NotFound(Users);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<List<User>>> UpdateUser(User user, int id)
+        [HttpPut]
+        public async Task<ActionResult<List<User>>> UpdateUser(User user)
         {
-            var dbUser = Users.FirstOrDefault(u => u.Id == id);
-            var userIndex = Users.IndexOf(dbUser);
-            if (dbUser == null)
-                return NotFound(dbUser);
-
-            Users[userIndex] = user;
-            return Ok(Users);
+            List<User> Users = await _user.UpdateUser(user);
+            if (Users != null)
+                return Ok(Users);
+            return NotFound(Users);
         }
     }
 }

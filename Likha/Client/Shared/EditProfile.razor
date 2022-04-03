@@ -1,11 +1,14 @@
 ﻿@inject IUserService UserService
 @inject IUserRepository UserRepo 
 @implements IDisposable
+@inject ILocalStorageService LocalStorage
 @inject IJSRuntime JsRuntime
+@inject AuthenticationStateProvider AuthState
+@inject NavigationManager NavManager
 
 <div class="account-container-xl d-block d-xl-none">
     <div class="account-box-xl d-flex flex-column align-items-center">
-        <img src="@defaultImage"
+        <img src="@(newUser.Image == null ? defaultImage : newUser.Image) "
              alt="" class="account-image">
         <h5 class="account-edit">Edit Account</h5>
     </div>
@@ -28,17 +31,17 @@
 
 
                     <label class="label-form" for="first_name-xl">First Name</label>
-                    <input class="input-form" @bind-value="updateUser.FirstName" type="text" name="first_name" id="first_name-xl">
+                    <input class="input-form" @bind-value="updateUser.FirstName" type="text" name="first_name" placeholder="@newUser.FirstName" id="first_name-xl">
                     <ValidationMessage For="() => updateUser.FirstName" />
 
 
                     <p class="edit-title">Email Address</p>
-                    <input class="input-form" @bind-value="updateUser.Email" type="text" name="email">
+                    <input class="input-form" @bind-value="updateUser.Email" type="text" placeholder="@newUser.Email" name="email">
                     <ValidationMessage For="() => updateUser.Email" />
                 </div>
                 <div class="col-xl">
                     <p class="edit-title">Phone Number</p>
-                    <input class="input-form" @bind-value="updateUser.Phone" type="text" name="phone">
+                    <input class="input-form" @bind-value="updateUser.Phone" type="text" name="phone" placeholder="@newUser.Phone">
                     <ValidationMessage For="() => updateUser.Phone" />
 
                     <p class="edit-title">Gender</p>
@@ -61,7 +64,7 @@
 <div class="body-container p-4 container-fluid d-none d-xl-block">
     <div class="account-container row">
         <div class="account-box d-flex flex-column align-items-center">
-            <img src="@defaultImage" alt="" class="account-image">
+            <img src="@(newUser.Image == null ? defaultImage : newUser.Image)" alt="" class="account-image">
             <h5 class="account-edit">Edit Account</h5>
         </div>
         <div class="edit-container">
@@ -81,16 +84,16 @@
                         <ValidationMessage For="() => updateUser.LastName" /><br>
 
                         <label class="label-form" for="first_name">First Name</label>
-                        <input class="input-form" @bind-value="updateUser.FirstName" type="text" name="first_name" id="first_name">
+                        <input class="input-form" @bind-value="updateUser.FirstName" type="text" name="first_name" placeholder="@newUser.FirstName" id="first_name">
                         <ValidationMessage For="() => updateUser.FirstName" />
 
                         <p class="edit-title">Email Address</p>
-                        <input class="input-form" @bind-value="updateUser.Email" type="text" name="email">
+                        <input class="input-form" @bind-value="updateUser.Email" type="text" name="email" placeholder="@newUser.Email">
                         <ValidationMessage For="() => updateUser.Email" />
                     </div>
                     <div class="col">
                         <p class="edit-title">Phone Number</p>
-                        <input class="input-form" @bind-value="updateUser.Phone" type="text" name="phone">
+                        <input class="input-form" @bind-value="updateUser.Phone" type="text" name="phone" placeholder="@newUser.Phone">
                         <ValidationMessage For="() => updateUser.Phone" />
 
                         <p class="edit-title">Gender</p>
@@ -124,9 +127,12 @@
     {
         updateUser.Id = newUser.Id;
         User encryptedUser = UserRepo.PasswordEncrypt(updateUser);
-        await JsRuntime.InvokeVoidAsync("console.log", encryptedUser);
-        //List<User> result = await UserService.RegisterUser(encryptedUser);
-        //await JsRuntime.InvokeVoidAsync("console.log", result);
+        List<User> result = await UserService.UpdateUser(encryptedUser);
+
+
+        await LocalStorage.SetItemAsStringAsync("username", encryptedUser.Email);
+        await AuthState.GetAuthenticationStateAsync();
+        NavManager.NavigateTo("");
     }
 
     private async Task OnFileChange(InputFileChangeEventArgs e)

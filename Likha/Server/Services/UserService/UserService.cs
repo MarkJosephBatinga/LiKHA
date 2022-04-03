@@ -42,5 +42,18 @@ namespace Likha.Server.Services.UserService
             List<User> Users = await _dataContext.Users.ToListAsync();
             return Users;
         }
+
+        public async Task<List<User>> UpdateUser(User user)
+        {
+            List<User> Users = await _dataContext.Users.ToListAsync();
+            var dbUser = await _dataContext.Users.FindAsync(user.Id);
+            if(dbUser != null)
+            {
+                _dataContext.Entry(dbUser).CurrentValues.SetValues(user);
+                await _dataContext.SaveChangesAsync();
+            }
+
+            return Users;
+        }
     }
 }
