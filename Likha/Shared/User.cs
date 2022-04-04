@@ -18,6 +18,7 @@ namespace Likha.Shared
         public string Phone { get; set; }
         public string Gender { get; set; }
         public string Image { get; set; }
+        public List<Address> Addresses{ get; set; }
 
         [NotMapped]
         public string Password { get; set; }

@@ -14,7 +14,7 @@
                 <div class="dropdown-menu" aria-labelledby="AccountDropdown">
                     <button class="dropdown-item" @onclick='() => ChangeBody(0)'>My Account</button>
                     <button class="dropdown-item" @onclick='() => ChangeBody(1)'>Edit Profile</button>
-                    <button class="dropdown-item" href="#">Edit Address</button>
+                    <button class="dropdown-item"@onclick='() => ChangeBody(2)'>Edit Address</button>
                 </div>
             </div>
             <div class="dropdown">
@@ -35,7 +35,7 @@
                 <h5 class="manage-subtitle">Manage My Account</h5>
                 <button class="manage-link" @onclick='() => ChangeBody(0)'>My Account</button>
                 <button class="manage-link" @onclick='() => ChangeBody(1)'>Edit Profile</button>
-                <a href="" class="manage-link">Edit Address</a>
+                <button class="manage-link" @onclick='() => ChangeBody(2)'>Edit Profile</button>
             </div>
             <h3 class="manage-title">My Gallery</h3>
             <div class="manage-box d-flex flex-column align-items-center">
@@ -53,6 +53,10 @@
             else if (IdLink == 1)
             {
                 <EditProfile newUser="@user" />
+            }
+            else if (IdLink == 2)
+            {
+                <EditAddress />
             }
         </div>
     </div>
