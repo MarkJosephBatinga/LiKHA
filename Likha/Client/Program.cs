@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using Blazored.Toast;
 using Likha.Client.Repository.UserRepository;
 using Likha.Client.Services;
+using Likha.Client.Services.AddressService;
 using Likha.Client.Services.UserService;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -27,6 +28,7 @@ namespace Likha.Client
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IAddressService, AddressService>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddOptions();

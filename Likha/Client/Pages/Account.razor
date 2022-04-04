@@ -1,6 +1,7 @@
 ﻿@page "/account"
 @inject IUserService UserService
 @inject ILocalStorageService LocalStorage
+@inject IAddressService AddressService 
 @inject IJSRuntime JsRuntime
 
 <div class="container-fluid">
@@ -35,7 +36,7 @@
                 <h5 class="manage-subtitle">Manage My Account</h5>
                 <button class="manage-link" @onclick='() => ChangeBody(0)'>My Account</button>
                 <button class="manage-link" @onclick='() => ChangeBody(1)'>Edit Profile</button>
-                <button class="manage-link" @onclick='() => ChangeBody(2)'>Edit Profile</button>
+                <button class="manage-link" @onclick='() => ChangeBody(2)'>Edit Address</button>
             </div>
             <h3 class="manage-title">My Gallery</h3>
             <div class="manage-box d-flex flex-column align-items-center">
@@ -56,7 +57,7 @@
             }
             else if (IdLink == 2)
             {
-                <EditAddress />
+                <EditAddress newUser="@user"/>
             }
         </div>
     </div>
@@ -64,12 +65,14 @@
 
 @code {
     User user = new User();
+    int userId = 0;
     int IdLink = 0;
 
     protected override async Task OnInitializedAsync()
     {
         var Username = await LocalStorage.GetItemAsStringAsync("username");
         user = await UserService.GetUser(Username);
+        userId = user.Id;
     }
 
     private void ChangeBody(int Id)

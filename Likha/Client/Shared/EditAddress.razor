@@ -1,59 +1,79 @@
 ﻿@inject IUserService UserService
+@inject IUserRepository UserRepo
+@inject IAddressService AddressService
 @inject ILocalStorageService LocalStorage
 @inject IJSRuntime JsRuntime
 @inject NavigationManager NavManager
+@inject IToastService ToastService
+@implements IDisposable
 
 <div class="d-block d-xl-none @tableRemove">
     <h5 class="address-book my-3">Address Book</h5>
-    <div class="address-box">
-        <p class="default">Default Address</p>
-        <p class="address-content">Tamara Menzi</p>
-        <p class="address-content">Lipit St.</p>
-        <p class="address-content">Alusiis-San Narciso-Zambales</p>
-        <p class="address-content">0501109163</p>
-        <a href="" class="edit-link edit-end">Edit</a>
-    </div>
+    @foreach (var myAddress in AddressService.Addresses)
+    {
+        <div class="address-box">
+            <p class="default">Default Address</p>
+            <p class="address-content">@myAddress.FirstName @myAddress.LastName</p>
+            <p class="address-content">@myAddress.Street</p>
+            <p class="address-content">@myAddress.Barangay - @myAddress.Town - @myAddress.Province</p>
+            <p class="address-content">@myAddress.Phone</p>
+            <a href="" class="edit-link edit-end">Edit</a>
+        </div>
+    }
     <div class="d-flex w-100 justify-content-end my-4">
         <button class="save-button" @onclick="AddAddress">Add New Address</button>
     </div>
 </div>
 <div class="account-container-xl d-block d-xl-none  @remove">
     <div class="account-box-xl d-flex flex-column align-items-center">
-        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
-                alt="" class="account-image">
+        <img src="@(newUser.Image == null ? defaultImage : newUser.Image)"
+             alt="" class="account-image">
         <h5 class="account-edit">Add Address</h5>
     </div>
     <div class="edit-container mx-3">
-        <EditForm Model="address" OnValidSubmit="SaveAddress">
+        <EditForm Model="newAddress" OnValidSubmit="SaveAddress">
+            <DataAnnotationsValidator></DataAnnotationsValidator>
             <div class="row">
                 <div class="col-xl">
                     <p class="edit-title">Full Name</p>
                     <label class="label-form" for="last_name">Last Name</label>
-                    <input class="input-form" type="text" id="last_name" @bind-value="address.LastName"><br>
+                    <input class="input-form" type="text" id="last_name" @bind-value="newAddress.LastName">
+                    <ValidationMessage For="() => newAddress.LastName" />
+                    <br>
 
                     <label class="label-form" for="first_name">First Name</label>
-                    <input class="input-form" type="text" id="first_name" @bind-value="address.FirstName">
+                    <input class="input-form" type="text" id="first_name" @bind-value="newAddress.FirstName">
+                    <ValidationMessage For="() => newAddress.FirstName" />
 
                     <p class="edit-title">Phone Number</p>
-                    <input class="input-form" type="text" @bind-value="address.Phone">
+                    <input class="input-form" type="text" @bind-value="newAddress.Phone">
+                    <ValidationMessage For="() => newAddress.Phone" />
                 </div>
                 <div class="col-xl">
                     <p class="edit-title">Address</p>
                     <label class="label-form" for="street">Street/House Number</label>
-                    <input class="input-form" type="text" id="street" @bind-value="address.Street"><br>
+                    <input class="input-form" type="text" id="street" @bind-value="newAddress.Street">
+                    <ValidationMessage For="() => newAddress.Street" />
+                    <br>
 
                     <label class="label-form" for="barangay-xl">Barangay</label>
-                    <input class="input-form" type="text" id="barangay" @bind-value="address.Barangay">
+                    <input class="input-form" type="text" id="barangay" @bind-value="newAddress.Barangay">
+                    <ValidationMessage For="() => newAddress.Barangay" />
+                    <br />
 
                     <label class="label-form" for="town-xl">Town/Municipality</label>
-                    <input class="input-form" type="text" id="town" @bind-value="address.Town"><br>
+                    <input class="input-form" type="text" id="town" @bind-value="newAddress.Town">
+                    <ValidationMessage For="() => newAddress.Town" />
+                    <br>
 
                     <label class="label-form" for="province-xl">Province/Region</label>
-                    <input class="input-form" type="text" id="province" @bind-value="address.Province">
+                    <input class="input-form" type="text" id="province" @bind-value="newAddress.Province">
+                    <ValidationMessage For="() => newAddress.Province" />
                 </div>
             </div>
             <p class="edit-title">Other Information</p>
-            <input class="input-form" type="text" id="other_info" @bind-value="address.Other">
+            <input class="input-form" type="text" id="other_info" @bind-value="newAddress.Other">
+            <ValidationMessage For="() => newAddress.Other" />
             <div class="save-box d-flex w-100 justify-content-center">
                 <button class="save-button mx-4" @onclick="Cancel">Cancel</button>
                 <button class="save-button" type="submit">Save Address</button>
@@ -71,59 +91,75 @@
                 <th>Post-code</th>
                 <th>Phone Number</th>
             </tr>
-            <tr>
-                <td>Tamara Menzi</td>
-                <td>Lipit St</td>
-                <td>Alusiis-San Narciso-Zambales</td>
-                <td>09501109163</td>
-                <td><b>Default Address</b></td>
-                <td><a href="" class="edit-link">Edit</a></td>
-            </tr>
+            @foreach (var myAddress in AddressService.Addresses)
+            {
+                <tr>
+                    <td>@myAddress.FirstName @myAddress.LastName</td>
+                    <td>@myAddress.Street</td>
+                    <td>@myAddress.Barangay - @myAddress.Town - @myAddress.Province</td>
+                    <td>@myAddress.Phone</td>
+                    <td><b>Default Address</b></td>
+                    <td><a href="" class="edit-link">Edit</a></td>
+                </tr>
+            }
         </table>
         <div class="d-flex w-100 justify-content-end">
-            <button class="save-button"  @onclick="AddAddress">Add New Address</button>
+            <button class="save-button" @onclick="AddAddress">Add New Address</button>
         </div>
     </div>
 
     <div class="account-container row  @remove">
         <div class="account-box d-flex flex-column align-items-center">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
-                    alt="" class="account-image">
+            <img src="@(newUser.Image == null ? defaultImage : newUser.Image)"
+                 alt="" class="account-image">
             <h5 class="account-edit">Add Address</h5>
         </div>
         <div class="edit-container">
-            <EditForm Model="address" OnValidSubmit="SaveAddress">
+            <EditForm Model="newAddress" OnValidSubmit="SaveAddress">
+                <DataAnnotationsValidator></DataAnnotationsValidator>
                 <div class="row">
                     <div class="col">
                         <p class="edit-title">Full Name</p>
-                        <label class="label-form"for="last_name-xl">Last Name</label>
-                        <input class="input-form" type="text" name="last_name-xl" id="last_name-xl"  @bind-value="address.LastName"><br>
+                        <label class="label-form" for="last_name-xl">Last Name</label>
+                        <input class="input-form" type="text" name="last_name-xl" id="last_name-xl" @bind-value="newAddress.LastName">
+                        <ValidationMessage For="() => newAddress.LastName" />
+                        <br>
 
                         <label class="label-form" for="first_name">First Name</label>
-                        <input class="input-form" type="text" name="first_name-xl" id="first_name-xl"  @bind-value="address.FirstName">
+                        <input class="input-form" type="text" name="first_name-xl" id="first_name-xl" @bind-value="newAddress.FirstName">
+                        <ValidationMessage For="() => newAddress.FirstName" />
 
                         <p class="edit-title">Phone Number</p>
-                        <input class="input-form" type="text" @bind-value="address.Phone" >
+                        <input class="input-form" type="text" @bind-value="newAddress.Phone">
+                        <ValidationMessage For="() => newAddress.Phone" />
                     </div>
                     <div class="col">
                         <p class="edit-title">Address</p>
                         <label class="label-form" for="street-xl">Street/House Number</label>
-                        <input class="input-form" type="text"id="street-xl" @bind-value="address.Street"><br>
+                        <input class="input-form" type="text" id="street-xl" @bind-value="newAddress.Street">
+                        <ValidationMessage For="() => newAddress.Street" />
+                        <br>
 
                         <label class="label-form" for="barangay-xl">Barangay</label>
-                        <input class="input-form" type="text" id="barangay-xl"  @bind-value="address.Barangay">
+                        <input class="input-form" type="text" id="barangay-xl" @bind-value="newAddress.Barangay">
+                        <ValidationMessage For="() => newAddress.Barangay" />
+                        <br>
 
                         <label class="label-form" for="town-xl">Town/Municipality</label>
-                        <input class="input-form" type="text" id="town-xl" @bind-value="address.Town"><br>
+                        <input class="input-form" type="text" id="town-xl" @bind-value="newAddress.Town">
+                        <ValidationMessage For="() => newAddress.Town" />
+                        <br>
 
                         <label class="label-form" for="province-xl">Province/Region</label>
-                        <input class="input-form" type="text" id="province-xl" @bind-value="address.Province">
+                        <input class="input-form" type="text" id="province-xl" @bind-value="newAddress.Province">
+                        <ValidationMessage For="() => newAddress.Province" />
                     </div>
                     <p class="edit-title">Other Information</p>
-                    <input class="input-form" type="text" @bind-value="address.Other">
+                    <input class="input-form" type="text" @bind-value="newAddress.Other">
+                    <ValidationMessage For="() => newAddress.Other" />
                 </div>
                 <div class="save-box d-flex w-100 justify-content-end">
-                    <button class="save-button mx-4"@onclick="Cancel">Cancel</button>
+                    <button class="save-button mx-4" @onclick="Cancel">Cancel</button>
                     <button class="save-button" type="submit">Save Address</button>
                 </div>
             </EditForm>
@@ -133,13 +169,24 @@
 
 
 @code {
+    [Parameter]
+    public User newUser { get; set; }
+    List<Address> addresses = new List<Address>();
     Address address = new Address();
+    AddAddress newAddress = new AddAddress();
+    string defaultImage = "../css/default-profile.png";
     string remove = "d-none";
     string tableRemove = string.Empty;
 
     private async void SaveAddress()
     {
-        await JsRuntime.InvokeVoidAsync("console.log", address);
+        address = UserRepo.AddAddress(newAddress, newUser.Id);
+        addresses = await AddressService.AddAddress(address);
+        if (addresses != null)
+        {
+            ToastService.ShowSuccess("Successfully Added", "New Address Added");
+            NavManager.NavigateTo("");
+        }
     }
 
     private void AddAddress()
@@ -152,5 +199,26 @@
     {
         tableRemove = string.Empty;
         remove = "d-none";
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (newUser.Id != 0)
+        {
+            await AddressService.LoadAddresses(newUser.Id);
+        }
+
+    }
+
+    protected override void OnInitialized()
+    {
+        UserService.OnChange += StateHasChanged;
+        AddressService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        UserService.OnChange -= StateHasChanged;
+        AddressService.OnChange -= StateHasChanged;
     }
 }

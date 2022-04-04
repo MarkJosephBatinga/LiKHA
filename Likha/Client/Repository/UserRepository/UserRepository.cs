@@ -11,6 +11,21 @@ namespace Likha.Client.Repository.UserRepository
 {
     public class UserRepository : IUserRepository
     {
+        public Address AddAddress(AddAddress NewAddress, int UserId)
+        {
+            Address address = new Address();
+            address.LastName = NewAddress.LastName;
+            address.FirstName = NewAddress.FirstName;
+            address.Phone = NewAddress.Phone;
+            address.Street = NewAddress.Street;
+            address.Barangay = NewAddress.Barangay;
+            address.Town = NewAddress.Town;
+            address.Province = NewAddress.Province;
+            address.Other = NewAddress.Other;
+            address.UserId = UserId;
+            return address;
+        }
+
         public User LoginEncrypt(LoginUser UserLogin)
         {
             User user = new User();

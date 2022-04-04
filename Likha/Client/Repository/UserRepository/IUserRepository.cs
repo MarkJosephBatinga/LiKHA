@@ -12,5 +12,7 @@ namespace Likha.Client.Repository.UserRepository
         User PasswordDecrypt(User user);
 
         User LoginEncrypt(LoginUser UserLogin);
+
+        Address AddAddress(AddAddress NewAddress, int UserId);
     }
 }
