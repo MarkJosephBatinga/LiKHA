@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Likha.Client.Services.AddressService
+namespace Likha.Server.Services.AddressService
 {
-    interface IAddressService
+    public interface IAddressService
     {
-        public event Action OnChange;
-        public List<Address> Addresses { get; set; }
         Task<List<Address>> AddAddress(Address address);
-        Task LoadAddresses(int UserId);
+
+        Task<List<Address>> LoadAddress(int UserId);
 
         Task<Address> GetAddress(int Id);
 

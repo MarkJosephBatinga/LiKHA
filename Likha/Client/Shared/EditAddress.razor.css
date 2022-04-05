@@ -111,6 +111,9 @@
     text-align: center;
     letter-spacing: 3px;
     padding: 10px 30px;
+    text-decoration: none;
+    color: #000000;
+    cursor: pointer;
 }
 
 .address-book {
@@ -161,6 +164,18 @@ td {
     letter-spacing: 1px;
     text-decoration: none;
     color: #ADAEB0;
+    cursor: pointer;
+}
+
+.delete-link {
+    font-style: normal;
+    font-weight: 400;
+    font-size: .7rem;
+    text-align: center;
+    letter-spacing: 1px;
+    text-decoration: none;
+    color: #AF8585;
+    cursor: pointer;
 }
 
 .default {

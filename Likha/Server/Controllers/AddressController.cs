@@ -1,4 +1,5 @@
-﻿using Likha.Shared;
+﻿using Likha.Server.Services.AddressService;
+using Likha.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,46 +13,45 @@ namespace Likha.Server.Controllers
     [ApiController]
     public class AddressController : ControllerBase
     {
-        List<Address> Addresses = new List<Address>
+        private readonly IAddressService _addressService;
+
+        public AddressController(IAddressService addressService)
         {
-            new Address
-            {
-                LastName = "Lagrana",
-                FirstName = "Maya Kayne",
-                Street = "Lipit St",
-                Town = "San Narciso",
-                Province = "Zambales",
-                Barangay = "Alusiis",
-                Phone = "09501109163",
-                Other = "",
-                UserId = 2
-            },
-             new Address
-            {
-                LastName = "Copias",
-                FirstName = "Shara",
-                Street = "Lipit St",
-                Town = "San Narciso",
-                Province = "Zambales",
-                Barangay = "Alusiis",
-                Phone = "09501109163",
-                Other = "",
-                UserId = 2
-            }
-        };
+            _addressService = addressService;
+        }
 
         [HttpPost]
         public async Task<ActionResult<List<Address>>> AddAddress(Address address)
         {
-            Addresses.Add(address);
-            return Ok(Addresses);
+            var addresses = await _addressService.AddAddress(address);
+            if (addresses == null)
+                return NotFound(addresses);
+            return Ok(addresses);
         }
 
         [HttpGet("{UserId:int}")]
         public async Task<ActionResult<List<Address>>> LoadAddresses(int UserId)
         {
-            var UserAddresses = Addresses.FindAll(a => a.UserId == UserId);
+            var UserAddresses = await _addressService.LoadAddress(UserId);
             return Ok(UserAddresses);
+        }
+
+        [HttpGet("address/{Id:int}")]
+        public async Task<ActionResult<Address>> GetAddress(int Id)
+        {
+            var Address = await _addressService.GetAddress(Id);
+            if (Address == null)
+                return NotFound(Address);
+            return Ok(Address);
+        }
+
+        [HttpPost("delete")]
+        public async Task<ActionResult<List<Address>>> DeleteAddress(Address address)
+        {
+            var Addresses = await _addressService.DeleteAddress(address);
+            if (Addresses == null)
+                return NotFound(Addresses);
+            return Ok(Addresses);
         }
     }
 }

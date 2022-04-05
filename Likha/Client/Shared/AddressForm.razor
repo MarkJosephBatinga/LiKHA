@@ -1,0 +1,100 @@
+﻿@inject IUserRepository UserRepo
+@inject IAddressService AddressService
+@inject IToastService ToastService 
+@inject NavigationManager NavManager
+
+<EditForm Model="newAddress" OnValidSubmit="SaveAddress">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <div class="row">
+        <div class="col-xl">
+            <p class="edit-title">Address Title</p>
+            <input class="input-form" type="text" @bind-value="newAddress.Title" placeholder="@ExistingAddress.Title">
+            <ValidationMessage For="() => newAddress.Title" />
+            <br>
+
+            <p class="edit-title">Full Name</p>
+            <label class="label-form" for="last_name-xl">Last Name</label>
+            <input class="input-form" type="text" name="last_name-xl" id="last_name-xl" @bind-value="newAddress.LastName" placeholder="@ExistingAddress.LastName">
+            <ValidationMessage For="() => newAddress.LastName" />
+            <br>
+
+            <label class="label-form" for="first_name">First Name</label>
+            <input class="input-form" type="text" name="first_name-xl" id="first_name-xl" @bind-value="newAddress.FirstName"  placeholder="@ExistingAddress.FirstName">
+            <ValidationMessage For="() => newAddress.FirstName" />
+        </div>
+        <div class="col-xl">
+            <p class="edit-title">Phone Number</p>
+            <input class="input-form" type="text" @bind-value="newAddress.Phone"  placeholder="@ExistingAddress.Phone">
+            <ValidationMessage For="() => newAddress.Phone" />
+
+            <p class="edit-title">Address</p>
+            <label class="label-form" for="street-xl">Street/House Number</label>
+            <input class="input-form" type="text" id="street-xl" @bind-value="newAddress.Street"  placeholder="@ExistingAddress.Street">
+            <ValidationMessage For="() => newAddress.Street" />
+            <br>
+
+            <label class="label-form" for="barangay-xl">Barangay</label>
+            <input class="input-form" type="text" id="barangay-xl" @bind-value="newAddress.Barangay"  placeholder="@ExistingAddress.Barangay">
+            <ValidationMessage For="() => newAddress.Barangay" />
+            <br>
+
+            <label class="label-form" for="town-xl">Town/Municipality</label>
+            <input class="input-form" type="text" id="town-xl" @bind-value="newAddress.Town"  placeholder="@ExistingAddress.Town">
+            <ValidationMessage For="() => newAddress.Town" />
+            <br>
+
+            <label class="label-form" for="province-xl">Province/Region</label>
+            <input class="input-form" type="text" id="province-xl" @bind-value="newAddress.Province"  placeholder="@ExistingAddress.Province">
+            <ValidationMessage For="() => newAddress.Province" />
+        </div>
+        <p class="edit-title">Other Information</p>
+        <input class="input-form" type="text" @bind-value="newAddress.Other"  placeholder="@ExistingAddress.Other">
+        <ValidationMessage For="() => newAddress.Other" />
+    </div>
+    <div class="save-box d-flex w-100 justify-content-end">
+        <a class="save-button mx-4" @onclick="OnClickCancel">Cancel</a>
+        <button class="save-button" type="submit">Save Address</button>
+    </div>
+</EditForm>
+
+
+@code {
+    [Parameter]
+    public User newUser { get; set; } = new User();
+    [Parameter]
+    public int AddressId { get; set; }
+    [Parameter]
+    public EventCallback Cancel { get; set; }
+
+    AddAddress newAddress = new AddAddress();
+    Address address = new Address();
+    Address ExistingAddress = new Address();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        if(AddressId != 0)
+        {
+            ExistingAddress = await AddressService.GetAddress(AddressId);
+        }
+        else
+        {
+            ExistingAddress = new Address();
+        }
+    }
+
+    private async void SaveAddress()
+    {
+        address = UserRepo.AddAddress(newAddress, newUser.Id);
+        var addresses = await AddressService.AddAddress(address);
+        if (addresses != null)
+        {
+            ToastService.ShowSuccess("Successfully Added", "New Address Added");
+            NavManager.NavigateTo("");
+        }
+    }
+
+    private void OnClickCancel()
+    {
+        Cancel.InvokeAsync();
+    }
+}

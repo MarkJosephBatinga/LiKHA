@@ -28,6 +28,19 @@ namespace Likha.Client.Services.AddressService
             return addresses;
         }
 
+        public async Task<List<Address>> DeleteAddress(Address address)
+        {
+            var result = await _http.PostAsJsonAsync<Address>($"api/address/delete", address);
+            var addresses = await result.Content.ReadFromJsonAsync<List<Address>>();
+            return addresses;
+        }
+
+        public async Task<Address> GetAddress(int Id)
+        {
+            var address = await _http.GetFromJsonAsync<Address>($"api/address/address/{Id}");
+            return address;
+        }
+
         public async Task LoadAddresses(int UserId)
         {
             Addresses = await _http.GetFromJsonAsync<List<Address>>($"api/address/{UserId}");

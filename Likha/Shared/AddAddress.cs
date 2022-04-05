@@ -11,6 +11,9 @@ namespace Likha.Shared
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Title is Required")]
+        public string Title { get; set; }
+
         [Required(ErrorMessage = "Last Name is Required")]
         public string LastName { get; set; }
 

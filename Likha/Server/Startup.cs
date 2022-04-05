@@ -1,4 +1,5 @@
 using Likha.Server.Data;
+using Likha.Server.Services.AddressService;
 using Likha.Server.Services.CategoryService;
 using Likha.Server.Services.ProductService;
 using Likha.Server.Services.UserService;
@@ -37,6 +38,7 @@ namespace Likha.Server
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAddressService, AddressService>();
             services.AddAuthentication(options => {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
