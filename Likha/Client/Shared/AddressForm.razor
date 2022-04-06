@@ -1,9 +1,10 @@
 ﻿@inject IUserRepository UserRepo
 @inject IAddressService AddressService
-@inject IToastService ToastService 
+@inject IToastService ToastService
+@inject IJSRuntime JsRuntime
 @inject NavigationManager NavManager
 
-<EditForm Model="newAddress" OnValidSubmit="SaveAddress">
+<EditForm Model="newAddress" OnValidSubmit="AddressId == 0 ? SaveAddress: UpdateAddress">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <div class="row">
         <div class="col-xl">
@@ -19,41 +20,41 @@
             <br>
 
             <label class="label-form" for="first_name">First Name</label>
-            <input class="input-form" type="text" name="first_name-xl" id="first_name-xl" @bind-value="newAddress.FirstName"  placeholder="@ExistingAddress.FirstName">
+            <input class="input-form" type="text" name="first_name-xl" id="first_name-xl" @bind-value="newAddress.FirstName" placeholder="@ExistingAddress.FirstName">
             <ValidationMessage For="() => newAddress.FirstName" />
         </div>
         <div class="col-xl">
             <p class="edit-title">Phone Number</p>
-            <input class="input-form" type="text" @bind-value="newAddress.Phone"  placeholder="@ExistingAddress.Phone">
+            <input class="input-form" type="text" @bind-value="newAddress.Phone" placeholder="@ExistingAddress.Phone">
             <ValidationMessage For="() => newAddress.Phone" />
 
             <p class="edit-title">Address</p>
             <label class="label-form" for="street-xl">Street/House Number</label>
-            <input class="input-form" type="text" id="street-xl" @bind-value="newAddress.Street"  placeholder="@ExistingAddress.Street">
+            <input class="input-form" type="text" id="street-xl" @bind-value="newAddress.Street" placeholder="@ExistingAddress.Street">
             <ValidationMessage For="() => newAddress.Street" />
             <br>
 
             <label class="label-form" for="barangay-xl">Barangay</label>
-            <input class="input-form" type="text" id="barangay-xl" @bind-value="newAddress.Barangay"  placeholder="@ExistingAddress.Barangay">
+            <input class="input-form" type="text" id="barangay-xl" @bind-value="newAddress.Barangay" placeholder="@ExistingAddress.Barangay">
             <ValidationMessage For="() => newAddress.Barangay" />
             <br>
 
             <label class="label-form" for="town-xl">Town/Municipality</label>
-            <input class="input-form" type="text" id="town-xl" @bind-value="newAddress.Town"  placeholder="@ExistingAddress.Town">
+            <input class="input-form" type="text" id="town-xl" @bind-value="newAddress.Town" placeholder="@ExistingAddress.Town">
             <ValidationMessage For="() => newAddress.Town" />
             <br>
 
             <label class="label-form" for="province-xl">Province/Region</label>
-            <input class="input-form" type="text" id="province-xl" @bind-value="newAddress.Province"  placeholder="@ExistingAddress.Province">
+            <input class="input-form" type="text" id="province-xl" @bind-value="newAddress.Province" placeholder="@ExistingAddress.Province">
             <ValidationMessage For="() => newAddress.Province" />
         </div>
         <p class="edit-title">Other Information</p>
-        <input class="input-form" type="text" @bind-value="newAddress.Other"  placeholder="@ExistingAddress.Other">
+        <input class="input-form" type="text" @bind-value="newAddress.Other" placeholder="@ExistingAddress.Other">
         <ValidationMessage For="() => newAddress.Other" />
     </div>
     <div class="save-box d-flex w-100 justify-content-end">
         <a class="save-button mx-4" @onclick="OnClickCancel">Cancel</a>
-        <button class="save-button" type="submit">Save Address</button>
+        <button class="save-button" type="submit">@(AddressId == 0 ? "Save Address" : "Update Address")</button>
     </div>
 </EditForm>
 
@@ -72,7 +73,7 @@
 
     protected async override Task OnParametersSetAsync()
     {
-        if(AddressId != 0)
+        if (AddressId != 0)
         {
             ExistingAddress = await AddressService.GetAddress(AddressId);
         }
@@ -89,6 +90,18 @@
         if (addresses != null)
         {
             ToastService.ShowSuccess("Successfully Added", "New Address Added");
+            NavManager.NavigateTo("");
+        }
+    }
+
+    private async void UpdateAddress()
+    {
+        address = UserRepo.AddAddress(newAddress, newUser.Id);
+        address.Id = AddressId;
+        var addresses = await AddressService.UpdateAddress(address);
+        if (addresses != null)
+        {
+            ToastService.ShowSuccess("Successfully Updated", "Address Successfully Updated");
             NavManager.NavigateTo("");
         }
     }

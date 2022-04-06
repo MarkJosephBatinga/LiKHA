@@ -43,5 +43,17 @@ namespace Likha.Server.Services.AddressService
             var userAddresses = await _data.Addresses.Where(a => a.UserId == UserId).ToListAsync();
             return userAddresses;
         }
+
+        public async Task<List<Address>> UpdateAddress(Address address)
+        {
+            List<Address> Addresses = await _data.Addresses.ToListAsync();
+            var dbAddress = await _data.Addresses.FindAsync(address.Id);
+            if (dbAddress != null)
+            {
+                _data.Entry(dbAddress).CurrentValues.SetValues(address);
+                await _data.SaveChangesAsync();
+            }
+            return Addresses;
+        }
     }
 }

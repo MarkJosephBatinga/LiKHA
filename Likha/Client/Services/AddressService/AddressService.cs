@@ -46,5 +46,12 @@ namespace Likha.Client.Services.AddressService
             Addresses = await _http.GetFromJsonAsync<List<Address>>($"api/address/{UserId}");
             OnChange.Invoke();
         }
+
+        public async Task<List<Address>> UpdateAddress(Address address)
+        {
+            var result = await _http.PutAsJsonAsync<Address>($"api/address/update/{address.Id}", address);
+            var addresses = await result.Content.ReadFromJsonAsync<List<Address>>();
+            return addresses;
+        }
     }
 }

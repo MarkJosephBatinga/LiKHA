@@ -53,5 +53,14 @@ namespace Likha.Server.Controllers
                 return NotFound(Addresses);
             return Ok(Addresses);
         }
+
+        [HttpPut("update/{AddressId:int}")]
+        public async Task<ActionResult<List<Address>>> UpdateAddress(Address address)
+        {
+            var Addresses = await _addressService.UpdateAddress(address);
+            if (Addresses == null)
+                return NotFound(Addresses);
+            return Ok(Addresses);
+        }
     }
 }

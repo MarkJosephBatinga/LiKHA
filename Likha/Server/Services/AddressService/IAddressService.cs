@@ -15,5 +15,7 @@ namespace Likha.Server.Services.AddressService
         Task<Address> GetAddress(int Id);
 
         Task<List<Address>> DeleteAddress(Address address);
+
+        Task<List<Address>> UpdateAddress(Address address);
     }
 }
