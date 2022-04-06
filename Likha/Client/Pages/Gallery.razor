@@ -19,8 +19,8 @@
                 <p class="address-content">@user.Phone</p>
             </div>
             <div class="edit-box d-flex flex-column justify-content-around align-items-end">
-                <a href="#" class="edit-link">Edit</a>
-                <button class="btn btn-md">Add New Art</button>
+                <a href="" class="edit-link">Edit</a>
+                <button @onclick="AddProductLink" class="btn btn-md">Add New Art</button>
             </div>
         </div>
     </div>
@@ -34,26 +34,50 @@
                 <h3 class="profile-name">@user.Email</h3>
                 <p class="address-content">@user.FirstName @user.LastName</p>
                 <p class="address-content">@user.Phone</p>
+                <a href="" class="edit-link">Edit</a>
+                <button @onclick="AddProductLink" class="btn btn-md">Add New Art</button>
             </div>
         </div>
 
     </div>
     <div class="container-fluid my-4">
-        <div class="row row-cols-md-3 row-cols-2 g-3">
-            <ProductList />
-        </div>
+        @if (changeComponent == 0)
+        {
+            <div class="row row-cols-md-3 row-cols-2 g-3">
+                <ProductList />
+            </div>
+        }
+        else
+        {
+            <ProductForm 
+              Cancel="Cancel"
+              FirstName="@user.FirstName"
+              LastName="@user.LastName"/>
+        }
+
     </div>
 </div>
 
 @code {
     User user = new User();
     private string imageDefault = "../css/default-profile.png";
+    private int changeComponent = 0;
 
     protected override async Task OnParametersSetAsync()
     {
         var username = await LocalStorage.GetItemAsStringAsync("username");
         user = await UserService.GetUser(username);
         await ProductService.LoadProducts();
+    }
+
+    public void AddProductLink()
+    {
+        changeComponent = 1;
+    }
+
+    private void Cancel()
+    {
+        changeComponent = 0;
     }
 
     protected override void OnInitialized()

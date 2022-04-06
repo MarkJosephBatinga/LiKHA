@@ -1,0 +1,82 @@
+﻿.account-container {
+    padding: 30px;
+    background: #f6f6f6;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    margin-bottom: 30px;
+}
+
+.body-container {
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    box-sizing: border-box;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.account-image {
+    width: auto;
+    max-height: 150px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.6));
+}
+
+.account-edit {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 25px;
+    letter-spacing: 3px;
+}
+
+.edit-title {
+    margin: 0;
+    margin-top: 30px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.label-form {
+    text-indent: 5px;
+    margin-bottom: 5px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 0.85rem;
+    line-height: 18px;
+    letter-spacing: 1px;
+}
+
+.input-form {
+    margin-top: 10px;
+    background: #ffffff;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    border: none;
+    width: 70%;
+    height: 30px;
+    text-indent: 5px;
+}
+
+.save-box {
+    margin-top: 60px;
+}
+
+.save-button {
+    border: none;
+    background: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.8rem;
+    line-height: 20px;
+    text-align: center;
+    letter-spacing: 3px;
+    padding: 10px 30px;
+    text-decoration: none;
+    color: #000000;
+    cursor: pointer;
+}

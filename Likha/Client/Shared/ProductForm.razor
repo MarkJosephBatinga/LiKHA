@@ -1,0 +1,43 @@
+﻿
+
+<div class="account-container mx-xl-5">
+    <div class="edit-container">
+        <form class="edit-form w-100 d-flex flex-column align-items-center" action="">
+            <p class="edit-title">Image</p>
+            <input type="file"><br>
+            <p class="edit-title">Title</p>
+            <input class="input-form" type="text">
+            <p class="edit-title">Artist</p>
+            <p class="input-form">@FirstName</p>
+            <p class="input-form">@LastName</p>
+            <p class="edit-title">Price</p>
+            <input class="input-form" type="text">
+            <p class="edit-title">Category</p>
+            <input class="input-form" type="text">
+            <p class="edit-title">Description</p>
+            <textarea class="input-form" rows="3" cols="100"></textarea>
+
+            <div class="save-box d-flex w-100 justify-content-end">
+                <a class="save-button mx-4" @onclick="OnClickCancel">Cancel</a>
+                <button class="save-button" type="submit">Save Address</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string LastName { get; set; }
+
+    [Parameter]
+    public string FirstName { get; set; }
+
+    [Parameter]
+    public EventCallback Cancel { get; set; }
+
+    private void OnClickCancel()
+    {
+        Cancel.InvokeAsync();
+    }
+}
