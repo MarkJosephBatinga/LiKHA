@@ -23,6 +23,13 @@ namespace Likha.Client.Services
 
         public event Action OnChange;
 
+        public async Task<List<Product>> AddProduct(Product newProduct)
+        {
+            var result = await _http.PostAsJsonAsync("api/Product", newProduct);
+            var status = await result.Content.ReadFromJsonAsync<List<Product>>();
+            return status;
+        }
+
         public async Task<Product> LoadProduct(int id)
         {
             Product product = await _http.GetFromJsonAsync<Product>($"api/Product/{id}");

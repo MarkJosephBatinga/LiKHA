@@ -1,43 +1,98 @@
-﻿
+﻿@inject ICategoryService CategoryService
+@inject IUserRepository UserRepo
+@inject IProductService ProductService
+@inject NavigationManager NavManager
+@inject IToastService ToastService
+@inject IJSRuntime JsRuntime
 
 <div class="account-container mx-xl-5">
     <div class="edit-container">
-        <form class="edit-form w-100 d-flex flex-column align-items-center" action="">
-            <p class="edit-title">Image</p>
-            <input type="file"><br>
-            <p class="edit-title">Title</p>
-            <input class="input-form" type="text">
-            <p class="edit-title">Artist</p>
-            <p class="input-form">@FirstName</p>
-            <p class="input-form">@LastName</p>
-            <p class="edit-title">Price</p>
-            <input class="input-form" type="text">
-            <p class="edit-title">Category</p>
-            <input class="input-form" type="text">
-            <p class="edit-title">Description</p>
-            <textarea class="input-form" rows="3" cols="100"></textarea>
+        <div class="row">
+            <EditForm Model="newProduct" OnValidSubmit="SubmitProduct" class="edit-form w-100">
+                <DataAnnotationsValidator></DataAnnotationsValidator>
+                <p class="edit-title">Add Product Image</p>
+                <label class="label-form" for="product-image">Select Image</label>
+                <InputFile type="file" OnChange="OnFileChange"
+                           accept="image/x-png,image/gif,image/jpeg,image/avi" name="product-image"
+                           id="product-image" />
+                <ValidationMessage For="() => newProduct.Image" /><br>
+                <div class="col-xl">
+                    <p class="edit-title">Title</p>
+                    <InputText @bind-Value="newProduct.Title" class="input-form" type="text" />
+                    <ValidationMessage For="() => newProduct.Title" /><br>
 
-            <div class="save-box d-flex w-100 justify-content-end">
-                <a class="save-button mx-4" @onclick="OnClickCancel">Cancel</a>
-                <button class="save-button" type="submit">Save Address</button>
-            </div>
-        </form>
+                    <p class="edit-title">Artist</p>
+                    <p class="input-form">@user.FirstName</p>
+                    <p class="input-form">@user.LastName</p>
+                </div>
+                <div class="col-xl">
+                    <p class="edit-title">Price</p>
+                    <InputNumber class="input-form" @bind-Value="newProduct.Price" />
+                    <ValidationMessage For="() => newProduct.Price" /><br>
+
+                    <p class="edit-title">Category</p>
+                    <InputSelect @bind-Value="newProduct.CategoryId" class="input-form">
+                        @foreach (var category in CategoryService.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="() => newProduct.CategoryId" /><br>
+
+                    <p class="edit-title">Description</p>
+                    <InputTextArea class="input-form" @bind-Value="newProduct.Description" rows="3" cols="100"></InputTextArea>
+                    <ValidationMessage For="() => newProduct.Description" /><br>
+                </div>
+                <div class="save-box d-flex w-100 justify-content-end">
+                    <a class="save-button mx-4" @onclick="OnClickCancel">Cancel</a>
+                    <button class="save-button" type="submit">Upload Product</button>
+                </div>
+            </EditForm>
+        </div>
     </div>
 </div>
 
 
 @code {
     [Parameter]
-    public string LastName { get; set; }
-
-    [Parameter]
-    public string FirstName { get; set; }
+    public User user { get; set; }
 
     [Parameter]
     public EventCallback Cancel { get; set; }
 
+    AddProduct newProduct = new AddProduct();
+
+    private async void SubmitProduct()
+    {
+        newProduct.Artist = $"{user.FirstName} {user.LastName}";
+        newProduct.ArtistId = user.Id;
+        var product = UserRepo.AddProduct(newProduct);
+        await JsRuntime.InvokeVoidAsync("console.log", product);
+        var productList = await ProductService.AddProduct(product);
+        if (productList != null)
+        {
+            ToastService.ShowSuccess("New Product Successfully Added");
+            NavManager.NavigateTo("/gallery", true);
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CategoryService.LoadCategories();
+    }
+
     private void OnClickCancel()
     {
         Cancel.InvokeAsync();
+    }
+
+    private async Task OnFileChange(InputFileChangeEventArgs e)
+    {
+        var format = "image/png";
+        var resizedImage = await e.File.RequestImageFileAsync(format, 1000, 1500);
+        var buffer = new byte[resizedImage.Size];
+        await resizedImage.OpenReadStream(3000000).ReadAsync(buffer);
+        var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
+        newProduct.Image = imageData;
     }
 }

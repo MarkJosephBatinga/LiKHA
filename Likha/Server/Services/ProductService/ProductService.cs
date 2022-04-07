@@ -38,5 +38,13 @@ namespace Likha.Server.Services.ProductService
             product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
             return product;
         }
+
+        public async Task<List<Product>> AddProduct(Product newProduct)
+        {
+            await _context.Products.AddAsync(newProduct);
+            await _context.SaveChangesAsync();
+            List<Product> Products = await _context.Products.ToListAsync();
+            return Products;
+        }
     }
 }

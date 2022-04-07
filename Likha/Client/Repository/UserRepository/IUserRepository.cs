@@ -14,5 +14,7 @@ namespace Likha.Client.Repository.UserRepository
         User LoginEncrypt(LoginUser UserLogin);
 
         Address AddAddress(AddAddress NewAddress, int UserId);
+
+        Product AddProduct(AddProduct NewProduct);
     }
 }

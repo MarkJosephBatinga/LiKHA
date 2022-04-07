@@ -28,6 +28,19 @@ namespace Likha.Client.Repository.UserRepository
             return address;
         }
 
+        public Product AddProduct(AddProduct NewProduct)
+        {
+            Product product = new Product();
+            product.Title = NewProduct.Title;
+            product.Description = NewProduct.Description;
+            product.Artist = NewProduct.Artist;
+            product.ArtistId = NewProduct.ArtistId;
+            product.Image = NewProduct.Image;
+            product.Price = NewProduct.Price;
+            product.CategoryId = NewProduct.CategoryId;
+            return product;
+        }
+
         public User LoginEncrypt(LoginUser UserLogin)
         {
             User user = new User();

@@ -4,14 +4,16 @@ using Likha.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Likha.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220407003347_EditArtistId")]
+    partial class EditArtistId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,6 +81,56 @@ namespace Likha.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Paintings",
+                            Url = "paintings"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Drawings",
+                            Url = "drawings"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Digital Arts",
+                            Url = "digital_arts"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Sculptures",
+                            Url = "sculptures"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Ceramics",
+                            Url = "ceramics"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Photography",
+                            Url = "photography"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Designs",
+                            Url = "designs"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Crafts",
+                            Url = "crafts"
+                        });
                 });
 
             modelBuilder.Entity("Likha.Shared.Product", b =>

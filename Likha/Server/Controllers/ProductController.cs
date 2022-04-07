@@ -39,5 +39,14 @@ namespace Likha.Server.Controllers
         {
             return Ok(await _productService.GetProduct(id));
         }
+
+        [HttpPost]
+        public async Task<ActionResult<List<Product>>> AddProduct(Product newProduct)
+        {
+            List<Product> Products = await _productService.AddProduct(newProduct);
+            if (Products != null)
+                return Ok(Products);
+            return NotFound(Products);
+        }
     }
 }

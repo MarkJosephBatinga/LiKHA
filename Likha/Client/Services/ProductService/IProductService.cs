@@ -16,5 +16,8 @@ namespace Likha.Client.Services
         Task LoadProducts();
         Task LoadProductsbyCategory(string categoryUrl);
         Task<Product> LoadProduct(int id);
+
+
+        Task<List<Product>> AddProduct(Product newProduct);
     }
 }
