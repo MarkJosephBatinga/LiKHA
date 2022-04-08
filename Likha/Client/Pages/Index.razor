@@ -3,10 +3,12 @@
 @inject ICategoryService CategoryService
 @inject IProductService ProductService
 @inject IUserService UserService
+@inject IJSRuntime JsRuntime
 @inject NavigationManager NavigationManager
 
+
 <div>
-    <div class="container-fluid sort-container py-md-3 py-2 mb-2">
+    <div class="container-fluid sort-container py-md-3 py-2 mb-2 @notLoaded">
         <div class="row d-flex align-items-center">
             <div class="col-md-3 col-4 d-flex justify-content-center">
                 <div class="dropdown d-block d-xxl-none">
@@ -15,7 +17,7 @@
                         Categories
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="ListTypeDrop">
-                        @foreach (var categories in CategoryService.Categories)
+                        @foreach (var categories in AllCategory)
                         {
                             <li><a class="dropdown-item" @onclick="() => CategorizeProduct(categories.Url)">@categories.Name</a></li>
                         }
@@ -47,11 +49,14 @@
         </div>
     </div>
     <div class="container-fluid body-container">
+        <div class="row @loaded">
+            <LoadPage />
+        </div>
         <div class="row">
             <div class="col-2 d-none d-xxl-block category-container">
-                <div class="d-flex flex-column align-items-center mt-5 min-vh-100">
+                <div class="d-flex flex-column align-items-center mt-5 min-vh-100 @notLoaded">
                     <h3 class="mb-3">CATEGORIES</h3>
-                    @foreach (var categories in CategoryService.Categories)
+                    @foreach (var categories in AllCategory)
                     {
                         <button @onclick="() => CategorizeProduct(categories.Url)" class="btn btn-lg w-75 my-4">@categories.Name</button>
                     }
@@ -62,12 +67,11 @@
                     <div class="row row-cols-md-3 row-cols-2 g-3">
                         @if (Url == null)
                         {
-                            <ProductList />
-
+                            <ProductList AllProducts="AllProduct" />
                         }
                         else
                         {
-                            <ProductsByCategory />
+                            <ProductsByCategory AllCategories="AllProductbyCategory" />
                         }
 
                     </div>
@@ -78,25 +82,33 @@
 </div>
 
 @code {
-
     [Parameter]
     public string Url { get; set; } = null;
 
+    string loaded = string.Empty;
+    string notLoaded = "d-none";
+    List<Product> AllProduct = new List<Product>();
+    List<Product> AllProductbyCategory = new List<Product>();
+    List<Category> AllCategory = new List<Category>();
+
+
     protected override async Task OnInitializedAsync()
     {
-        await CategoryService.LoadCategories();
-        await ProductService.LoadProducts();
+        AllCategory = await CategoryService.LoadCategories();
+        AllProduct = await ProductService.LoadProducts();
+        loaded = "d-none";
+        notLoaded = string.Empty;
     }
 
     protected override async Task OnParametersSetAsync()
     {
         if (Url != null)
         {
-            await ProductService.LoadProductsbyCategory(Url);
+            AllProductbyCategory = await ProductService.LoadProductsbyCategory(Url);
+            loaded = "d-none";
         }
 
     }
-
 
     private void CategorizeProduct(string categoryUrl)
     {

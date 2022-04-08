@@ -1,7 +1,7 @@
 ﻿@inject IProductService ProductService
 @implements IDisposable
 
-@foreach (var product in ProductService.Products)
+@foreach (var product in AllProducts)
 {
     <div class="col">
         <a href="/product/@product.Id">
@@ -26,6 +26,8 @@
 @code {
 
     private int MaxLength = 35;
+    [Parameter]
+    public List<Product> AllProducts { get; set; } = new List<Product>();
 
     private string MaximizaDescription(string Description)
     {
@@ -37,10 +39,8 @@
         return Description;
     }
 
-
     protected override void OnInitialized()
     {
-        //await ProductService.LoadProductsbyCategory(CategoryUrl);
         ProductService.OnChange += StateHasChanged;
     }
 

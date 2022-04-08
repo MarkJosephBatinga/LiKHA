@@ -1,7 +1,7 @@
 ﻿@inject IProductService ProductService
 @implements IDisposable
 
-@foreach (var product in ProductService.ProductsbyCategory)
+@foreach (var product in AllCategories)
 {
     <div class="col">
         <a href="/product/@product.Id">
@@ -26,6 +26,9 @@
 @code {
     [Parameter]
     public string CategoryUrl { get; set; }
+    [Parameter]
+    public List<Product> AllCategories { get; set; }
+
 
     private int MaxLength = 35;
 
@@ -42,7 +45,6 @@
 
     protected override void OnInitialized()
     {
-        //await ProductService.LoadProductsbyCategory(CategoryUrl);
         ProductService.OnChange += StateHasChanged;
     }
 

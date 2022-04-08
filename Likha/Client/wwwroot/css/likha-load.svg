@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="280" height="257" preserveAspectRatio="xMidYMid">
+<style type="text/css">
+  text {
+    text-anchor: middle; font-size: 80px; opacity: 0;
+  }
+</style>
+<g style="transform-origin:140px 128.5px;transform:scale(1)">
+<g transform="translate(140,128.5)">
+  <g transform="translate(0,0)"><g class="path" style="transform: matrix(1, 0, 0, 1, 0, 0); transform-origin: -79.08px -6.5472px; animation: 1s linear -0.528s infinite normal forwards running bounce-48ec6061-b99b-413d-807c-8f5bf6c1bb7a;"><path d="M7.04 0L7.04-54.56L13.76-54.56L13.76-6.40L38.56-6.40L38.56 0L7.04 0" fill="#353535" stroke="none" stroke-width="none" transform="translate(-101.88003540039062,20.732799072265625)" style="fill: rgb(53, 53, 53);"></path></g><g class="path" style="transform: matrix(1, 0, 0, 1, 0, 0); transform-origin: -51.56px -6.5472px; animation: 1s linear -0.396s infinite normal forwards running bounce-48ec6061-b99b-413d-807c-8f5bf6c1bb7a;"><path d="M46.96 0L46.96-54.56L53.68-54.56L53.68 0L46.96 0" fill="#353535" stroke="none" stroke-width="none" transform="translate(-101.88003540039062,20.732799072265625)" style="fill: rgb(102, 102, 102);"></path></g><g class="path" style="transform: matrix(1, 0, 0, 1, 0, 0); transform-origin: -13.52px -6.5472px; animation: 1s linear -0.264s infinite normal forwards running bounce-48ec6061-b99b-413d-807c-8f5bf6c1bb7a;"><path d="M67.76 0L67.76-54.56L74.48-54.56L74.48-29.36L97.36-54.56L105.76-54.56L84.80-31.68L108.96 0L100.56 0L80.16-26.72L74.48-20.48L74.48 0L67.76 0" fill="#353535" stroke="none" stroke-width="none" transform="translate(-101.88003540039062,20.732799072265625)" style="fill: rgb(155, 155, 155);"></path></g><g class="path" style="transform: matrix(1, 0, 0, 1, 0, 0); transform-origin: 34.08px -6.5472px; animation: 1s linear -0.132s infinite normal forwards running bounce-48ec6061-b99b-413d-807c-8f5bf6c1bb7a;"><path d="M115.44 0L115.44-54.56L122.16-54.56L122.16-30.96L149.76-30.96L149.76-54.56L156.48-54.56L156.48 0L149.76 0L149.76-24.96L122.16-24.96L122.16 0L115.44 0" fill="#353535" stroke="none" stroke-width="none" transform="translate(-101.88003540039062,20.732799072265625)" style="fill: rgb(212, 212, 212);"></path></g><g class="path" style="transform: matrix(1, 0, 0, 1, 0, 0); transform-origin: 86.04px -6.5472px; animation: 1s linear 0s infinite normal forwards running bounce-48ec6061-b99b-413d-807c-8f5bf6c1bb7a;"><path d="M165.04 0L183.76-54.56L192.08-54.56L210.80 0L203.84 0L199.04-14.56L176.88-14.56L172 0L165.04 0zM178.96-20.96L196.88-20.96L188.08-48.16L187.84-48.16L178.96-20.96" fill="#353535" stroke="none" stroke-width="none" transform="translate(-101.88003540039062,20.732799072265625)" style="fill: rgb(53, 53, 53);"></path></g></g>
+</g>
+</g>
+<style id="bounce-48ec6061-b99b-413d-807c-8f5bf6c1bb7a" data-anikit="">@keyframes bounce-48ec6061-b99b-413d-807c-8f5bf6c1bb7a
+{
+  0% {
+    animation-timing-function: cubic-bezier(0.1361,0.2514,0.2175,0.8786);
+    transform: translate(0,0px) scaleY(1);
+  }
+  37% {
+    animation-timing-function: cubic-bezier(0.7674,0.1844,0.8382,0.7157);
+    transform: translate(0,-39.96px) scaleY(1);
+  }
+  72% {
+    animation-timing-function: cubic-bezier(0.1118,0.2149,0.2172,0.941);
+    transform: translate(0,0px) scaleY(1);
+  }
+  87% {
+    animation-timing-function: cubic-bezier(0.7494,0.2259,0.8209,0.6963);
+    transform: translate(0,19.900000000000002px) scaleY(0.602);
+  }
+  100% {
+    transform: translate(0,0px) scaleY(1);
+  }
+}</style></svg>

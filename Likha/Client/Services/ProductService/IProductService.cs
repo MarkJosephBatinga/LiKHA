@@ -10,11 +10,8 @@ namespace Likha.Client.Services
     {
         event Action OnChange;
 
-        public List<Product> Products { get; set; }
-        public List<Product> ProductsbyCategory { get; set; }
-
-        Task LoadProducts();
-        Task LoadProductsbyCategory(string categoryUrl);
+        Task<List<Product>> LoadProducts();
+        Task<List<Product>> LoadProductsbyCategory(string categoryUrl);
         Task<Product> LoadProduct(int id);
 
 

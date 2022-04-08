@@ -8,8 +8,6 @@ namespace Likha.Client.Services
 {
     interface ICategoryService
     {
-        List<Category> Categories { get; set; }
-
-        Task LoadCategories();
+        Task<List<Category>> LoadCategories();
     }
 }

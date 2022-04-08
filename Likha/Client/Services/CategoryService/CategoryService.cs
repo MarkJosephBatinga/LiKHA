@@ -13,16 +13,15 @@ namespace Likha.Client.Services
     {
         private readonly HttpClient _http;
 
-        public List<Category> Categories { get; set; } = new List<Category>();
-
         public CategoryService(HttpClient http)
         {
             _http = http;
         }
 
-        public async Task LoadCategories()
+        public async Task<List<Category>> LoadCategories()
         {
-            Categories = await _http.GetFromJsonAsync<List<Category>>("api/Category");
+            List<Category> Categories = await _http.GetFromJsonAsync<List<Category>>("api/Category");
+            return Categories;
         }
     }
 }

@@ -1,0 +1,28 @@
+﻿.loading-img {
+    width: 80px;
+}
+
+.login-load {
+    width: 80px;
+}
+
+.loading-box {
+    padding: 5% 15%;
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    box-sizing: border-box;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    height: 80vh;
+}
+
+.load-text {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 25px;
+    letter-spacing: 5px;
+    text-transform: capitalize;
+    color: #ADAEB0;
+    text-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+}

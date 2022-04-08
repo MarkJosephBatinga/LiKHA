@@ -31,6 +31,7 @@ namespace Likha.Shared
         public decimal Price { get; set; }
         
         [Required(ErrorMessage = "Please Select Category for your Product")]
+        [Range(9, 100, ErrorMessage = "Invalid Category, Please Try Again")]
         public int CategoryId { get; set; }
     }
 }

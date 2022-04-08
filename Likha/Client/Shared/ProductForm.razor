@@ -32,7 +32,8 @@
 
                     <p class="edit-title">Category</p>
                     <InputSelect @bind-Value="newProduct.CategoryId" class="input-form">
-                        @foreach (var category in CategoryService.Categories)
+                        <option value="0" selected>Select A Category</option>
+                        @foreach (var category in AllCategories)
                         {
                             <option value="@category.Id">@category.Name</option>
                         }
@@ -44,8 +45,9 @@
                     <ValidationMessage For="() => newProduct.Description" /><br>
                 </div>
                 <div class="save-box d-flex w-100 justify-content-end">
-                    <a class="save-button mx-4" @onclick="OnClickCancel">Cancel</a>
-                    <button class="save-button" type="submit">Upload Product</button>
+                    <a class="save-button mx-4  @removeButton" @onclick="OnClickCancel">Cancel</a>
+                    <button class="save-button @removeButton" type="submit">Upload Product</button>
+                    <img src="./css/upload.svg" class="@upload" alt="uploading"/>
                 </div>
             </EditForm>
         </div>
@@ -60,25 +62,32 @@
     [Parameter]
     public EventCallback Cancel { get; set; }
 
+    List<Category> AllCategories = new List<Category>();
     AddProduct newProduct = new AddProduct();
+    string removeButton = string.Empty;
+    string upload = "d-none";
 
     private async void SubmitProduct()
     {
+        upload = string.Empty;
+        removeButton = "d-none";
         newProduct.Artist = $"{user.FirstName} {user.LastName}";
         newProduct.ArtistId = user.Id;
         var product = UserRepo.AddProduct(newProduct);
-        await JsRuntime.InvokeVoidAsync("console.log", product);
+        //await JsRuntime.InvokeVoidAsync("console.log", product);
         var productList = await ProductService.AddProduct(product);
         if (productList != null)
         {
             ToastService.ShowSuccess("New Product Successfully Added");
-            NavManager.NavigateTo("/gallery", true);
+            upload = "d-none";
+            removeButton =string.Empty;
+            NavManager.NavigateTo("");
         }
     }
 
     protected override async Task OnInitializedAsync()
     {
-        await CategoryService.LoadCategories();
+        AllCategories = await CategoryService.LoadCategories();
     }
 
     private void OnClickCancel()
@@ -89,9 +98,9 @@
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
         var format = "image/png";
-        var resizedImage = await e.File.RequestImageFileAsync(format, 1000, 1500);
+        var resizedImage = await e.File.RequestImageFileAsync(format, 600, 600);
         var buffer = new byte[resizedImage.Size];
-        await resizedImage.OpenReadStream(3000000).ReadAsync(buffer);
+        await resizedImage.OpenReadStream(1000000).ReadAsync(buffer);
         var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
         newProduct.Image = imageData;
     }
