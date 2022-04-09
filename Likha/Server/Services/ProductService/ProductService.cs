@@ -46,5 +46,10 @@ namespace Likha.Server.Services.ProductService
             List<Product> Products = await _context.Products.ToListAsync();
             return Products;
         }
+
+        public async Task<List<Product>> GetProductByArtist(int ArtistId)
+        {
+            return await _context.Products.Where(p => p.ArtistId == ArtistId).ToListAsync();
+        }
     }
 }

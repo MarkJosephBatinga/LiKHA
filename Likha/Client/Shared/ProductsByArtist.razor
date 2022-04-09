@@ -1,0 +1,54 @@
+﻿@inject IProductService ProductService
+@implements IDisposable
+
+@foreach (var product in AllProductByArtist)
+{
+    <div class="col">
+        <a href="/product/@product.Id">
+            <div class="art-card p-md-3">
+                <img src="@product.Image" alt="" class="art-img">
+                <div class="card-body">
+                    <span class="tag">Painting</span>
+                    <span class="tag">Religous</span>
+                    <h5 class="card-title my-md-2">@product.Title</h5>
+                    <h6 class="card-subtitle my-md-2">@product.Artist</h6>
+                    <p class="card-text d-none d-xl-block">
+                        @MaximizaDescription(product.Description)
+                    </p>
+                    <h6 class="card-subtitle">&#8369;@product.Price</h6>
+                </div>
+            </div>
+        </a>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public List<Product> AllProductByArtist { get; set; }
+
+
+    private int MaxLength = 35;
+
+    private string MaximizaDescription(string Description)
+    {
+        if (Description.Length > MaxLength)
+        {
+            Description = Description.Substring(0, MaxLength) + "...";
+            return Description;
+        }
+        return Description;
+    }
+
+
+    protected override void OnInitialized()
+    {
+        ProductService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        ProductService.OnChange -= StateHasChanged;
+    }
+}
+

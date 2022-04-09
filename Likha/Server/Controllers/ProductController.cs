@@ -40,6 +40,12 @@ namespace Likha.Server.Controllers
             return Ok(await _productService.GetProduct(id));
         }
 
+        [HttpGet("Artist/{ArtistId}")]
+        public async Task<ActionResult<List<Product>>> GetProductByArtist(int ArtistId)
+        {
+            return Ok(await _productService.GetProductByArtist(ArtistId));
+        }
+
         [HttpPost]
         public async Task<ActionResult<List<Product>>> AddProduct(Product newProduct)
         {

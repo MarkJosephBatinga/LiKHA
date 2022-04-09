@@ -48,7 +48,7 @@
             @if (changeComponent == 0)
             {
                 <div class="row row-cols-md-3 row-cols-2 g-3">
-                    <ProductList AllProducts="AllProducts" />
+                    <ProductsByArtist AllProductByArtist="AllProductsByArtist" />
                 </div>
             }
             else
@@ -63,7 +63,7 @@
 
 @code {
     User user = new User();
-    List<Product> AllProducts = new List<Product>();
+    List<Product> AllProductsByArtist = new List<Product>();
     private string imageDefault = "../css/default-profile.png";
     private int changeComponent = 0;
     string loaded = string.Empty;
@@ -73,7 +73,7 @@
     {
         var username = await LocalStorage.GetItemAsStringAsync("username");
         user = await UserService.GetUser(username);
-        AllProducts = await ProductService.LoadProducts();
+        AllProductsByArtist = await ProductService.LoadProductsbyArtist(user.Id);
         loaded = "d-none";
         notLoaded = string.Empty;
     }

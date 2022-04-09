@@ -20,6 +20,7 @@ namespace Likha.Client.Services
         public event Action OnChange;
         List<Product> AllProducts = new List<Product>();
         List<Product> ProductsbyCategory = new List<Product>();
+        List<Product> ProductsbyArtist = new List<Product>();
 
         public async Task<List<Product>> AddProduct(Product newProduct)
         {
@@ -48,6 +49,13 @@ namespace Likha.Client.Services
             ProductsbyCategory = await _http.GetFromJsonAsync<List<Product>>($"api/Product/Category/{categoryUrl}");
             OnChange.Invoke();
             return ProductsbyCategory;
+        }
+
+        public async Task<List<Product>> LoadProductsbyArtist(int artistId)
+        {
+            ProductsbyArtist = await _http.GetFromJsonAsync<List<Product>>($"api/Product/Artist/{artistId}");
+            OnChange.Invoke();
+            return ProductsbyArtist;
         }
     }
 }

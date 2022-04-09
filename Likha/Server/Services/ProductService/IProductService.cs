@@ -9,6 +9,7 @@ namespace Likha.Server.Services.ProductService
     public interface IProductService
     {
         Task<List<Product>> GetProductByCategory(string categoryUrl);
+        Task<List<Product>> GetProductByArtist(int ArtistId);
         Task<List<Product>> GetProducts();
         Task<Product> GetProduct(int id);
 
