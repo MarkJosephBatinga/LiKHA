@@ -51,5 +51,25 @@ namespace Likha.Server.Services.ProductService
         {
             return await _context.Products.Where(p => p.ArtistId == ArtistId).ToListAsync();
         }
+
+        public async Task<List<Product>> UpdateProduct(Product existingProduct)
+        {
+            List<Product> Products = await _context.Products.ToListAsync();
+            var dbProduct = await _context.Products.FindAsync(existingProduct.Id);
+            if (dbProduct != null)
+            {
+                _context.Entry(dbProduct).CurrentValues.SetValues(existingProduct);
+                await _context.SaveChangesAsync();
+            }
+            return Products;
+        }
+
+        public async Task<List<Product>> DeleteProduct(Product existingProduct)
+        {
+            _context.Products.Remove(existingProduct);
+            await _context.SaveChangesAsync();
+            var products = await _context.Products.ToListAsync();
+            return products;
+        }
     }
 }

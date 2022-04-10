@@ -1,11 +1,13 @@
 ﻿@inject IProductService ProductService
+@inject IToastService ToastService
+@inject NavigationManager NavManager
 @implements IDisposable
 
 @foreach (var product in AllProductByArtist)
 {
     <div class="col">
-        <a href="/product/@product.Id">
-            <div class="art-card p-md-3">
+        <div class="art-card p-md-3">
+            <a href="/product/@product.Id">
                 <img src="@product.Image" alt="" class="art-img">
                 <div class="card-body">
                     <span class="tag">Painting</span>
@@ -17,8 +19,12 @@
                     </p>
                     <h6 class="card-subtitle">&#8369;@product.Price</h6>
                 </div>
+            </a>
+            <div class="px-3">
+                <a @onclick="() => OnClickEdit(product)" class="edit-link">Edit</a>
+                <a @onclick="() => OnClickDelete(product)" class="edit-link">Delete</a>
             </div>
-        </a>
+        </div>
     </div>
 }
 
@@ -26,7 +32,8 @@
 @code {
     [Parameter]
     public List<Product> AllProductByArtist { get; set; }
-
+    [Parameter]
+    public EventCallback<Product> OnEdit { get; set; }
 
     private int MaxLength = 35;
 
@@ -40,6 +47,17 @@
         return Description;
     }
 
+    private async Task OnClickEdit(Product Product)
+    {
+        await OnEdit.InvokeAsync(Product);
+    }
+
+    private async Task OnClickDelete(Product Product)
+    {
+        await ProductService.DeleteProduct(Product);
+        ToastService.ShowSuccess("Succesfully Deleted", "Product Deleted");
+        NavManager.NavigateTo("");
+    }
 
     protected override void OnInitialized()
     {

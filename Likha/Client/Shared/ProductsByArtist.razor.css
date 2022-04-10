@@ -52,6 +52,22 @@ a {
     color: #585858;
 }
 
+.edit-link {
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    color: #c2c2c2;
+    text-indent: 20px;
+    cursor: pointer;
+}
+
+    .edit-link:hover {
+        color: black;
+    }
+
+
 @media (max-width: 640px) {
     .art-card {
         width: 100%;

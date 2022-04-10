@@ -4,13 +4,14 @@
 @inject NavigationManager NavManager
 @inject IToastService ToastService
 @inject IJSRuntime JsRuntime
+@implements IDisposable
 
 <div class="account-container mx-xl-5">
     <div class="edit-container">
         <div class="row">
-            <EditForm Model="newProduct" OnValidSubmit="SubmitProduct" class="edit-form w-100">
+            <EditForm Model="newProduct" OnValidSubmit="ProductId == 0 ? SubmitProduct: SubmitEdit" class="edit-form w-100">
                 <DataAnnotationsValidator></DataAnnotationsValidator>
-                <p class="edit-title">Add Product Image</p>
+                <p class="edit-title">@(ProductId == 0 ? "Add Product Image" : "Edit Product")</p>
                 <label class="label-form" for="product-image">Select Image</label>
                 <InputFile type="file" OnChange="OnFileChange"
                            accept="image/x-png,image/gif,image/jpeg,image/avi" name="product-image"
@@ -18,7 +19,7 @@
                 <ValidationMessage For="() => newProduct.Image" /><br>
                 <div class="col-xl">
                     <p class="edit-title">Title</p>
-                    <InputText @bind-Value="newProduct.Title" class="input-form" type="text" />
+                    <InputText @bind-Value="newProduct.Title" class="input-form" type="text" placeholder="@EditProduct.Title"/>
                     <ValidationMessage For="() => newProduct.Title" /><br>
 
                     <p class="edit-title">Artist</p>
@@ -27,7 +28,7 @@
                 </div>
                 <div class="col-xl">
                     <p class="edit-title">Price</p>
-                    <InputNumber class="input-form" @bind-Value="newProduct.Price" />
+                    <InputNumber class="input-form" @bind-Value="newProduct.Price" placeholder="@EditProduct.Price"/>
                     <ValidationMessage For="() => newProduct.Price" /><br>
 
                     <p class="edit-title">Category</p>
@@ -41,7 +42,7 @@
                     <ValidationMessage For="() => newProduct.CategoryId" /><br>
 
                     <p class="edit-title">Description</p>
-                    <InputTextArea class="input-form" @bind-Value="newProduct.Description" rows="3" cols="100"></InputTextArea>
+                    <InputTextArea class="input-form" @bind-Value="newProduct.Description" rows="3" cols="100" placeholder="@EditProduct.Description"></InputTextArea>
                     <ValidationMessage For="() => newProduct.Description" /><br>
                 </div>
                 <div class="save-box d-flex w-100 justify-content-end">
@@ -58,12 +59,15 @@
 @code {
     [Parameter]
     public User user { get; set; }
+    [Parameter]
+    public int ProductId { get; set; }
 
     [Parameter]
     public EventCallback Cancel { get; set; }
 
-    List<Category> AllCategories = new List<Category>();
-    AddProduct newProduct = new AddProduct();
+    private List<Category> AllCategories = new List<Category>();
+    private Product EditProduct = new Product();
+    private AddProduct newProduct = new AddProduct();
     string removeButton = string.Empty;
     string upload = "d-none";
 
@@ -74,7 +78,6 @@
         newProduct.Artist = $"{user.FirstName} {user.LastName}";
         newProduct.ArtistId = user.Id;
         var product = UserRepo.AddProduct(newProduct);
-        //await JsRuntime.InvokeVoidAsync("console.log", product);
         var productList = await ProductService.AddProduct(product);
         if (productList != null)
         {
@@ -85,9 +88,33 @@
         }
     }
 
+    private async void SubmitEdit()
+    {
+        upload = string.Empty;
+        removeButton = "d-none";
+        newProduct.Artist = $"{user.FirstName} {user.LastName}";
+        newProduct.ArtistId = user.Id;
+        var product = UserRepo.AddProduct(newProduct);
+        product.Id = ProductId;
+        var productList = await ProductService.EditProduct(product);
+        if (productList != null)
+        {
+            ToastService.ShowSuccess("Product Successfully Updated");
+            upload = "d-none";
+            removeButton = string.Empty;
+            NavManager.NavigateTo("");
+        }
+    }
+
+
     protected override async Task OnInitializedAsync()
     {
         AllCategories = await CategoryService.LoadCategories();
+        if (ProductId != 0)
+        {
+            EditProduct = await ProductService.LoadProduct(ProductId);
+
+        }
     }
 
     private void OnClickCancel()
@@ -103,5 +130,16 @@
         await resizedImage.OpenReadStream(1000000).ReadAsync(buffer);
         var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
         newProduct.Image = imageData;
+    }
+
+
+    protected override void OnInitialized()
+    {
+        ProductService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        ProductService.OnChange -= StateHasChanged;
     }
 }

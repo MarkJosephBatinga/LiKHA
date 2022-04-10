@@ -14,5 +14,7 @@ namespace Likha.Server.Services.ProductService
         Task<Product> GetProduct(int id);
 
         Task<List<Product>> AddProduct(Product newProduct);
+        Task<List<Product>> UpdateProduct(Product existingProduct);
+        Task<List<Product>> DeleteProduct(Product existingProduct);
     }
 }

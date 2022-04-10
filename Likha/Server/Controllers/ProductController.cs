@@ -54,5 +54,23 @@ namespace Likha.Server.Controllers
                 return Ok(Products);
             return NotFound(Products);
         }
+
+        [HttpPut]
+        public async Task<ActionResult<List<Product>>> UpdateProduct(Product existingProduct)
+        {
+            List<Product> Products = await _productService.UpdateProduct(existingProduct);
+            if (Products != null)
+                return Ok(Products);
+            return NotFound(Products);
+        }
+
+        [HttpPost("delete")]
+        public async Task<ActionResult<List<Product>>> DeleteAddress(Product existingProduct)
+        {
+            var Products = await _productService.DeleteProduct(existingProduct);
+            if (Products == null)
+                return NotFound(Products);
+            return Ok(Products);
+        }
     }
 }

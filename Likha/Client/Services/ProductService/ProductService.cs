@@ -18,6 +18,7 @@ namespace Likha.Client.Services
         }
 
         public event Action OnChange;
+        Product product = new Product();
         List<Product> AllProducts = new List<Product>();
         List<Product> ProductsbyCategory = new List<Product>();
         List<Product> ProductsbyArtist = new List<Product>();
@@ -31,7 +32,7 @@ namespace Likha.Client.Services
 
         public async Task<Product> LoadProduct(int id)
         {
-            Product product = await _http.GetFromJsonAsync<Product>($"api/Product/{id}");
+            product = await _http.GetFromJsonAsync<Product>($"api/Product/{id}");
             OnChange.Invoke();
             return product;
  
@@ -56,6 +57,20 @@ namespace Likha.Client.Services
             ProductsbyArtist = await _http.GetFromJsonAsync<List<Product>>($"api/Product/Artist/{artistId}");
             OnChange.Invoke();
             return ProductsbyArtist;
+        }
+
+        public async Task<List<Product>> EditProduct(Product existingProduct)
+        {
+            var result = await _http.PutAsJsonAsync("api/Product", existingProduct);
+            var Products = await result.Content.ReadFromJsonAsync<List<Product>>();
+            return Products;
+        }
+
+        public async Task<List<Product>> DeleteProduct(Product existingProduct)
+        {
+            var result = await _http.PostAsJsonAsync<Product>($"api/Product/delete", existingProduct);
+            var Products = await result.Content.ReadFromJsonAsync<List<Product>>();
+            return Products;
         }
     }
 }

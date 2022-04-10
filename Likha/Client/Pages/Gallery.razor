@@ -48,13 +48,16 @@
             @if (changeComponent == 0)
             {
                 <div class="row row-cols-md-3 row-cols-2 g-3">
-                    <ProductsByArtist AllProductByArtist="AllProductsByArtist" />
+                    <ProductsByArtist 
+                                      AllProductByArtist="AllProductsByArtist"
+                                      OnEdit="OnEditClick"/>
                 </div>
             }
             else
             {
                 <ProductForm Cancel="Cancel"
-                             user="@user" />
+                             user="@user" 
+                             ProductId="productId"/>
             }
 
         </div>
@@ -66,6 +69,7 @@
     List<Product> AllProductsByArtist = new List<Product>();
     private string imageDefault = "../css/default-profile.png";
     private int changeComponent = 0;
+    private int productId = 0;
     string loaded = string.Empty;
     string notLoaded = "d-none";
 
@@ -85,7 +89,15 @@
 
     private void Cancel()
     {
+        productId = 0;
         changeComponent = 0;
+    }
+
+    private void OnEditClick(Product product)
+    {
+        Console.WriteLine(product.Id);
+        productId = product.Id;
+        changeComponent = 1;
     }
 
     protected override void OnInitialized()
