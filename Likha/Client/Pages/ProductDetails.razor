@@ -55,16 +55,15 @@ else
 
     private async Task AddToCart()
     {
-        var cart = await LocalStorage.GetItemAsync<List<Product>>("cart");
-
-        if (cart == null)
+        var Username = await LocalStorage.GetItemAsStringAsync("username");
+        if(string.IsNullOrEmpty(Username))
         {
-            cart = new List<Product>();
+            NavigationManager.NavigateTo("/login");
         }
-
-        cart.Add(product);
-        await LocalStorage.SetItemAsync("cart", cart);
-        ToastService.ShowSuccess(product.Title, "Successfuly added to cart:");
+        else
+        {
+            Console.WriteLine(Username);
+        }
     }
 
     protected override async Task OnParametersSetAsync()
