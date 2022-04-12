@@ -22,6 +22,13 @@ namespace Likha.Server.Controllers
 
         List<Cart> Carts = new List<Cart>();
 
+        [HttpGet("{UserId}")]
+        public async Task<ActionResult<List<Cart>>> GetCartProducts(int UserId)
+        {
+            return Ok(await _cartService.GetCartProducts(UserId));
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<List<Cart>>> AddProduct(Cart newCart)
         {

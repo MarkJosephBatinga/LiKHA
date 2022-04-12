@@ -25,5 +25,10 @@ namespace Likha.Client.Services.CartService
             Carts = await result.Content.ReadFromJsonAsync<List<Cart>>();
             return Carts;
         }
+
+        public async Task<List<Cart>> GetCartProducts(int userId)
+        {
+            return await _http.GetFromJsonAsync<List<Cart>>($"api/Cart/{userId}");
+        }
     }
 }

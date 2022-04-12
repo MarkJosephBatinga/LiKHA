@@ -3,6 +3,9 @@
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager NavigationManager
 @inject IToastService ToastService
+@inject IUserService UserService
+@inject ICartService CartService
+@inject IJSRuntime JsRuntime
 
 @if (isLoaded)
 {
@@ -48,6 +51,8 @@ else
 @code {
     private Product product = new Product();
     private List<Product> allProducts = new List<Product>();
+    private User user = new User();
+    private Cart newCart = new Cart();
     private bool isLoaded = false;
 
     [Parameter]
@@ -62,7 +67,19 @@ else
         }
         else
         {
-            Console.WriteLine(Username);
+            newCart.ProductId = product.Id;
+            var username = await LocalStorage.GetItemAsStringAsync("username");
+            user = await UserService.GetUser(username);
+            newCart.UserId = user.Id;
+            newCart.TotalPrice = product.Price;
+            var dateNow = DateTime.Now;
+            newCart.DateAdded = dateNow.Date;
+            var carts = await CartService.AddCart(newCart);
+            if (carts != null)
+            {
+                ToastService.ShowSuccess($"{product.Title} has been added to cart", "Product Added to Cart");
+                NavigationManager.NavigateTo("/cart");
+            }
         }
     }
 
@@ -76,10 +93,12 @@ else
     protected override void OnInitialized()
     {
         ProductService.OnChange += StateHasChanged;
+        UserService.OnChange += StateHasChanged;
     }
 
     public void Dispose()
     {
         ProductService.OnChange -= StateHasChanged;
+        UserService.OnChange -= StateHasChanged;
     }
 }

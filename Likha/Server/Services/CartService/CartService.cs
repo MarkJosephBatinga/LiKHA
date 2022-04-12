@@ -19,6 +19,11 @@ namespace Likha.Server.Services.CartService
 
         List<Cart> Carts = new List<Cart>();
 
+        public async Task<List<Cart>> GetCartProducts(int userId)
+        {
+            return await _data.Carts.Where(p => p.UserId == userId).ToListAsync();
+        }
+
         public async Task<List<Cart>> AddCart(Cart newCart)
         {
             await _data.Carts.AddAsync(newCart);
