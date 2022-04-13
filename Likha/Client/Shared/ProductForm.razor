@@ -14,7 +14,7 @@
                 <p class="edit-title">@(ProductId == 0 ? "Add Product Image" : "Edit Product")</p>
                 <label class="label-form" for="product-image">Select Image</label>
                 <InputFile type="file" OnChange="OnFileChange"
-                           accept="image/x-png,image/gif,image/jpeg,image/avi" name="product-image"
+                           accept="image/x-png,image/gif,image/jpeg,image/avi,image/webp" name="product-image"
                            id="product-image" />
                 <ValidationMessage For="() => newProduct.Image" /><br>
                 <div class="col-xl">

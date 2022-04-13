@@ -12,10 +12,6 @@
         <div class="col-xl-8">
             <div class="body-title p-4 d-flex justify-content-between align-items-center">
                 <h3 class="my-cart">My Cart</h3>
-                <form class="select-all-form" action="">
-                    <label class="select-all" for="select-all">Select All</label>
-                    <input type="checkbox" name="select-all" id="select">
-                </form>
             </div>
             <div class="d-md-none d-block">
                 @foreach (var product in cartProducts)
@@ -31,7 +27,7 @@
                             </div>
                         </div>
                         <div class="art-md-right d-flex flex-column align-items-end justify-content-between">
-                            <input type="checkbox" name="select" id="">
+                            <input type="checkbox" name="select" @onchange="EventArgs => OnChangeCheck(product.Price, EventArgs.Value)">
                             <button class="mt-auto">Delete</button>
                         </div>
                     </div>
@@ -58,13 +54,12 @@
                         <td class="price">@product.Price</td>
                         <td>
                             <form action="">
-                                <input type="checkbox" name="select" id="">
+                                <input type="checkbox" name="select" @onchange="EventArgs => OnChangeCheck(product.Price, EventArgs.Value)" >
                             </form>
                         </td>
                         <td><button>Delete</button></td>
                     </tr>
                     }
-
                 </table>
             </div>
         </div>
@@ -78,9 +73,9 @@
                         <h4 class="summary-title">Total</h4>
                     </div>
                     <div class="right">
-                        <p class="summary-total">Php 12,000</p>
-                        <p class="summary-total">Php 1,000</p>
-                        <p class="summary-total">Php 13,500</p>
+                        <p class="summary-total">Php @shippingFee</p>
+                        <p class="summary-total">Php @subTotal</p>
+                        <p class="summary-total">Php @total</p>
                     </div>
                 </div>
                 <button @onclick="Payment" class="btn btn-lg">Checkout</button>
@@ -95,6 +90,9 @@
 @code {
     string loaded = string.Empty;
     string notLoaded = "d-none";
+    decimal subTotal = 0.00M;
+    decimal shippingFee = 0.00M;
+    decimal total = 0.00M;
     User user = new User();
     List<Cart> dbCarts = new List<Cart>();
     List<Product> cartProducts = new List<Product>();
@@ -117,6 +115,21 @@
         }
         loaded = "d-none";
         notLoaded = string.Empty;
+    }
+
+    private void OnChangeCheck(decimal price, object checkedValue)
+    {
+        if(checkedValue.Equals(true))
+        {
+            subTotal += price;
+            shippingFee += 75.00M;
+        }
+        else
+        {
+            subTotal -= price;
+            shippingFee -= 75.00M;
+        }
+        total = subTotal + shippingFee;
     }
 
     protected override void OnInitialized()
