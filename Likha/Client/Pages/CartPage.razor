@@ -1,146 +1,158 @@
 ﻿@page "/cart"
 @inject NavigationManager NavigationManager
 @inject IUserService UserService
-@inject ICartService CartService 
+@inject ICartService CartService
 @inject IProductService ProductService
 @inject ILocalStorageService LocalStorage
 @inject IJSRuntime JsRuntime
 @implements IDisposable
 
-<div class="container-fluid mb-3 @notLoaded">
-    <div class="row">
-        <div class="col-xl-8">
-            <div class="body-title p-4 d-flex justify-content-between align-items-center">
-                <h3 class="my-cart">My Cart</h3>
-            </div>
-            <div class="d-md-none d-block">
-                @foreach (var product in cartProducts)
-                {
-                    <div class="cart-arts p-4 mb-3 d-flex justify-content-between align-items-center">
-                        <div class="art-md-left d-flex align-items-center">
-                            <img src="@product.Image" alt="" class="img-art-md">
-                            <div class="mx-4">
-                                <h3 class="art-title-md">@product.Title</h3>
-                                <p class="art-content-md">@product.Price</p>
-                                <p class="art-content-md">@product.Artist</p>
-                                <p class="art-content-md">@product.DateAddedCart.ToShortDateString()</p>
+    <div class="@notLoaded">
+        <div class="container-fluid mb-3 @cartPage">
+            <div class="row">
+                <div class="col-xl-8">
+                    <div class="body-title p-4 d-flex justify-content-between align-items-center">
+                        <h3 class="my-cart">My Cart</h3>
+                    </div>
+                    <div class="d-md-none d-block">
+                        @foreach (var product in cartProducts)
+                        {
+                            <div class="cart-arts p-4 mb-3 d-flex justify-content-between align-items-center">
+                                <div class="art-md-left d-flex align-items-center">
+                                    <img src="@product.Image" alt="" class="img-art-md">
+                                    <div class="mx-4">
+                                        <h3 class="art-title-md">@product.Title</h3>
+                                        <p class="art-content-md">@product.Price</p>
+                                        <p class="art-content-md">@product.Artist</p>
+                                        <p class="art-content-md">@product.DateAddedCart.ToShortDateString()</p>
+                                    </div>
+                                </div>
+                                <div class="art-md-right d-flex flex-column align-items-end justify-content-between">
+                                    <input type="checkbox" name="select" @onchange="EventArgs => OnChangeCheck(product, EventArgs.Value)">
+                                    <button class="mt-auto">Delete</button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="art-md-right d-flex flex-column align-items-end justify-content-between">
-                            <input type="checkbox" name="select" @onchange="EventArgs => OnChangeCheck(product.Price, EventArgs.Value)">
-                            <button class="mt-auto">Delete</button>
-                        </div>
-                    </div>
-                }
+                        }
 
-            </div>
-            <div class="cart-artwork p-5 d-md-block d-none d-flex justify-content-center salign-items-center">
-                <table class="cart-table">
-                    <tr>
-                        <th>Date</th>
-                        <th>Artwork</th>
-                        <th>Artist</th>
-                        <th>Total</th>
-                        <th>Select</th>
-                        <th>Delete</th>
-                    </tr>
-
-                    @foreach (var product in cartProducts)
-                    {
-                    <tr>
-                        <td>@product.DateAddedCart.ToShortDateString()</td>
-                        <td><img src="@product.Image" alt="" class="art-img"></td>
-                        <td>@product.Artist</td>
-                        <td class="price">@product.Price</td>
-                        <td>
-                            <form action="">
-                                <input type="checkbox" name="select" @onchange="EventArgs => OnChangeCheck(product.Price, EventArgs.Value)" >
-                            </form>
-                        </td>
-                        <td><button>Delete</button></td>
-                    </tr>
-                    }
-                </table>
-            </div>
-        </div>
-        <div class="col-xl-4 summary-container my-3 p-5 d-flex justify-content-center">
-            <div class="order-container p-4">
-                <h3 class="order-summary">Order Summary</h3>
-                <div class="fee-container my-3">
-                    <div class="left">
-                        <h4 class="summary-title">Shipping Fee</h4>
-                        <h4 class="summary-title">Subtotal</h4>
-                        <h4 class="summary-title">Total</h4>
                     </div>
-                    <div class="right">
-                        <p class="summary-total">Php @shippingFee</p>
-                        <p class="summary-total">Php @subTotal</p>
-                        <p class="summary-total">Php @total</p>
+                    <div class="cart-artwork p-5 d-md-block d-none d-flex justify-content-center salign-items-center">
+                        <table class="cart-table">
+                            <tr>
+                                <th>Date</th>
+                                <th>Artwork</th>
+                                <th>Artist</th>
+                                <th>Total</th>
+                                <th>Select</th>
+                                <th>Delete</th>
+                            </tr>
+
+                            @foreach (var product in cartProducts)
+                            {
+                                <tr>
+                                    <td>@product.DateAddedCart.ToShortDateString()</td>
+                                    <td><img src="@product.Image" alt="" class="art-img"></td>
+                                    <td>@product.Artist</td>
+                                    <td class="price">@product.Price</td>
+                                    <td>
+                                        <form action="">
+                                            <input type="checkbox" name="select" @onchange="EventArgs => OnChangeCheck(product, EventArgs.Value)">
+                                        </form>
+                                    </td>
+                                    <td><button>Delete</button></td>
+                                </tr>
+                            }
+                        </table>
                     </div>
                 </div>
-                <button @onclick="Payment" class="btn btn-lg">Checkout</button>
+                <div class="col-xl-4 summary-container my-3 p-5 d-flex justify-content-center">
+                    <div class="order-container p-4">
+                        <h3 class="order-summary">Order Summary</h3>
+                        <div class="fee-container my-3">
+                            <div class="left">
+                                <h4 class="summary-title">Shipping Fee</h4>
+                                <h4 class="summary-title">Subtotal</h4>
+                                <h4 class="summary-title">Total</h4>
+                            </div>
+                            <div class="right">
+                                <p class="summary-total">Php @shippingFee</p>
+                                <p class="summary-total">Php @subTotal</p>
+                                <p class="summary-total">Php @total</p>
+                            </div>
+                        </div>
+                        <button @onclick="Payment" class="btn btn-lg">Checkout</button>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="@paymentPage">
+            <PaymentMethod ProductList="SelectedProduct"/>
+        </div>
     </div>
-</div>
-<div class="container-fluid @loaded">
-    <LoadPage />
-</div>
+    <div class="container-fluid @loaded">
+        <LoadPage />
+    </div>
 
-@code {
-    string loaded = string.Empty;
-    string notLoaded = "d-none";
-    decimal subTotal = 0.00M;
-    decimal shippingFee = 0.00M;
-    decimal total = 0.00M;
-    User user = new User();
-    List<Cart> dbCarts = new List<Cart>();
-    List<Product> cartProducts = new List<Product>();
+    @code {
+        string loaded = string.Empty;
+        string notLoaded = "d-none";
+        string cartPage = string.Empty;
+        string paymentPage = "d-none";
+        decimal subTotal = 0.00M;
+        decimal shippingFee = 0.00M;
+        decimal total = 0.00M;
+        User user = new User();
+        List<Cart> dbCarts = new List<Cart>();
+        List<Product> SelectedProduct = new List<Product>();
+        List<Product> cartProducts = new List<Product>();
+        List<string> strings = new List<string>();
 
-    private void Payment()
-    {
-        NavigationManager.NavigateTo("payment");
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        var Username = await LocalStorage.GetItemAsStringAsync("username");
-        user = await UserService.GetUser(Username);
-        dbCarts = await CartService.GetCartProducts(user.Id);
-        foreach (var cartProduct in dbCarts)
+        private void Payment()
         {
-            var product = await ProductService.LoadProduct(cartProduct.ProductId);
-            product.DateAddedCart = cartProduct.DateAdded;
-            cartProducts.Add(product);
+            cartPage = "d-none";
+            paymentPage = string.Empty;
         }
-        loaded = "d-none";
-        notLoaded = string.Empty;
-    }
 
-    private void OnChangeCheck(decimal price, object checkedValue)
-    {
-        if(checkedValue.Equals(true))
+        protected override async Task OnInitializedAsync()
         {
-            subTotal += price;
-            shippingFee += 75.00M;
+            var Username = await LocalStorage.GetItemAsStringAsync("username");
+            user = await UserService.GetUser(Username);
+            dbCarts = await CartService.GetCartProducts(user.Id);
+            foreach (var cartProduct in dbCarts)
+            {
+                var product = await ProductService.LoadProduct(cartProduct.ProductId);
+                product.DateAddedCart = cartProduct.DateAdded;
+                cartProducts.Add(product);
+            }
+            loaded = "d-none";
+            notLoaded = string.Empty;
         }
-        else
+
+        private void OnChangeCheck(Product product, object checkedValue)
         {
-            subTotal -= price;
-            shippingFee -= 75.00M;
+            if (checkedValue.Equals(true))
+            {
+                subTotal += product.Price;
+                shippingFee += 75.00M;
+                SelectedProduct.Add(product);
+            }
+            else
+            {
+                subTotal -= product.Price;
+                shippingFee -= 75.00M;
+                SelectedProduct.Remove(product);
+            }
+            total = subTotal + shippingFee;
         }
-        total = subTotal + shippingFee;
-    }
 
-    protected override void OnInitialized()
-    {
-        ProductService.OnChange += StateHasChanged;
-        UserService.OnChange += StateHasChanged;
-    }
+        protected override void OnInitialized()
+        {
+            ProductService.OnChange += StateHasChanged;
+            UserService.OnChange += StateHasChanged;
+        }
 
-    public void Dispose()
-    {
-        ProductService.OnChange -= StateHasChanged;
-        UserService.OnChange -= StateHasChanged;
+        public void Dispose()
+        {
+            ProductService.OnChange -= StateHasChanged;
+            UserService.OnChange -= StateHasChanged;
+        }
     }
-}

@@ -1,5 +1,4 @@
-﻿@page "/payment"
-@inject IUserService UserService
+﻿@inject IUserService UserService
 @inject ILocalStorageService LocalStorage
 
 <div class="container-fluid d-block d-xl-none">
@@ -116,9 +115,8 @@
 </div>
 
 @code {
-    //protected async override Task OnInitializedAsync()
-    //{
-    //    var username = await LocalStorage.GetItemAsStringAsync("username");
-    //    user = await UserService.GetUser(username);
-    //}
+    [Parameter]
+    public List<Product> ProductList { get; set; }
+
 }
+

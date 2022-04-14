@@ -58,14 +58,12 @@ a, .btn-link {
 @media (min-width: 641px) {
     .container-fluid {
         padding: 0px 25px;
-        min-height: 70vh;
     }
 }
 
 @media (min-width: 1000px) {
     .container-fluid {
         padding: 0px 100px;
-        min-height: 70vh;
     }
 }
 
