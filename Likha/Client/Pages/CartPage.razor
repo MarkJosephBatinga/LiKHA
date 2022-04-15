@@ -7,8 +7,10 @@
 @inject IJSRuntime JsRuntime
 @implements IDisposable
 
-    <div class="@notLoaded">
-        <div class="container-fluid mb-3 @cartPage">
+<div class="@notLoaded">
+    @if (changePage == 0)
+    {
+        <div class="container-fluid mb-3">
             <div class="row">
                 <div class="col-xl-8">
                     <div class="body-title p-4 d-flex justify-content-between align-items-center">
@@ -79,15 +81,25 @@
                                 <p class="summary-total">Php @total</p>
                             </div>
                         </div>
-                        <button @onclick="Payment" class="btn btn-lg">Checkout</button>
+                        @if (total != 0)
+                        {
+                            <button @onclick="Payment" class="btn btn-lg">Checkout</button>
+                        }
                     </div>
                 </div>
             </div>
         </div>
-        <div class="@paymentPage">
-            <PaymentMethod ProductList="SelectedProduct"/>
-        </div>
-    </div>
+    }
+    else
+    {
+        <PaymentMethod 
+            ProductList="SelectedProduct" 
+            Cancel="CancelClick"
+            SubTotal="subTotal"
+            ShippingFee="shippingFee"
+            Total="total"/>
+    }
+</div>
     <div class="container-fluid @loaded">
         <LoadPage />
     </div>
@@ -95,8 +107,7 @@
     @code {
         string loaded = string.Empty;
         string notLoaded = "d-none";
-        string cartPage = string.Empty;
-        string paymentPage = "d-none";
+        int changePage = 0;
         decimal subTotal = 0.00M;
         decimal shippingFee = 0.00M;
         decimal total = 0.00M;
@@ -106,10 +117,17 @@
         List<Product> cartProducts = new List<Product>();
         List<string> strings = new List<string>();
 
+        private void CancelClick()
+        {
+            changePage = 0;
+            subTotal = 0.00M;
+            shippingFee = 0.00M;
+            total = 0.00M;
+        }
+
         private void Payment()
         {
-            cartPage = "d-none";
-            paymentPage = string.Empty;
+            changePage = 1;
         }
 
         protected override async Task OnInitializedAsync()
