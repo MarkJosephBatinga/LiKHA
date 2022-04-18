@@ -4,6 +4,7 @@
 @inject ICartService CartService
 @inject IProductService ProductService
 @inject ILocalStorageService LocalStorage
+@inject IAddressService AddressService
 @inject IJSRuntime JsRuntime
 @implements IDisposable
 
@@ -31,7 +32,7 @@
                                 </div>
                                 <div class="art-md-right d-flex flex-column align-items-end justify-content-between">
                                     <input type="checkbox" name="select" @onchange="EventArgs => OnChangeCheck(product, EventArgs.Value)">
-                                    <button class="mt-auto">Delete</button>
+                                    <button class="mt-auto" @onclick="() => OnClickDelete(product)">Delete</button>
                                 </div>
                             </div>
                         }
@@ -60,7 +61,7 @@
                                             <input type="checkbox" name="select" @onchange="EventArgs => OnChangeCheck(product, EventArgs.Value)">
                                         </form>
                                     </td>
-                                    <td><button>Delete</button></td>
+                                    <td><button @onclick="() => OnClickDelete(product)">Delete</button></td>
                                 </tr>
                             }
                         </table>
@@ -94,6 +95,7 @@
     {
         <PaymentMethod 
             ProductList="SelectedProduct" 
+            AddressList="AddressService.Addresses"
             Cancel="CancelClick"
             SubTotal="subTotal"
             ShippingFee="shippingFee"
@@ -134,6 +136,7 @@
         {
             var Username = await LocalStorage.GetItemAsStringAsync("username");
             user = await UserService.GetUser(Username);
+            await AddressService.LoadAddresses(user.Id);
             dbCarts = await CartService.GetCartProducts(user.Id);
             foreach (var cartProduct in dbCarts)
             {
@@ -162,15 +165,23 @@
             total = subTotal + shippingFee;
         }
 
+        private async Task OnClickDelete(Product product)
+        {
+            var result = await CartService.DeleteCart(product, user.Id);
+            await JsRuntime.InvokeVoidAsync("console.log", result);
+        }
+
         protected override void OnInitialized()
         {
             ProductService.OnChange += StateHasChanged;
             UserService.OnChange += StateHasChanged;
+            AddressService.OnChange += StateHasChanged;
         }
 
         public void Dispose()
         {
             ProductService.OnChange -= StateHasChanged;
             UserService.OnChange -= StateHasChanged;
+            AddressService.OnChange -= StateHasChanged;
         }
     }

@@ -1,12 +1,43 @@
 ﻿@inject IUserService UserService
 @inject ILocalStorageService LocalStorage
+@inject IAddressService AddressService
+@inject IJSRuntime JsRuntime
 
 <div class="container-fluid d-block d-xl-none">
     <div class="shipping-container-xl p-3 mb-4 d-flex flex-column align-items-center">
         <h3 class="body-title">Shipping Address</h3>
-        <p class="address-content">Tamara Menzi</p>
-        <p class="address-content">Ercuis, France, Europe</p>
-        <p class="address-content">+123456789</p>
+        <form>
+            <select name="Addresses" @onchange="OnChangeSelect">
+                @foreach (var address in AddressList)
+                {
+                    <option value="@address.Id">@address.Title</option>
+                }
+            </select>
+        </form>
+        @if (AddressList.Count != 0)
+        {
+            if (AddressList.Count == 1)
+            {
+                <p class="address-content">@AddressList[0].FirstName  @AddressList[0].LastName</p>
+                <p class="address-content">@AddressList[0].Street</p>
+                <p class="address-content">@AddressList[0].Barangay, @AddressList[0].Town, @AddressList[0].Province</p>
+                <p class="address-content">@AddressList[0].Phone</p>
+            }
+            else
+            {
+                <p class="address-content">@SelectedAddress.FirstName  @SelectedAddress.LastName</p>
+                <p class="address-content">@SelectedAddress.Street</p>
+                <p class="address-content">@SelectedAddress.Barangay, @SelectedAddress.Town, @SelectedAddress.Province</p>
+                <p class="address-content">@SelectedAddress.Phone</p>
+            }
+
+        }
+        else
+        {
+            <p class="address-content">Please Add a New Address in the Account Section</p>
+            <p><a href="/account">Click Here to Add New Address</a></p>
+
+        }
         <div class="dropdown">
             <button class="btn btn-md dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="false">
@@ -63,69 +94,105 @@
     <div class="row">
         <div class="shipping-container col-9">
             <h3 class="body-title">Shipping Address</h3>
-            <div class="address-box">
-                <p class="address-content">Tamara Menzi</p>
-                <p class="address-content">Ercuis, France, Europe</p>
-                <p class="address-content">+123456789</p>
-            </div>
-            <h3 class="body-title">Artworks</h3>
-            @foreach (var product in ProductList)
-            {
-                <div class="artwork-box mb-3">
-                    <div class="img-box">
-                        <img src="@product.Image" alt="" class="art-img">
-                    </div>
-                    <div class="artwork-summary">
-                        <h4 class="artwork-number">@product.Title</h4>
-                        <p class="artwork-content">@product.Artist</p>
-                        <p class="artwork-content">@product.Description</p>
-                    </div>
-                    <div class="total-summary">
-                        <p class="summary-content">Total: @product.Price</p>
-                    </div>
-                </div>
-            }
-        </div>
-        <div class="payment-container pt-3 col-3 d-flex flex-column align-items-center">
-            <h3 class="payment-title">Select Payment Method</h3>
-            <form action="">
-                <div class="check-box">
-                    <label for="cod-method" class="checkbox-label">Cash On Delivery</label>
-                    <input type="checkbox" name="cod-method" id="payment-method">
-                </div>
-                <div class="check-box">
-                    <label for="cd-method" class="checkbox-label">Credit/Debit Card</label>
-                    <input type="checkbox" name="cd-method" id="payment-method">
-                </div>
-                <div class="order-box">
-                    <h3 class="payment-title">Order Summary</h3>
-                    <table>
-                        <tr>
-                            <th>Subtotal</th>
-                            <td>@SubTotal</td>
-                        </tr>
-                        <tr>
-                            <th>Shipping Fee</th>
-                            <td>@ShippingFee</td>
-                        </tr>
-                        <tr>
-                            <th>Total</th>
-                            <td>@Total</td>
-                        </tr>
-                    </table>
-                    <div>
-                        <button class="checkout mx-4" @onclick="OnClickCancel">Cancel</button>
-                        <button class="checkout" type="submit">Checkout</button>
-                    </div>
-                </div>
+            <form>
+                <select name="Addresses" @onchange="OnChangeSelect">
+                    @foreach (var address in AddressList)
+                    {
+                        <option value="@address.Id">@address.Title</option>
+                    }
+                </select>
             </form>
-        </div>
-    </div>
+            @if (AddressList.Count != 0)
+            {
+                if (AddressList.Count == 1)
+                {
+                    <div class="address-box">
+                        <p class="address-content">@AddressList[0].FirstName  @AddressList[0].LastName</p>
+                        <p class="address-content">@AddressList[0].Street</p>
+                        <p class="address-content">@AddressList[0].Barangay, @AddressList[0].Town, @AddressList[0].Province</p>
+                        <p class="address-content">@AddressList[0].Phone</p>
+                   </div>
+                }
+                else
+                {
+                    <div class="address-box">
+                        <p class="address-content">@SelectedAddress.FirstName  @SelectedAddress.LastName</p>
+                        <p class="address-content">@SelectedAddress.Street</p>
+                        <p class="address-content">@SelectedAddress.Barangay, @SelectedAddress.Town, @SelectedAddress.Province</p>
+                        <p class="address-content">@SelectedAddress.Phone</p>
+                    </div>
+                }
+
+                }
+                else
+                {
+                    <div class="address-box">
+                        <p class="address-content">Please Add a New Address in the Account Section</p>
+                        <p><a href="/account">Click Here to Add New Address</a></p>
+                    </div>
+                }
+
+                <h3 class="body-title">Artworks</h3>
+                @foreach (var product in ProductList)
+                {
+                    <div class="artwork-box mb-3">
+                        <div class="img-box">
+                            <img src="@product.Image" alt="" class="art-img">
+                        </div>
+                        <div class="artwork-summary">
+                            <h4 class="artwork-number">@product.Title</h4>
+                            <p class="artwork-content">@product.Artist</p>
+                            <p class="artwork-content">@product.Description</p>
+                        </div>
+                        <div class="total-summary">
+                            <p class="summary-content">Total: @product.Price</p>
+                        </div>
+                    </div>
+                }
+                    </div>
+                    <div class="payment-container pt-3 col-3 d-flex flex-column align-items-center">
+                        <h3 class="payment-title">Select Payment Method</h3>
+                        <form action="">
+                            <div class="check-box">
+                                <label for="cod-method" class="checkbox-label">Cash On Delivery</label>
+                                <input type="checkbox" name="cod-method" id="payment-method">
+                            </div>
+                            <div class="check-box">
+                                <label for="cd-method" class="checkbox-label">Credit/Debit Card</label>
+                                <input type="checkbox" name="cd-method" id="payment-method">
+                            </div>
+                            <div class="order-box">
+                                <h3 class="payment-title">Order Summary</h3>
+                                <table>
+                                    <tr>
+                                        <th>Subtotal</th>
+                                        <td>@SubTotal</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Shipping Fee</th>
+                                        <td>@ShippingFee</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total</th>
+                                        <td>@Total</td>
+                                    </tr>
+                                </table>
+                                <div>
+                                    <button class="checkout mx-4" @onclick="OnClickCancel">Cancel</button>
+                                    <button class="checkout" type="submit">Checkout</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 </div>
 
 @code {
     [Parameter]
     public List<Product> ProductList { get; set; }
+
+    [Parameter]
+    public List<Address> AddressList { get; set; }
 
     [Parameter]
     public decimal ShippingFee { get; set; }
@@ -139,11 +206,18 @@
     [Parameter]
     public EventCallback Cancel { get; set; }
 
+    Address SelectedAddress = new Address();
 
     private void OnClickCancel()
     {
         ProductList.Clear();
         Cancel.InvokeAsync();
+    }
+
+    private async Task OnChangeSelect(ChangeEventArgs e)
+    {
+        int SelectedValue = Int32.Parse(e.Value.ToString());
+        SelectedAddress = await AddressService.GetAddress(SelectedValue);
     }
 }
 

@@ -11,5 +11,6 @@ namespace Likha.Client.Services.CartService
         Task<List<Cart>> GetCartProducts(int userId);
 
         Task<List<Cart>> AddCart(Cart newCart);
+        Task<List<Cart>> DeleteCart(Product product, int userId);
     }
 }

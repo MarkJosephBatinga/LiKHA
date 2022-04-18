@@ -37,5 +37,14 @@ namespace Likha.Server.Controllers
                 return Ok(Carts);
             return NotFound(Carts);
         }
+
+        [HttpPost("delete/{userId}")]
+        public async Task<ActionResult<List<Cart>>> DeleteProduct(Product product, int userId)
+        {
+            Carts = await _cartService.DeleteCart(product, userId);
+            if (Carts != null)
+                return Ok(Carts);
+            return NotFound(Carts);
+        }
     }
 }

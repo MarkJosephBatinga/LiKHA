@@ -31,5 +31,14 @@ namespace Likha.Server.Services.CartService
             Carts = await _data.Carts.ToListAsync();
             return Carts;
         }
+
+        public async Task<List<Cart>> DeleteCart(Product product, int userId)
+        {
+            var cartProduct = await _data.Carts.Where(c => c.ProductId == product.Id && c.UserId == userId).FirstOrDefaultAsync();
+            _data.Carts.Remove(cartProduct);
+            await _data.SaveChangesAsync();
+            var Carts = await _data.Carts.ToListAsync();
+            return Carts;
+        }
     }
 }
