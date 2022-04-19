@@ -2,6 +2,7 @@ using Likha.Server.Data;
 using Likha.Server.Services.AddressService;
 using Likha.Server.Services.CartService;
 using Likha.Server.Services.CategoryService;
+using Likha.Server.Services.OrderService;
 using Likha.Server.Services.ProductService;
 using Likha.Server.Services.UserService;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -41,6 +42,7 @@ namespace Likha.Server
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IOrderService, OrderService>();
             services.AddAuthentication(options => {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             });
