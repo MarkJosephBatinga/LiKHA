@@ -6,14 +6,20 @@
 <div class="container-fluid d-block d-xl-none">
     <div class="shipping-container-xl p-3 mb-4 d-flex flex-column align-items-center">
         <h3 class="body-title">Shipping Address</h3>
-        <form>
-            <select name="Addresses" @onchange="OnChangeSelect">
-                @foreach (var address in AddressList)
-                {
-                    <option value="@address.Id">@address.Title</option>
-                }
-            </select>
-        </form>
+        @if (AddressList.Count >= 2)
+        {
+            <form>
+                <p class="@validateSelect">Invalid Address</p>
+                <select name="Addresses" @onchange="OnChangeSelect">
+                    <option value="0" selected>Select Address</option>
+                    @foreach (var address in AddressList)
+                    {
+                        <option value="@address.Id">@address.Title</option>
+                    }
+                </select>
+            </form>
+        }
+
         @if (AddressList.Count != 0)
         {
             if (AddressList.Count == 1)
@@ -38,16 +44,6 @@
             <p><a href="/account">Click Here to Add New Address</a></p>
 
         }
-        <div class="dropdown">
-            <button class="btn btn-md dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
-                Payment Method
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Cash on Delivery</a>
-                <a class="dropdown-item" href="#">Credit/Debit Card</a>
-            </div>
-        </div>
     </div>
     <h3 class="body-title">Artworks</h3>
     @foreach (var product in ProductList)
@@ -66,8 +62,19 @@
             </div>
         </div>
     }
-    <form action="">
+    <EditForm Model="newOrder" OnValidSubmit="OnClickCheckout">
         <div class="order-box-xl p-3">
+            <h3 class="payment-title">Select Payment Method</h3>
+            <InputRadioGroup class="input-form" @bind-Value="newOrder.PaymentMethod">
+                <div class="check-box">
+                    <label for="cod-method" class="checkbox-label">Cash On Delivery</label>
+                    <InputRadio Value="CodValue" />
+                </div>
+                <div class="check-box">
+                    <label for="credit-metho" class="checkbox-label">Credit/Debit Card</label>
+                    <InputRadio Value="CreditValue" />
+                </div>
+            </InputRadioGroup>
             <h3 class="payment-title">Order Summary</h3>
             <table>
                 <tr>
@@ -84,24 +91,32 @@
                 </tr>
             </table>
             <div>
-                <button class="checkout mx-4" @onclick="OnClickCancel">Cancel</button>
-                <button class="checkout" type="submit">Checkout</button>
+                <a class="checkout mx-4" @onclick="OnClickCancel">Cancel</a>
+                @if (newOrder.AddressId != 0 && newOrder.PaymentMethod != null)
+                {
+                    <button class="checkout" type="submit">Checkout</button>
+                }
             </div>
         </div>
-    </form>
+    </EditForm>
 </div>
 <div class="container-fluid d-none d-xl-block">
     <div class="row">
         <div class="shipping-container col-9">
             <h3 class="body-title">Shipping Address</h3>
-            <form>
-                <select name="Addresses" @onchange="OnChangeSelect">
-                    @foreach (var address in AddressList)
-                    {
-                        <option value="@address.Id">@address.Title</option>
-                    }
-                </select>
-            </form>
+            @if (AddressList.Count >= 2)
+            {
+                <form>
+                    <p class="@validateSelect">Invalid Address</p>
+                    <select name="Addresses" @onchange="OnChangeSelect">
+                        <option value="0" selected>Select Address</option>
+                        @foreach (var address in AddressList)
+                        {
+                            <option value="@address.Id">@address.Title</option>
+                        }
+                    </select>
+                </form>
+            }
             @if (AddressList.Count != 0)
             {
                 if (AddressList.Count == 1)
@@ -111,7 +126,7 @@
                         <p class="address-content">@AddressList[0].Street</p>
                         <p class="address-content">@AddressList[0].Barangay, @AddressList[0].Town, @AddressList[0].Province</p>
                         <p class="address-content">@AddressList[0].Phone</p>
-                   </div>
+                    </div>
                 }
                 else
                 {
@@ -123,68 +138,73 @@
                     </div>
                 }
 
-                }
-                else
-                {
-                    <div class="address-box">
-                        <p class="address-content">Please Add a New Address in the Account Section</p>
-                        <p><a href="/account">Click Here to Add New Address</a></p>
-                    </div>
-                }
+            }
+            else
+            {
+                <div class="address-box">
+                    <p class="address-content">Please Add a New Address in the Account Section</p>
+                    <p><a href="/account">Click Here to Add New Address</a></p>
+                </div>
+            }
 
-                <h3 class="body-title">Artworks</h3>
-                @foreach (var product in ProductList)
-                {
-                    <div class="artwork-box mb-3">
-                        <div class="img-box">
-                            <img src="@product.Image" alt="" class="art-img">
-                        </div>
-                        <div class="artwork-summary">
-                            <h4 class="artwork-number">@product.Title</h4>
-                            <p class="artwork-content">@product.Artist</p>
-                            <p class="artwork-content">@product.Description</p>
-                        </div>
-                        <div class="total-summary">
-                            <p class="summary-content">Total: @product.Price</p>
-                        </div>
+            <h3 class="body-title">Artworks</h3>
+            @foreach (var product in ProductList)
+            {
+                <div class="artwork-box mb-3">
+                    <div class="img-box">
+                        <img src="@product.Image" alt="" class="art-img">
                     </div>
-                }
+                    <div class="artwork-summary">
+                        <h4 class="artwork-number">@product.Title</h4>
+                        <p class="artwork-content">@product.Artist</p>
+                        <p class="artwork-content">@product.Description</p>
                     </div>
-                    <div class="payment-container pt-3 col-3 d-flex flex-column align-items-center">
-                        <h3 class="payment-title">Select Payment Method</h3>
-                        <form action="">
-                            <div class="check-box">
-                                <label for="cod-method" class="checkbox-label">Cash On Delivery</label>
-                                <input type="checkbox" name="cod-method" id="payment-method">
-                            </div>
-                            <div class="check-box">
-                                <label for="cd-method" class="checkbox-label">Credit/Debit Card</label>
-                                <input type="checkbox" name="cd-method" id="payment-method">
-                            </div>
-                            <div class="order-box">
-                                <h3 class="payment-title">Order Summary</h3>
-                                <table>
-                                    <tr>
-                                        <th>Subtotal</th>
-                                        <td>@SubTotal</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Shipping Fee</th>
-                                        <td>@ShippingFee</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total</th>
-                                        <td>@Total</td>
-                                    </tr>
-                                </table>
-                                <div>
-                                    <button class="checkout mx-4" @onclick="OnClickCancel">Cancel</button>
-                                    <button class="checkout" type="submit">Checkout</button>
-                                </div>
-                            </div>
-                        </form>
+                    <div class="total-summary">
+                        <p class="summary-content">Total: @product.Price</p>
                     </div>
                 </div>
+            }
+        </div>
+        <div class="payment-container pt-3 col-3 d-flex flex-column align-items-center">
+            <h3 class="payment-title">Select Payment Method</h3>
+            <EditForm Model="newOrder" OnValidSubmit="OnClickCheckout">
+                <InputRadioGroup class="input-form" @bind-Value="newOrder.PaymentMethod">
+                    <div class="check-box">
+                        <label for="cod-method" class="checkbox-label">Cash On Delivery</label>
+                        <InputRadio Value="CodValue" />
+                    </div>
+                    <div class="check-box">
+                        <label for="credit-metho" class="checkbox-label">Credit/Debit Card</label>
+                        <InputRadio Value="CreditValue" />
+                    </div>
+                </InputRadioGroup>
+                <div class="order-box">
+                    <h3 class="payment-title">Order Summary</h3>
+                    <table>
+                        <tr>
+                            <th>Subtotal</th>
+                            <td>@SubTotal</td>
+                        </tr>
+                        <tr>
+                            <th>Shipping Fee</th>
+                            <td>@ShippingFee</td>
+                        </tr>
+                        <tr>
+                            <th>Total</th>
+                            <td>@Total</td>
+                        </tr>
+                    </table>
+                    <div>
+                        <a class="checkout m-4" @onclick="OnClickCancel">Cancel</a>
+                        @if (newOrder.AddressId != 0 && newOrder.PaymentMethod != null)
+                        {
+                            <button class="checkout" type="submit">Checkout</button>
+                        }
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+    </div>
 </div>
 
 @code {
@@ -204,9 +224,40 @@
     public decimal Total { get; set; }
 
     [Parameter]
+    public int UserId { get; set; }
+
+    [Parameter]
     public EventCallback Cancel { get; set; }
 
     Address SelectedAddress = new Address();
+    Order newOrder = new Order();
+    string validateSelect = "d-none";
+    string CodValue = "Cash On Delivery";
+    string CreditValue = "Credit/Debit";
+
+    protected override void OnInitialized()
+    {
+        if(AddressList.Count == 1)
+        {
+            newOrder.AddressId = AddressList[0].Id;
+        }
+        else if (AddressList.Count == 0)
+        {
+            newOrder.AddressId = 0;
+        }
+    }
+
+    private async Task OnClickCheckout()
+    {
+        foreach (var product in ProductList)
+        {
+            newOrder.UserId = UserId;
+            newOrder.ProductId = product.Id;
+            newOrder.OrderDate = DateTime.Now.ToShortDateString();
+            newOrder.TotalPrice = product.Price + 75.00M;
+            await JsRuntime.InvokeVoidAsync("console.log", newOrder);
+        }
+    }
 
     private void OnClickCancel()
     {
@@ -217,7 +268,17 @@
     private async Task OnChangeSelect(ChangeEventArgs e)
     {
         int SelectedValue = Int32.Parse(e.Value.ToString());
-        SelectedAddress = await AddressService.GetAddress(SelectedValue);
+        if(SelectedValue != 0)
+        {
+            validateSelect = "d-none";
+            SelectedAddress = await AddressService.GetAddress(SelectedValue);
+            newOrder.AddressId = SelectedAddress.Id;
+        }
+        else
+        {
+            validateSelect = string.Empty;
+            newOrder.AddressId = 0;
+        }
     }
 }
 
