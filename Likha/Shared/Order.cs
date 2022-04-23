@@ -18,5 +18,10 @@ namespace Likha.Shared
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalPrice { get; set; }
         public string OrderDate { get; set; }
+
+        [NotMapped]
+        public string Image { get; set; }
+        [NotMapped]
+        public string Artist { get; set; }
     }
 }

@@ -20,13 +20,25 @@ namespace Likha.Server.Controllers
             _orderService = orderService;
         }
 
+        List<Order> Orders = new List<Order>();
+
         [HttpPost]
         public async Task<ActionResult<List<Order>>> AddProduct(Order newOrder)
         {
-            List<Order> Orders = await _orderService.AddProduct(newOrder);
+            Orders = await _orderService.AddProduct(newOrder);
             if (Orders != null)
                 return Ok(Orders);
             return NotFound(Orders);
         }
+
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<List<Order>>> GetOrderByBuyer(int userId)
+        {
+            Orders = await _orderService.GetOrderByBuyer(userId);
+            if (Orders != null)
+                return Ok(Orders);
+            return NotFound(Orders);
+        }
+
     }
 }

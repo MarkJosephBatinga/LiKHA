@@ -8,6 +8,8 @@ namespace Likha.Server.Services.OrderService
 {
     public interface IOrderService
     {
+        Task<List<Order>> GetOrderByBuyer(int UserId);
+
         Task<List<Order>> AddProduct(Order newOrder);
     }
 }

@@ -1,7 +1,10 @@
 ﻿@inject IUserService UserService
 @inject ILocalStorageService LocalStorage
 @inject IAddressService AddressService
-@inject IJSRuntime JsRuntime
+@inject ICartService CartService
+@inject IOrderService OrderService
+@inject IToastService ToastService
+@inject NavigationManager NavManager
 
 <div class="container-fluid d-block d-xl-none">
     <div class="shipping-container-xl p-3 mb-4 d-flex flex-column align-items-center">
@@ -94,7 +97,8 @@
                 <a class="checkout mx-4" @onclick="OnClickCancel">Cancel</a>
                 @if (newOrder.AddressId != 0 && newOrder.PaymentMethod != null)
                 {
-                    <button class="checkout" type="submit">Checkout</button>
+                    <button class="checkout @removeButton" type="submit">Checkout</button>
+                    <img src="./css/upload.svg" class="@upload" alt="uploading" />
                 }
             </div>
         </div>
@@ -198,7 +202,8 @@
                         <a class="checkout m-4" @onclick="OnClickCancel">Cancel</a>
                         @if (newOrder.AddressId != 0 && newOrder.PaymentMethod != null)
                         {
-                            <button class="checkout" type="submit">Checkout</button>
+                            <button class="checkout @removeButton" type="submit">Checkout</button>
+                            <img src="./css/upload.svg" class="@upload" alt="uploading" />
                         }
                     </div>
                 </div>
@@ -234,6 +239,8 @@
     string validateSelect = "d-none";
     string CodValue = "Cash On Delivery";
     string CreditValue = "Credit/Debit";
+    string removeButton = string.Empty;
+    string upload = "d-none";
 
     protected override void OnInitialized()
     {
@@ -249,14 +256,19 @@
 
     private async Task OnClickCheckout()
     {
+        upload = string.Empty;
+        removeButton = "d-none";
         foreach (var product in ProductList)
         {
             newOrder.UserId = UserId;
             newOrder.ProductId = product.Id;
             newOrder.OrderDate = DateTime.Now.ToShortDateString();
             newOrder.TotalPrice = product.Price + 75.00M;
-            await JsRuntime.InvokeVoidAsync("console.log", newOrder);
+            await OrderService.AddOrder(newOrder);
+            await CartService.DeleteCart(product, UserId);
         }
+        ToastService.ShowSuccess("Thank You for Your Purchase", "Order Success");
+        NavManager.NavigateTo("account");
     }
 
     private void OnClickCancel()

@@ -1,5 +1,6 @@
 ﻿@inject IUserService UserService
-@implements IDisposable
+@inject IProductService ProductService
+@inject IOrderService OrderService
 
 <div class="account-container-xl d-block d-xl-none">
     <div class="account-box-xl d-flex flex-column align-items-center">
@@ -37,14 +38,17 @@
                 <th>Artist</th>
                 <th>Total</th>
             </tr>
-            <tr>
-                <td>123456</td>
-                <td>Jan 18, 2022</td>
-                <td><img src="https://picsum.photos/1000/300" alt="" class="art-img-order"></td>
-                <td>Vince Gogh</td>
-                <td>Php 12,000</td>
-            </tr>
-        </table>
+            @foreach (var order in OrderByBuyer)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.OrderDate</td>
+                    <td><img src="@order.Image" alt="" class="art-img-order"></td>
+                    <td>@order.Artist</td>
+                    <td>@order.TotalPrice</td>
+                </tr>
+            }
+        </table> 
     </div>
 </div>
 <div class="body-container-xl d-block d-xl-none">
@@ -64,16 +68,8 @@
 @code {
     [Parameter]
     public User user { get; set; }
+    [Parameter]
+    public List<Order> OrderByBuyer { get; set; }
 
     string defaultImage = "../css/default-profile.png";
-
-    protected override void OnInitialized()
-    {
-        UserService.OnChange += StateHasChanged;
-    }
-
-    public void Dispose()
-    {
-        UserService.OnChange -= StateHasChanged;
-    }
 }

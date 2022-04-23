@@ -15,41 +15,59 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse  d-flex-md justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
                 <AuthorizeView>
                     <NotAuthorized>
-                        <li>
+                        <ul class="navbar-nav">
+                            <li>
+                                <a class="nav-link d-flex align-items-center" href="/">
+                                    <p class="m-2">Home</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link d-flex align-items-center" href="/about">
+                                    <p class="m-2">About Us</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="ms-auto">
                             <a class="nav-link d-flex align-items-center" href="/login">
-                                <i class="bi bi-person-circle"></i>
-                                <p class="d-block d-lg-none m-2">Login</p>
+                                <i class="d-none d-lg-block bi bi-person-circle"></i>
+                                <p class="d-block d-lg-none m-2 ">Login</p>
                             </a>
-                        </li>
+                        </div>
                     </NotAuthorized>
                     <Authorized>
-                        <li>
-                            <a class="nav-link d-flex align-items-center" href="/cart">
-                                <i class="bi bi-handbag-fill"></i>
-                                <p class="d-block d-lg-none m-2">Cart</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link d-flex align-items-center" href="/gallery">
-                                <i class="bi bi-images"></i>
-                                <p class="d-block d-lg-none m-2 ">Gallery</p>
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown dropstart">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="bi bi-person-circle"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/account">@SyncLocalStorage.GetItemAsString("username") Account</a>
-                                <a class="dropdown-item" @onclick="Logout">Logout</a>
-                            </div>
-                        </li>
+                        <ul class="navbar-nav">
+                            <li>
+                                <a class="nav-link d-flex align-items-center" href="/cart">
+                                    <i class="bi bi-box2-fill"></i>
+                                    <p class="d-block d-lg-none m-2">Orders</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link d-flex align-items-center" href="/cart">
+                                    <i class="bi bi-handbag-fill"></i>
+                                    <p class="d-block d-lg-none m-2">Carts</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link d-flex align-items-center" href="/gallery">
+                                    <i class="bi bi-images"></i>
+                                    <p class="d-block d-lg-none m-2 ">Gallery</p>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown dropstart">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bi bi-person-circle"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/account">@SyncLocalStorage.GetItemAsString("username") Account</a>
+                                    <a class="dropdown-item" @onclick="Logout">Logout</a>
+                                </div>
+                            </li>
+                        </ul>
                     </Authorized>
                 </AuthorizeView>
-            </ul>
         </div>
     </div>
 </nav>
