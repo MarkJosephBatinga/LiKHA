@@ -31,10 +31,19 @@ namespace Likha.Server.Controllers
             return NotFound(Orders);
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("buyer/{userId}")]
         public async Task<ActionResult<List<Order>>> GetOrderByBuyer(int userId)
         {
             Orders = await _orderService.GetOrderByBuyer(userId);
+            if (Orders != null)
+                return Ok(Orders);
+            return NotFound(Orders);
+        }
+
+        [HttpGet("seller/{userId}")]
+        public async Task<ActionResult<List<Order>>> GetOrderBySeller(int userId)
+        {
+            Orders = await _orderService.GetOrderBySeller(userId);
             if (Orders != null)
                 return Ok(Orders);
             return NotFound(Orders);

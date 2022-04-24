@@ -11,6 +11,7 @@ namespace Likha.Server.Services.UserService
         Task<User> LoginUser(User user);
 
         Task<User> GetUser(string username);
+        Task<User> GetUserById(int userId);
 
         Task<List<User>> RegisterUser(User user);
 

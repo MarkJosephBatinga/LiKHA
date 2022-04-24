@@ -31,5 +31,19 @@ namespace Likha.Server.Services.OrderService
         {
             return Orders = await _data.Orders.Where(o => o.UserId == UserId).ToListAsync();
         }
+
+        public async Task<List<Order>> GetOrderBySeller(int SellerId)
+        {
+            var SellerProduct = await _data.Products.Where(p => p.ArtistId == SellerId).ToListAsync();
+            foreach(var product in SellerProduct)
+            {
+                var ProductOrders = await _data.Orders.Where(o => o.ProductId == product.Id).ToListAsync();
+                foreach (var order in ProductOrders)
+                {
+                    Orders.Add(order);
+                }
+            }
+            return Orders;
+        }
     }
 }

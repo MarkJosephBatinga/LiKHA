@@ -29,7 +29,12 @@ namespace Likha.Client.Services.OrderService
 
         public async Task<List<Order>> DisplayBuyerOrder(int UserId)
         {
-            return Orders = await _http.GetFromJsonAsync<List<Order>>($"api/Order/{UserId}");
+            return Orders = await _http.GetFromJsonAsync<List<Order>>($"api/Order/buyer/{UserId}");
+        }
+
+        public async Task<List<Order>> DisplaySellerOrder(int SellerId)
+        {
+            return Orders = await _http.GetFromJsonAsync<List<Order>>($"api/Order/seller/{SellerId}");
         }
     }
 }

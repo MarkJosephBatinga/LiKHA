@@ -13,6 +13,7 @@ namespace Likha.Client.Services.UserService
         event Action OnChange;
 
         Task<User> GetUser(string username);
+        Task<User> GetUserById(int UserId);
 
         Task<List<User>> RegisterUser(User user);
 

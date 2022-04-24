@@ -32,6 +32,14 @@ namespace Likha.Server.Controllers
             return Ok(dbuser);
         }
 
+        [HttpGet("get/{UserId}")]
+        public async Task<ActionResult<User>> GetUserById(int UserId)
+        {
+            var dbuser = await _user.GetUserById(UserId);
+            return Ok(dbuser);
+        }
+
+
         [HttpPost("login")]
         public async Task<ActionResult<User>> LoginUser(User user)
         {

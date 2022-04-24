@@ -53,5 +53,12 @@ namespace Likha.Client.Services.UserService
             var status = await result.Content.ReadFromJsonAsync<List<User>>();
             return status;
         }
+
+        public async Task<User> GetUserById(int UserId)
+        {
+            User = await _http.GetFromJsonAsync<User>($"api/user/get/{UserId}");
+            OnChange.Invoke();
+            return User;
+        }
     }
 }
