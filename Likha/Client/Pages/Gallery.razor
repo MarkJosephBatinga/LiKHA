@@ -5,62 +5,58 @@
 @implements IDisposable
 
 <div class="container-fluid">
-    <div class="@loaded">
-        <LoadPage />
+    <div class="gallery-container p-3 d-xl-flex flex-column align-items-center d-none d-xl-block">
+        <div class="profile-container d-flex">
+            <div class="image-box d-flex flex-column align-items-center">
+                <img src="@(user.Image == null ? imageDefault : user.Image)"
+                        alt="" class="profile-img">
+                <h3 class="profile-name">@user.FirstName @user.LastName</h3>
+            </div>
+            <div class="address-box p-2 d-flex flex-column justify-content-center">
+                <h3 class="address-title">Address Book</h3>
+                <p class="address-content">@user.Email</p>
+                <p class="address-content">@user.FirstName @user.LastName</p>
+                <p class="address-content">@user.Phone</p>
+            </div>
+            <div class="edit-box d-flex flex-column justify-content-around align-items-end">
+                <a href="" class="edit-link">Edit</a>
+                <button @onclick="AddProductLink" class="btn btn-md">Add New Art</button>
+            </div>
+        </div>
     </div>
-    <div class="@notLoaded">
-        <div class="gallery-container p-3 d-xl-flex flex-column align-items-center d-none d-xl-block">
-            <div class="profile-container d-flex">
-                <div class="image-box d-flex flex-column align-items-center">
-                    <img src="@(user.Image == null ? imageDefault : user.Image)"
-                         alt="" class="profile-img">
-                    <h3 class="profile-name">@user.FirstName @user.LastName</h3>
-                </div>
-                <div class="address-box p-2 d-flex flex-column justify-content-center">
-                    <h3 class="address-title">Address Book</h3>
-                    <p class="address-content">@user.Email</p>
-                    <p class="address-content">@user.FirstName @user.LastName</p>
-                    <p class="address-content">@user.Phone</p>
-                </div>
-                <div class="edit-box d-flex flex-column justify-content-around align-items-end">
-                    <a href="" class="edit-link">Edit</a>
-                    <button @onclick="AddProductLink" class="btn btn-md">Add New Art</button>
-                </div>
+    <div class="gallery-container d-block d-xl-none">
+        <div class="profile-container-xl d-flex flex-column">
+            <div class="image-box pt-4 d-flex flex-column align-items-center">
+                <img src="@(user.Image == null ? imageDefault : user.Image)"
+                        alt="" class="profile-img">
+            </div>
+            <div class="address-box-xl p-3 d-flex flex-column align-items-center">
+                <h3 class="profile-name">@user.Email</h3>
+                <p class="address-content">@user.FirstName @user.LastName</p>
+                <p class="address-content">@user.Phone</p>
+                <a href="" class="edit-link">Edit</a>
+                <button @onclick="AddProductLink" class="btn btn-md">Add New Art</button>
             </div>
         </div>
-        <div class="gallery-container d-block d-xl-none">
-            <div class="profile-container-xl d-flex flex-column">
-                <div class="image-box pt-4 d-flex flex-column align-items-center">
-                    <img src="@(user.Image == null ? imageDefault : user.Image)"
-                         alt="" class="profile-img">
-                </div>
-                <div class="address-box-xl p-3 d-flex flex-column align-items-center">
-                    <h3 class="profile-name">@user.Email</h3>
-                    <p class="address-content">@user.FirstName @user.LastName</p>
-                    <p class="address-content">@user.Phone</p>
-                    <a href="" class="edit-link">Edit</a>
-                    <button @onclick="AddProductLink" class="btn btn-md">Add New Art</button>
-                </div>
+
+    </div>
+    <div class="container-fluid my-4">
+        @if (changeComponent == 0)
+        {
+            <div class="row row-cols-md-3 row-cols-2 g-3">
+                <ProductsByArtist 
+                                    AllProductByArtist="AllProductsByArtist"
+                                    UserId="user.Id"
+                                    OnEdit="OnEditClick"/>
             </div>
+        }
+        else
+        {
+            <ProductForm Cancel="Cancel"
+                            user="@user" 
+                            ProductId="productId"/>
+        }
 
-        </div>
-        <div class="container-fluid my-4">
-            @if (changeComponent == 0)
-            {
-                <div class="row row-cols-md-3 row-cols-2 g-3">
-                    <ProductsByArtist 
-                                      AllProductByArtist="AllProductsByArtist"
-                                      OnEdit="OnEditClick"/>
-                </div>
-            }
-            else
-            {
-                <ProductForm Cancel="Cancel"
-                             user="@user" 
-                             ProductId="productId"/>
-            }
-
-        </div>
     </div>
 </div>
 
@@ -70,16 +66,12 @@
     private string imageDefault = "../css/default-profile.png";
     private int changeComponent = 0;
     private int productId = 0;
-    string loaded = string.Empty;
-    string notLoaded = "d-none";
 
     protected override async Task OnParametersSetAsync()
     {
         var username = await LocalStorage.GetItemAsStringAsync("username");
         user = await UserService.GetUser(username);
         AllProductsByArtist = await ProductService.LoadProductsbyArtist(user.Id);
-        loaded = "d-none";
-        notLoaded = string.Empty;
     }
 
     public void AddProductLink()

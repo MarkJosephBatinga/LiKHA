@@ -33,6 +33,8 @@
     [Parameter]
     public List<Product> AllProductByArtist { get; set; }
     [Parameter]
+    public int UserId { get; set; }
+    [Parameter]
     public EventCallback<Product> OnEdit { get; set; }
 
     private int MaxLength = 35;
@@ -54,9 +56,10 @@
 
     private async Task OnClickDelete(Product Product)
     {
-        await ProductService.DeleteProduct(Product);
+        var result = await ProductService.DeleteProduct(Product);
+        AllProductByArtist = await ProductService.LoadProductsbyArtist(UserId);
         ToastService.ShowSuccess("Succesfully Deleted", "Product Deleted");
-        NavManager.NavigateTo("");
+
     }
 
     protected override void OnInitialized()

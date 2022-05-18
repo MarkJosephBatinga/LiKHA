@@ -6,9 +6,10 @@
 @inject ILocalStorageService LocalStorage
 @inject IAddressService AddressService
 @inject IJSRuntime JsRuntime
+@inject IToastService Toast
 @implements IDisposable
 
-<div class="@notLoaded">
+<div>
     @if (changePage == 0)
     {
         <div class="container-fluid mb-3">
@@ -103,86 +104,90 @@
             Total="total"/>
     }
 </div>
-    <div class="container-fluid @loaded">
-        <LoadPage />
-    </div>
 
-    @code {
-        string loaded = string.Empty;
-        string notLoaded = "d-none";
-        int changePage = 0;
-        decimal subTotal = 0.00M;
-        decimal shippingFee = 0.00M;
-        decimal total = 0.00M;
-        User user = new User();
-        List<Cart> dbCarts = new List<Cart>();
-        List<Product> SelectedProduct = new List<Product>();
-        List<Product> cartProducts = new List<Product>();
-        List<string> strings = new List<string>();
+@code {
+    int changePage = 0;
+    decimal subTotal = 0.00M;
+    decimal shippingFee = 0.00M;
+    decimal total = 0.00M;
+    User user = new User();
+    List<Cart> dbCarts = new List<Cart>();
+    List<Product> SelectedProduct = new List<Product>();
+    List<Product> cartProducts = new List<Product>();
+    List<string> strings = new List<string>();
 
-        private void CancelClick()
+    private void CancelClick()
+    {
+        changePage = 0;
+        subTotal = 0.00M;
+        shippingFee = 0.00M;
+        total = 0.00M;
+    }
+
+    private void Payment()
+    {
+        changePage = 1;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var Username = await LocalStorage.GetItemAsStringAsync("username");
+        user = await UserService.GetUser(Username);
+        await AddressService.LoadAddresses(user.Id);
+        dbCarts = await CartService.GetCartProducts(user.Id);
+        foreach (var cartProduct in dbCarts)
         {
-            changePage = 0;
-            subTotal = 0.00M;
-            shippingFee = 0.00M;
-            total = 0.00M;
+            var product = await ProductService.LoadProduct(cartProduct.ProductId);
+            product.DateAddedCart = cartProduct.DateAdded;
+            cartProducts.Add(product);
+        }
+    }
+
+    private void OnChangeCheck(Product product, object checkedValue)
+    {
+        if (checkedValue.Equals(true))
+        {
+            subTotal += product.Price;
+            shippingFee += 75.00M;
+            SelectedProduct.Add(product);
+        }
+        else
+        {
+            subTotal -= product.Price;
+            shippingFee -= 75.00M;
+            SelectedProduct.Remove(product);
+        }
+        total = subTotal + shippingFee;
+    }
+
+    private async Task OnClickDelete(Product product)
+    {
+        cartProducts = new List<Product>();
+        dbCarts = new List<Cart>();
+        Toast.ShowSuccess("Product Remove", "Deleted");
+        var result = await CartService.DeleteCart(product, user.Id);
+        dbCarts = result;
+        foreach (var cartProduct in dbCarts)
+        {
+            var dbproduct = await ProductService.LoadProduct(cartProduct.ProductId);
+            dbproduct.DateAddedCart = cartProduct.DateAdded;
+            cartProducts.Add(product);
         }
 
-        private void Payment()
-        {
-            changePage = 1;
-        }
 
-        protected override async Task OnInitializedAsync()
-        {
-            var Username = await LocalStorage.GetItemAsStringAsync("username");
-            user = await UserService.GetUser(Username);
-            await AddressService.LoadAddresses(user.Id);
-            dbCarts = await CartService.GetCartProducts(user.Id);
-            foreach (var cartProduct in dbCarts)
-            {
-                var product = await ProductService.LoadProduct(cartProduct.ProductId);
-                product.DateAddedCart = cartProduct.DateAdded;
-                cartProducts.Add(product);
-            }
-            loaded = "d-none";
-            notLoaded = string.Empty;
-        }
+    }
 
-        private void OnChangeCheck(Product product, object checkedValue)
-        {
-            if (checkedValue.Equals(true))
-            {
-                subTotal += product.Price;
-                shippingFee += 75.00M;
-                SelectedProduct.Add(product);
-            }
-            else
-            {
-                subTotal -= product.Price;
-                shippingFee -= 75.00M;
-                SelectedProduct.Remove(product);
-            }
-            total = subTotal + shippingFee;
-        }
+    protected override void OnInitialized()
+    {
+        ProductService.OnChange += StateHasChanged;
+        UserService.OnChange += StateHasChanged;
+        AddressService.OnChange += StateHasChanged;
+    }
 
-        private async Task OnClickDelete(Product product)
-        {
-            var result = await CartService.DeleteCart(product, user.Id);
-            await JsRuntime.InvokeVoidAsync("console.log", result);
-        }
-
-        protected override void OnInitialized()
-        {
-            ProductService.OnChange += StateHasChanged;
-            UserService.OnChange += StateHasChanged;
-            AddressService.OnChange += StateHasChanged;
-        }
-
-        public void Dispose()
-        {
-            ProductService.OnChange -= StateHasChanged;
-            UserService.OnChange -= StateHasChanged;
-            AddressService.OnChange -= StateHasChanged;
-        }
+    public void Dispose()
+    {
+        ProductService.OnChange -= StateHasChanged;
+        UserService.OnChange -= StateHasChanged;
+        AddressService.OnChange -= StateHasChanged;
+    }
     }

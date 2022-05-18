@@ -7,76 +7,67 @@
 @inject IJSRuntime JsRuntime
 @implements IDisposable
 
-@if (!loaded)
-{
-    <LoadPage />
-}
-else
-{
-    <div class="container-fluid">
-        <div class="row">
-            <div class="dropdown-container d-block d-xl-none d-flex justify-content-around">
-                <div class="dropdown">
-                    <button class="btn btn-md dropdown-toggle" type="button" id="AccountDropdown" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                        Manage My Account
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="AccountDropdown">
-                        <button class="dropdown-item" @onclick='() => ChangeBody(0)'>My Account</button>
-                        <button class="dropdown-item" @onclick='() => ChangeBody(1)'>Edit Profile</button>
-                        <button class="dropdown-item" @onclick='() => ChangeBody(2)'>Edit Address</button>
-                    </div>
-                </div>
-                <div class="dropdown">
-                    <button class="btn btn-md dropdown-toggle" type="button" id="GalleryDropdown" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                        Manage My Gallery
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="GalleryDropdown">
-                        <a class="dropdown-item" href="#">Edit Profile</a>
-                        <a class="dropdown-item" href="#">Edit Address</a>
-                        <a class="dropdown-item" href="#">Orders</a>
-                    </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="dropdown-container d-block d-xl-none d-flex justify-content-around">
+            <div class="dropdown">
+                <button class="btn btn-md dropdown-toggle" type="button" id="AccountDropdown" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Manage My Account
+                </button>
+                <div class="dropdown-menu" aria-labelledby="AccountDropdown">
+                    <button class="dropdown-item" @onclick='() => ChangeBody(0)'>My Account</button>
+                    <button class="dropdown-item" @onclick='() => ChangeBody(1)'>Edit Profile</button>
+                    <button class="dropdown-item" @onclick='() => ChangeBody(2)'>Edit Address</button>
                 </div>
             </div>
-            <div class="manage-container d-none d-xl-block col-xl-3 d-flex flex-column align-items-center">
-                <h3 class="manage-title">My Account</h3>
-                <div class="manage-box d-flex flex-column align-items-center">
-                    <h5 class="manage-subtitle">Manage My Account</h5>
-                    <button class="manage-link" @onclick='() => ChangeBody(0)'>My Account</button>
-                    <button class="manage-link" @onclick='() => ChangeBody(1)'>Edit Profile</button>
-                    <button class="manage-link" @onclick='() => ChangeBody(2)'>Edit Address</button>
+            <div class="dropdown">
+                <button class="btn btn-md dropdown-toggle" type="button" id="GalleryDropdown" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Manage My Gallery
+                </button>
+                <div class="dropdown-menu" aria-labelledby="GalleryDropdown">
+                    <a class="dropdown-item" href="#">Edit Profile</a>
+                    <a class="dropdown-item" href="#">Edit Address</a>
+                    <a class="dropdown-item" href="#">Orders</a>
                 </div>
-                <h3 class="manage-title">My Gallery</h3>
-                <div class="manage-box d-flex flex-column align-items-center">
-                    <h5 class="manage-subtitle">Manage My Gallery</h5>
-                    <a href="" class="manage-link">Edit Profile</a>
-                    <a href="" class="manage-link">Edit Address</a>
-                    <a href="" class="manage-link">Orders</a>
-                </div>
-            </div>
-            <div class="col-xl-9">
-                @if (IdLink == 0)
-                {
-                    <DisplayAccount user="@user" OrderByBuyer="OrderByBuyer" />
-                }
-                else if (IdLink == 1)
-                {
-                    <EditProfile newUser="@user" />
-                }
-                else if (IdLink == 2)
-                {
-                    <EditAddress newUser="@user" />
-                }
             </div>
         </div>
+        <div class="manage-container d-none d-xl-block col-xl-3 d-flex flex-column align-items-center">
+            <h3 class="manage-title">My Account</h3>
+            <div class="manage-box d-flex flex-column align-items-center">
+                <h5 class="manage-subtitle">Manage My Account</h5>
+                <button class="manage-link" @onclick='() => ChangeBody(0)'>My Account</button>
+                <button class="manage-link" @onclick='() => ChangeBody(1)'>Edit Profile</button>
+                <button class="manage-link" @onclick='() => ChangeBody(2)'>Edit Address</button>
+            </div>
+            <h3 class="manage-title">My Gallery</h3>
+            <div class="manage-box d-flex flex-column align-items-center">
+                <h5 class="manage-subtitle">Manage My Gallery</h5>
+                <a href="" class="manage-link">Edit Profile</a>
+                <a href="" class="manage-link">Edit Address</a>
+                <a href="" class="manage-link">Orders</a>
+            </div>
+        </div>
+        <div class="col-xl-9">
+            @if (IdLink == 0)
+            {
+                <DisplayAccount user="@user" OrderByBuyer="OrderByBuyer" />
+            }
+            else if (IdLink == 1)
+            {
+                <EditProfile newUser="@user" />
+            }
+            else if (IdLink == 2)
+            {
+                <EditAddress newUser="@user" />
+            }
+        </div>
     </div>
-}
-
+</div>
 
 @code {
     User user = new User();
-    bool loaded = false;
     int userId = 0;
     int IdLink = 0;
     Order LoadOrder = new Order();
@@ -97,7 +88,6 @@ else
             LoadOrder.Artist = product.Artist;
             OrderByBuyer.Add(LoadOrder);
         }
-        loaded = true;
     }
 
     private void ChangeBody(int Id)

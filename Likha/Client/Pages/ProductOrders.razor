@@ -7,110 +7,101 @@
 @inject IJSRuntime JsRuntime
 @implements IDisposable
 
-@if (loaded)
-{
-    <div class="container-fluid">
-        <div class="order-container d-flex flex-column align-items-center">
-            <div class="title-box row">
-                <div class="title-text-card w-100 col-6 d-flex justify-content-start align-items-center">
-                    <h1 class="title">Product Orders</h1>
-                </div>
-                <div class="seller-text-card col-6 d-flex flex-column justify-content-center align-items-center">
-                    <img src="@user.Image" alt="Seller" class="seller-img">
-                    <h3 class="seller-name mt-3">@user.FirstName @user.LastName</h3>
-                </div>
+<div class="container-fluid">
+    <div class="order-container d-flex flex-column align-items-center">
+        <div class="title-box row">
+            <div class="title-text-card w-100 col-6 d-flex justify-content-start align-items-center">
+                <h1 class="title">Product Orders</h1>
             </div>
-            <div class="table-box d-none d-lg-block">
-                <table class="w-100 text-center">
-                    <tr>
-                        <th>Artworks</th>
-                        <th>Title</th>
-                        <th>Date</th>
-                        <th>Buyer</th>
-                        <th>Buyer Address</th>
-                        <th>Buyer Phone No.</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                        <th>Change Status</th>
-                    </tr>
-                    @foreach (var order in OrderBySeller)
-                    {
-                        <tr>
-                            <td>
-                                <img src="@order.Image" alt="" class="art-img">
-                            </td>
-                            <td>
-                                @order.Title
-                            </td>
-                            <td>
-                                @order.OrderDate
-                            </td>
-                            <td>
-                                @order.Buyer
-                            </td>
-                            <td>
-                                @order.BuyerAddress
-                            </td>
-                            <td>
-                                @order.BuyerPhone
-                            </td>
-                            <td>
-                                @order.TotalPrice
-                            </td>
-                            <td>
-                                <select class="btn-select" @onchange="ChangeEventArgs => OnChangeStatus(ChangeEventArgs, order)">
-                                    <option value="0">New</option>
-                                    <option value="1">Processing</option>
-                                    <option value="2">Delivery</option>
-                                    <option value="3">Delivered</option>
-                                </select>
-                            </td>
-                            <td>
-                                <button @onclick="OnClickStatus" class="btn-status-save">Save</button>
-                            </td>
-                        </tr>
-                    }
-                </table>
+            <div class="seller-text-card col-6 d-flex flex-column justify-content-center align-items-center">
+                <img src="@user.Image" alt="Seller" class="seller-img">
+                <h3 class="seller-name mt-3">@user.FirstName @user.LastName</h3>
             </div>
         </div>
-        <div class="product-container d-block d-lg-none d-flex flex-column align-items-center">
-            @foreach (var order in OrderBySeller)
-            {
-                <div class="product-box row">
-                    <div class="art-img-card col d-flex align-items-center justify-content-center">
-                        <img src="@order.Image" class="product-img" alt="">
-                    </div>
-                    <div class="order-box col">
-                        <h3 class="art-title">@order.Title</h3>
-                        <p class="order-content">@order.OrderDate</p>
-                        <p class="order-content">@order.Buyer</p>
-                        <p class="order-content">@order.BuyerAddress</p>
-                        <p class="order-content">@order.BuyerPhone</p>
-                        <p class="order-content">@order.TotalPrice</p>
-                    </div>
-                    <div class="btn-box col-3 d-flex flex-column justify-content-between align-items-end">
-                        <select class="btn-select" @onchange="ChangeEventArgs => OnChangeStatus(ChangeEventArgs, order)">
-                            <option value="0">New</option>
-                            <option value="1">Processing</option>
-                            <option value="2">Delivery</option>
-                            <option value="3">Delivered</option>
-                        </select>
-                        <button @onclick="OnClickStatus" class="btn-status-save">Save</button>
-                    </div>
-                </div>
-            }
+        <div class="table-box d-none d-lg-block">
+            <table class="w-100 text-center">
+                <tr>
+                    <th>Artworks</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Buyer</th>
+                    <th>Buyer Address</th>
+                    <th>Buyer Phone No.</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Change Status</th>
+                </tr>
+                @foreach (var order in OrderBySeller)
+                {
+                    <tr>
+                        <td>
+                            <img src="@order.Image" alt="" class="art-img">
+                        </td>
+                        <td>
+                            @order.Title
+                        </td>
+                        <td>
+                            @order.OrderDate
+                        </td>
+                        <td>
+                            @order.Buyer
+                        </td>
+                        <td>
+                            @order.BuyerAddress
+                        </td>
+                        <td>
+                            @order.BuyerPhone
+                        </td>
+                        <td>
+                            @order.TotalPrice
+                        </td>
+                        <td>
+                            <select class="btn-select" @onchange="ChangeEventArgs => OnChangeStatus(ChangeEventArgs, order)">
+                                <option value="0">New</option>
+                                <option value="1">Processing</option>
+                                <option value="2">Delivery</option>
+                                <option value="3">Delivered</option>
+                            </select>
+                        </td>
+                        <td>
+                            <button @onclick="OnClickStatus" class="btn-status-save">Save</button>
+                        </td>
+                    </tr>
+                }
+            </table>
         </div>
     </div>
-}
-else
-{
-    <LoadPage />
-}
-
+    <div class="product-container d-block d-lg-none d-flex flex-column align-items-center">
+        @foreach (var order in OrderBySeller)
+        {
+            <div class="product-box row">
+                <div class="art-img-card col d-flex align-items-center justify-content-center">
+                    <img src="@order.Image" class="product-img" alt="">
+                </div>
+                <div class="order-box col">
+                    <h3 class="art-title">@order.Title</h3>
+                    <p class="order-content">@order.OrderDate</p>
+                    <p class="order-content">@order.Buyer</p>
+                    <p class="order-content">@order.BuyerAddress</p>
+                    <p class="order-content">@order.BuyerPhone</p>
+                    <p class="order-content">@order.TotalPrice</p>
+                </div>
+                <div class="btn-box col-3 d-flex flex-column justify-content-between align-items-end">
+                    <select class="btn-select" @onchange="ChangeEventArgs => OnChangeStatus(ChangeEventArgs, order)">
+                        <option value="0">New</option>
+                        <option value="1">Processing</option>
+                        <option value="2">Delivery</option>
+                        <option value="3">Delivered</option>
+                    </select>
+                    <button @onclick="OnClickStatus" class="btn-status-save">Save</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 
 @code {
     User user = new User();
-    bool loaded = false;
     Order LoadOrder = new Order();
     List<Order> OrderBySeller = new List<Order>();
     Order ChangeStatus = new Order();
@@ -149,7 +140,6 @@ else
             LoadOrder.BuyerPhone = $"{address.Phone}";
             OrderBySeller.Add(LoadOrder);
         }
-        loaded = true;
     }
 
     protected override void OnInitialized()

@@ -66,6 +66,17 @@ namespace Likha.Server.Services.ProductService
 
         public async Task<List<Product>> DeleteProduct(Product existingProduct)
         {
+            var dbCart = await _context.Carts.Where(c => c.ProductId == existingProduct.Id).ToListAsync();
+            foreach (var item in dbCart)
+            {
+                _context.Carts.Remove(item);
+            }
+
+            var dborder = await _context.Orders.Where(o => o.ProductId == existingProduct.Id).ToListAsync();
+            foreach (var item in dborder)
+            {
+                _context.Orders.Remove(item);
+            }
             _context.Products.Remove(existingProduct);
             await _context.SaveChangesAsync();
             var products = await _context.Products.ToListAsync();

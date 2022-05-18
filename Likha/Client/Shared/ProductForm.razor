@@ -124,10 +124,12 @@
 
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
-        var format = "image/png";
+        var format = e.File.ContentType;
+        long maxFileSize = 1024 * 1024 * 15;
+
         var resizedImage = await e.File.RequestImageFileAsync(format, 600, 600);
         var buffer = new byte[resizedImage.Size];
-        await resizedImage.OpenReadStream(1000000).ReadAsync(buffer);
+        await resizedImage.OpenReadStream(maxFileSize).ReadAsync(buffer);
         var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
         newProduct.Image = imageData;
     }
