@@ -1,4 +1,5 @@
 ﻿@page "/about"
+@inject NavigationManager NavManager
 
 <div class="container-fluid body-container">
     <div class="about-box row m-5">
@@ -23,16 +24,34 @@
     <div class="team-box my-4 row">
         <h3 class="team-title text-center">Our LiKHA Team</h3>
         <div class="team-card col d-flex flex-column align-items-center">
-            <img src="./css/images/team.png" alt="Painting" class="member-img">
+            <img src="./css/images/Hanz.png" @onclick="OnHanzClick" class="member-img">
             <p class="member-name">Hanz Patrick A. Andrada</p>
         </div>
         <div class="team-card col d-flex flex-column align-items-center">
-            <img src="./css/images/team.png" alt="Painting" class="member-img">
+            <img src="./css/images/Mark.png" @onclick="OnMarkClick" class="member-img">
             <p class="member-name">Mark Joseph Q. Batinga</p>
         </div>
         <div class="team-card col d-flex flex-column align-items-center">
-            <img src="./css/images/team.png" alt="Painting" class="member-img">
+            <img src="./css/images/Joe.png" @onclick="OnJoeClick" class="member-img">
             <p class="member-name">Joe Patrick Valin</p>
         </div>
     </div>
 </div>
+
+@code {
+
+    private void OnMarkClick()
+    {
+        NavManager.NavigateTo("https://www.facebook.com/markjoseph.batinga");
+    }
+
+    private void OnHanzClick()
+    {
+        NavManager.NavigateTo("https://www.facebook.com/hanz.nambah.wan");
+    }
+
+    private void OnJoeClick()
+    {
+        NavManager.NavigateTo("https://www.facebook.com/jopaaat");
+    }
+}

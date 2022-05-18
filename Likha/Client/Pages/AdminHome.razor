@@ -1,0 +1,30 @@
+﻿@layout AdminLayout
+@page "/admin"
+@page "/admin/{Url}"
+
+<div class="container-fluid">
+    <div class="admin-container">
+        <h1 class="table-title">@Url</h1>
+        <table>
+            <tr>
+                <th>Company</th>
+                <th>Contact</th>
+                <th>Country</th>
+                <th><p class="update-th">Update</p></th>
+                <th><p class="delete-th">Delete</p></th>
+            </tr>
+            <tr>
+                <td>Alfreds Futterkiste</td>
+                <td>Maria Anders</td>
+                <td>Germany</td>
+                <td><button class="btn-update">Update</button></td>
+                <td><button class="btn-delete">Delete</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Url { get; set; } = null;
+}
