@@ -76,6 +76,15 @@
         if (AddressId != 0)
         {
             ExistingAddress = await AddressService.GetAddress(AddressId);
+            newAddress.Title = ExistingAddress.Title;
+            newAddress.LastName = ExistingAddress.LastName;
+            newAddress.FirstName = ExistingAddress.FirstName;
+            newAddress.Phone = ExistingAddress.Phone;
+            newAddress.Street = ExistingAddress.Street;
+            newAddress.Barangay = ExistingAddress.Barangay;
+            newAddress.Town = ExistingAddress.Town;
+            newAddress.Province = ExistingAddress.Province;
+            newAddress.Other = ExistingAddress.Other;
         }
         else
         {

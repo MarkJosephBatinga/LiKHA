@@ -5,6 +5,7 @@
 @inject IToastService ToastService
 @inject IUserService UserService
 @inject ICartService CartService
+@inject ICategoryService CategoryService
 @inject IJSRuntime JsRuntime
 
 <div class="container-fluid">
@@ -45,6 +46,7 @@
 @code {
     private Product product = new Product();
     private List<Product> allProducts = new List<Product>();
+    private List<Category> Categories = new List<Category>();
     private User user = new User();
     private Cart newCart = new Cart();
 
@@ -79,6 +81,14 @@
     {
         product = await ProductService.LoadProduct(Id);
         allProducts = await ProductService.LoadProducts();
+        foreach (var product in allProducts)
+        {
+            var category = Categories.Where(c => c.Id == product.CategoryId).FirstOrDefault();
+            if (category != null)
+            {
+                product.Category = category.Name;
+            }
+        }
     }
 
     protected override void OnInitialized()

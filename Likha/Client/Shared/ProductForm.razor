@@ -113,6 +113,10 @@
         if (ProductId != 0)
         {
             EditProduct = await ProductService.LoadProduct(ProductId);
+            newProduct.Title = EditProduct.Title;
+            newProduct.Artist = EditProduct.Artist;
+            newProduct.Description = EditProduct.Description;
+            newProduct.Price = EditProduct.Price;
 
         }
     }
@@ -127,7 +131,7 @@
         var format = e.File.ContentType;
         long maxFileSize = 1024 * 1024 * 15;
 
-        var resizedImage = await e.File.RequestImageFileAsync(format, 600, 600);
+        var resizedImage = await e.File.RequestImageFileAsync(format, 1000, 1000);
         var buffer = new byte[resizedImage.Size];
         await resizedImage.OpenReadStream(maxFileSize).ReadAsync(buffer);
         var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";

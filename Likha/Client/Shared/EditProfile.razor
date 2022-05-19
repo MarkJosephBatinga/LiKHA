@@ -140,7 +140,7 @@
         var format = e.File.ContentType;
         long maxFileSize = 1024 * 1024 * 15;
 
-        var resizedImage = await e.File.RequestImageFileAsync(format, 600, 600);
+        var resizedImage = await e.File.RequestImageFileAsync(format, 1000, 1000);
         var buffer = new byte[resizedImage.Size];
         await resizedImage.OpenReadStream(maxFileSize).ReadAsync(buffer);
         var imageData = $"data:{format};base64,{Convert.ToBase64String(buffer)}";
@@ -149,6 +149,16 @@
 
     protected override void OnInitialized()
     {
+        if(updateUser != null)
+        {
+            updateUser.LastName = newUser.LastName;
+            updateUser.FirstName = newUser.FirstName;
+            updateUser.Phone = newUser.Phone;
+            updateUser.Email = newUser.Email;
+            updateUser.Gender = newUser.Gender;
+            updateUser.Password = newUser.Password;
+
+        }
         UserService.OnChange += StateHasChanged;
     }
 

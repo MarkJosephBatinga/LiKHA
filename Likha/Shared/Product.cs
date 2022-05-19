@@ -29,5 +29,7 @@ namespace Likha.Shared
 
         [NotMapped]
         public DateTime DateAddedCart { get; set; }
+        [NotMapped]
+        public string Category { get; set; }
     }
 }

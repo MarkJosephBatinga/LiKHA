@@ -94,6 +94,14 @@
     {
         AllCategory = await CategoryService.LoadCategories();
         AllProduct = await ProductService.LoadProducts();
+        foreach (var product in AllProduct)
+        {
+            var category = AllCategory.Where(c => c.Id == product.CategoryId).FirstOrDefault();
+            if (category != null)
+            {
+                product.Category = category.Name;
+            }
+        }
         loaded = "d-none";
         notLoaded = string.Empty;
     }
@@ -103,6 +111,14 @@
         if (Url != null)
         {
             AllProductbyCategory = await ProductService.LoadProductsbyCategory(Url);
+            foreach (var product in AllProductbyCategory)
+            {
+                var category = AllCategory.Where(c => c.Id == product.CategoryId).FirstOrDefault();
+                if (category != null)
+                {
+                    product.Category = category.Name;
+                }
+            }
             loaded = "d-none";
         }
 
