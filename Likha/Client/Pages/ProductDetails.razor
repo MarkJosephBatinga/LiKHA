@@ -81,6 +81,7 @@
     {
         product = await ProductService.LoadProduct(Id);
         allProducts = await ProductService.LoadProducts();
+        Categories = await CategoryService.LoadCategories();
         foreach (var product in allProducts)
         {
             var category = Categories.Where(c => c.Id == product.CategoryId).FirstOrDefault();

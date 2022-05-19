@@ -2,6 +2,7 @@
 @inject IUserService UserService 
 @inject IProductService ProductService
 @inject ILocalStorageService LocalStorage
+@inject ICategoryService CategoryService
 @implements IDisposable
 
 <div class="container-fluid">
@@ -67,11 +68,22 @@
     private int changeComponent = 0;
     private int productId = 0;
 
+    List<Category> Categories = new List<Category>();
+
     protected override async Task OnParametersSetAsync()
     {
         var username = await LocalStorage.GetItemAsStringAsync("username");
         user = await UserService.GetUser(username);
         AllProductsByArtist = await ProductService.LoadProductsbyArtist(user.Id);
+        Categories = await CategoryService.LoadCategories();
+        foreach (var product in AllProductsByArtist)
+        {
+            var category = Categories.Where(c => c.Id == product.CategoryId).FirstOrDefault();
+            if (category != null)
+            {
+                product.Category = category.Name;
+            }
+        }
     }
 
     public void AddProductLink()
